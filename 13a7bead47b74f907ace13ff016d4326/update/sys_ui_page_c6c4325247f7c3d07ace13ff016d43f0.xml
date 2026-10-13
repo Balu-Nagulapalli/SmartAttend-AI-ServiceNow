@@ -1,0 +1,826 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[window.addEventListener(
+    'load',
+    function() {
+        loadTeamAttendance();
+    }
+);
+
+
+// =============================================================
+// LOAD TEAM ATTENDANCE
+// =============================================================
+function loadTeamAttendance() {
+
+    var loadingBox =
+        document.getElementById('loadingBox');
+
+    var teamContainer =
+        document.getElementById('teamContainer');
+
+
+    fetch(
+        '/api/x_1760545_smarta_0/smartattend_api/team-attendance',
+        {
+            method: 'GET',
+
+            credentials: 'same-origin',
+
+            headers: {
+                'X-UserToken':
+                    window.g_ck || ''
+            }
+        }
+    )
+
+    .then(function(response) {
+
+        return response
+            .json()
+            .then(function(data) {
+
+                return {
+                    ok: response.ok,
+                    data: data
+                };
+
+            });
+
+    })
+
+    .then(function(result) {
+
+        if (
+            !result.ok ||
+            !result.data.result ||
+            !result.data.result.success
+        ) {
+
+            throw new Error(
+                'Unable to load team attendance.'
+            );
+        }
+
+
+        var data =
+            result.data.result;
+
+
+        // -----------------------------------------------------
+        // Manager header
+        // -----------------------------------------------------
+        document.getElementById(
+            'managerName'
+        ).innerHTML =
+            data.manager || 'Manager';
+
+
+        document.getElementById(
+            'managerDate'
+        ).innerHTML =
+            formatDate(
+                data.attendance_date
+            );
+
+
+        document.getElementById(
+            'managerBar'
+        ).style.display =
+            'block';
+
+
+        // -----------------------------------------------------
+        // Summary counts
+        // -----------------------------------------------------
+        var total = 0;
+        var present = 0;
+        var late = 0;
+        var missing = 0;
+
+
+        if (data.employees) {
+
+            total =
+                data.employees.length;
+
+
+            for (
+                var i = 0;
+                i < data.employees.length;
+                i++
+            ) {
+
+                var status =
+                    data.employees[i]
+                        .attendance
+                        .status;
+
+
+                if (status === 'present') {
+                    present++;
+                }
+
+                else if (status === 'late') {
+                    late++;
+                }
+
+                else if (
+                    status ===
+                    'not_checked_in'
+                ) {
+
+                    missing++;
+                }
+            }
+        }
+
+
+        document.getElementById(
+            'totalCount'
+        ).innerHTML =
+            total;
+
+
+        document.getElementById(
+            'presentCount'
+        ).innerHTML =
+            present;
+
+
+        document.getElementById(
+            'lateCount'
+        ).innerHTML =
+            late;
+
+
+        document.getElementById(
+            'missingCount'
+        ).innerHTML =
+            missing;
+
+
+        document.getElementById(
+            'summaryGrid'
+        ).style.display =
+            'grid';
+
+
+        loadingBox.style.display =
+            'none';
+
+
+        // -----------------------------------------------------
+        // No employees
+        // -----------------------------------------------------
+        if (
+            !data.employees ||
+            data.employees.length === 0
+        ) {
+
+            teamContainer.innerHTML =
+                '<div class="employee-card">' +
+                    'No employees are assigned to this manager.' +
+                '</div>';
+
+            return;
+        }
+
+
+        // -----------------------------------------------------
+        // Render employees
+        // -----------------------------------------------------
+        var html = '';
+
+
+        for (
+            var j = 0;
+            j < data.employees.length;
+            j++
+        ) {
+
+            html +=
+                buildEmployeeCard(
+                    data.employees[j]
+                );
+        }
+
+
+        teamContainer.innerHTML =
+            html;
+
+    })
+
+    .catch(function(error) {
+
+        console.error(
+            'Team Attendance Error:',
+            error
+        );
+
+
+        loadingBox.className =
+            'error';
+
+
+        loadingBox.innerHTML =
+            error.message ||
+            'Unable to load team attendance.';
+
+    });
+}
+
+
+
+// =============================================================
+// BUILD EMPLOYEE CARD
+// =============================================================
+function buildEmployeeCard(
+    employee
+) {
+
+    var attendance =
+        employee.attendance || {};
+
+
+    var statusText =
+        formatStatus(
+            attendance.status
+        );
+
+
+    var statusClass =
+        getStatusClass(
+            attendance.status
+        );
+
+
+    var employeeCode =
+        employee.employee_code ||
+        'No Employee Code';
+
+
+    var department =
+        employee.department ||
+        'No Department';
+
+
+    var shift =
+        employee.shift ||
+        '-';
+
+
+    var checkIn =
+        formatDateTime(
+            attendance.check_in
+        );
+
+
+    var checkOut =
+        formatDateTime(
+            attendance.check_out
+        );
+
+
+    return (
+
+        '<div class="employee-card">' +
+
+            '<div class="employee-top">' +
+
+                '<div>' +
+
+                    '<div class="employee-name">' +
+                        escapeHtml(
+                            employee.employee || '-'
+                        ) +
+                    '</div>' +
+
+                    '<div class="employee-meta">' +
+                        escapeHtml(employeeCode) +
+                        ' • ' +
+                        escapeHtml(department) +
+                        ' • ' +
+                        escapeHtml(shift) +
+                    '</div>' +
+
+                '</div>' +
+
+                '<div class="status-badge ' +
+                    statusClass +
+                '">' +
+
+                    escapeHtml(
+                        statusText
+                    ) +
+
+                '</div>' +
+
+            '</div>' +
+
+
+            '<div class="details-grid">' +
+
+                buildDetailBox(
+                    'Check In',
+                    checkIn || '-'
+                ) +
+
+                buildDetailBox(
+                    'Check Out',
+                    checkOut || '-'
+                ) +
+
+                buildDetailBox(
+                    'Late Minutes',
+                    attendance.late_minutes || '0'
+                ) +
+
+                buildDetailBox(
+                    'Working Minutes',
+                    attendance.working_minutes || '-'
+                ) +
+
+            '</div>' +
+
+        '</div>'
+    );
+}
+
+
+
+// =============================================================
+// DETAIL BOX
+// =============================================================
+function buildDetailBox(
+    label,
+    value
+) {
+
+    return (
+
+        '<div class="detail-box">' +
+
+            '<div class="detail-label">' +
+                escapeHtml(label) +
+            '</div>' +
+
+            '<div class="detail-value">' +
+                escapeHtml(
+                    String(value)
+                ) +
+            '</div>' +
+
+        '</div>'
+    );
+}
+
+
+
+// =============================================================
+// FORMAT STATUS
+// =============================================================
+function formatStatus(status) {
+
+    if (status === 'present') {
+        return 'Present';
+    }
+
+    if (status === 'late') {
+        return 'Late';
+    }
+
+    if (status === 'half_day') {
+        return 'Half Day';
+    }
+
+    if (
+        status ===
+        'insufficient_hours'
+    ) {
+        return 'Insufficient Hours';
+    }
+
+    if (
+        status ===
+        'not_checked_in'
+    ) {
+        return 'Not Checked In';
+    }
+
+    return status || '-';
+}
+
+
+
+// =============================================================
+// STATUS CLASS
+// =============================================================
+function getStatusClass(status) {
+
+    if (status === 'present') {
+        return 'status-present';
+    }
+
+    if (status === 'late') {
+        return 'status-late';
+    }
+
+    if (status === 'half_day') {
+        return 'status-half';
+    }
+
+    if (
+        status ===
+        'not_checked_in'
+    ) {
+        return 'status-missing';
+    }
+
+    return 'status-insufficient';
+}
+
+
+
+// =============================================================
+// FORMAT DATE
+// =============================================================
+function formatDate(dateValue) {
+
+    if (!dateValue) {
+        return '-';
+    }
+
+
+    var parts =
+        dateValue.split('-');
+
+
+    if (parts.length !== 3) {
+        return dateValue;
+    }
+
+
+    return (
+        parts[2] +
+        '-' +
+        parts[1] +
+        '-' +
+        parts[0]
+    );
+}
+
+
+
+// =============================================================
+// FORMAT DATETIME
+// =============================================================
+function formatDateTime(dateTime) {
+
+    if (!dateTime) {
+        return '';
+    }
+
+
+    var parts =
+        dateTime.split(' ');
+
+
+    if (parts.length < 2) {
+        return dateTime;
+    }
+
+
+    return parts[1];
+}
+
+
+
+// =============================================================
+// HTML ESCAPE
+// =============================================================
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replace(/&/g, '&amp;')
+
+        .replace(/</g, '&lt;')
+
+        .replace(/>/g, '&gt;')
+
+        .replace(/"/g, '&quot;')
+
+        .replace(/'/g, '&#039;');
+}]]></client_script>
+        <description>Manager dashboard for SmartAttend team attendance&#13;
+</description>
+        <direct>false</direct>
+        <endpoint>x_1760545_smarta_0_smartattend_manager.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+
+<j:jelly
+    xmlns:j="jelly:core"
+    xmlns:g="glide"
+    trim="false">
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .brand {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #667085;
+        }
+
+        h1 {
+            margin: 8px 0 5px;
+            color: #101828;
+        }
+
+        .subtitle {
+            color: #667085;
+            margin-bottom: 24px;
+        }
+
+        .manager-bar {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        .manager-name {
+            font-size: 21px;
+            font-weight: 700;
+            color: #101828;
+        }
+
+        .manager-date {
+            margin-top: 5px;
+            color: #667085;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: #667085;
+        }
+
+        .summary-value {
+            margin-top: 8px;
+            font-size: 30px;
+            font-weight: 700;
+            color: #101828;
+        }
+
+        .employee-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        .employee-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .employee-name {
+            font-size: 19px;
+            font-weight: 700;
+            color: #101828;
+        }
+
+        .employee-meta {
+            margin-top: 5px;
+            color: #667085;
+            font-size: 13px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            border-radius: 999px;
+            padding: 7px 12px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .status-present {
+            background: #ecfdf3;
+            color: #027a48;
+        }
+
+        .status-late {
+            background: #fffaeb;
+            color: #b54708;
+        }
+
+        .status-half {
+            background: #eff8ff;
+            color: #175cd3;
+        }
+
+        .status-insufficient {
+            background: #fef3f2;
+            color: #b42318;
+        }
+
+        .status-missing {
+            background: #f2f4f7;
+            color: #475467;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+            border: 1px solid #eaecf0;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #667085;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: #101828;
+        }
+
+        #loadingBox {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            color: #667085;
+        }
+
+        .error {
+            color: #b42318;
+        }
+
+        @media (max-width: 850px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .details-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 520px) {
+            .page {
+                padding: 14px;
+            }
+
+            .summary-grid,
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .employee-top {
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+
+    <div class="page">
+
+        <div class="container">
+
+            <div class="brand">
+                SmartAttend AI
+            </div>
+
+            <h1>
+                Team Attendance
+            </h1>
+
+            <div class="subtitle">
+                View today's attendance for employees assigned to you.
+            </div>
+
+
+            <div
+                id="managerBar"
+                class="manager-bar"
+                style="display:none;">
+
+                <div
+                    id="managerName"
+                    class="manager-name">
+                </div>
+
+                <div
+                    id="managerDate"
+                    class="manager-date">
+                </div>
+
+            </div>
+
+
+            <div
+                id="summaryGrid"
+                class="summary-grid"
+                style="display:none;">
+
+                <div class="summary-card">
+                    <div class="summary-label">Total Employees</div>
+                    <div id="totalCount" class="summary-value">0</div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-label">Present</div>
+                    <div id="presentCount" class="summary-value">0</div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-label">Late</div>
+                    <div id="lateCount" class="summary-value">0</div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-label">Not Checked In</div>
+                    <div id="missingCount" class="summary-value">0</div>
+                </div>
+
+            </div>
+
+
+            <div id="loadingBox">
+                Loading team attendance...
+            </div>
+
+            <div id="teamContainer">
+            </div>
+
+        </div>
+
+    </div>
+
+</j:jelly>]]></html>
+        <name>smartattend_manager</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-10 12:04:46</sys_created_on>
+        <sys_id>c6c4325247f7c3d07ace13ff016d43f0</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>smartattend_manager</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_ui_page_c6c4325247f7c3d07ace13ff016d43f0</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-10 12:05:58</sys_updated_on>
+    </sys_ui_page>
+</record_update>

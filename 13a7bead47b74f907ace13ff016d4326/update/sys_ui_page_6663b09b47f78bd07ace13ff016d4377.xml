@@ -1,0 +1,1092 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[window.addEventListener(
+    'load',
+    function() {
+        loadManagerDashboard();
+    }
+);
+
+
+function loadManagerDashboard() {
+
+    fetch(
+        '/api/x_1760545_smarta_0/smartattend_api/manager-dashboard',
+        {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                'X-UserToken':
+                    window.g_ck || ''
+            }
+        }
+    )
+
+    .then(function(response) {
+        return response.json();
+    })
+
+    .then(function(data) {
+
+        if (
+            !data.result ||
+            !data.result.success
+        ) {
+            throw new Error(
+                'Unable to load attendance dashboard.'
+            );
+        }
+
+        renderDashboard(
+            data.result
+        );
+
+    })
+
+    .catch(function(error) {
+
+        var loading =
+            document.getElementById(
+                'loadingBox'
+            );
+
+        loading.className =
+            'error';
+
+        loading.textContent =
+            error.message;
+    });
+
+}
+
+
+function renderDashboard(data) {
+
+    document.getElementById(
+        'loadingBox'
+    ).style.display =
+        'none';
+
+
+    document.getElementById(
+        'managerCard'
+    ).style.display =
+        'block';
+
+
+    document.getElementById(
+        'dashboardContent'
+    ).style.display =
+        'block';
+
+
+    setText(
+        'managerName',
+        data.manager
+    );
+
+
+    setText(
+        'dashboardDate',
+        'Today • ' +
+        formatDate(
+            data.today
+        )
+    );
+
+
+    var today =
+        data.today_summary || {};
+
+
+    setText(
+        'todayTotal',
+        today.total_employees || 0
+    );
+
+    setText(
+        'todayCheckedIn',
+        today.checked_in || 0
+    );
+
+    setText(
+        'todayCheckedOut',
+        today.checked_out || 0
+    );
+
+    setText(
+        'todayNotCheckedIn',
+        today.not_checked_in || 0
+    );
+
+    setText(
+        'todayLate',
+        today.late || 0
+    );
+
+    setText(
+        'todayPresent',
+        today.present || 0
+    );
+
+    setText(
+        'todayHalfDay',
+        today.half_day || 0
+    );
+
+    setText(
+        'todayInsufficient',
+        today.insufficient_hours || 0
+    );
+
+
+    var seven =
+        data.seven_day_summary || {};
+
+
+    setText(
+        'sevenDayPeriod',
+        formatDate(
+            seven.from
+        ) +
+        ' to ' +
+        formatDate(
+            seven.to
+        )
+    );
+
+
+    setText(
+        'sevenRecords',
+        seven.attendance_records || 0
+    );
+
+    setText(
+        'sevenPresent',
+        seven.present || 0
+    );
+
+    setText(
+        'sevenLate',
+        seven.late || 0
+    );
+
+    setText(
+        'sevenInsufficient',
+        seven.insufficient_hours || 0
+    );
+
+    setText(
+        'sevenHalfDay',
+        seven.half_day || 0
+    );
+
+    setText(
+        'sevenAvgWork',
+        seven.average_working_minutes || 0
+    );
+
+    setText(
+        'sevenLateMinutes',
+        seven.total_late_minutes || 0
+    );
+
+
+    renderEmployees(
+        data.employees || []
+    );
+
+}
+
+
+function renderEmployees(
+    employees
+) {
+
+    var container =
+        document.getElementById(
+            'employeeContainer'
+        );
+
+
+    if (
+        !employees ||
+        employees.length === 0
+    ) {
+
+        container.innerHTML =
+            '<div class="employee-card">' +
+            'No employees assigned.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    var html = '';
+
+
+    for (
+        var i = 0;
+        i < employees.length;
+        i++
+    ) {
+
+        var employee =
+            employees[i];
+
+
+        var status =
+            employee.status ||
+            'not_checked_in';
+
+
+        var statusInfo =
+            getStatusInfo(
+                status
+            );
+
+
+        html +=
+
+            '<div class="employee-card">' +
+
+                '<div class="employee-name">' +
+                    escapeHtml(
+                        employee.employee ||
+                        '-'
+                    ) +
+                '</div>' +
+
+                '<div class="employee-meta">' +
+
+                    escapeHtml(
+                        employee.employee_code ||
+                        'No Employee Code'
+                    ) +
+
+                    ' • ' +
+
+                    escapeHtml(
+                        employee.department ||
+                        'No Department'
+                    ) +
+
+                    ' • ' +
+
+                    escapeHtml(
+                        employee.shift ||
+                        '-'
+                    ) +
+
+                '</div>' +
+
+
+                '<div class="employee-status ' +
+                    statusInfo.css +
+                '">' +
+
+                    escapeHtml(
+                        statusInfo.label
+                    ) +
+
+                '</div>' +
+
+
+                '<div class="employee-time-grid">' +
+
+                    buildEmployeeStat(
+                        'Check In',
+                        formatDateTime(
+                            employee.check_in
+                        )
+                    ) +
+
+                    buildEmployeeStat(
+                        'Check Out',
+                        formatDateTime(
+                            employee.check_out
+                        )
+                    ) +
+
+                    buildEmployeeStat(
+                        'Working',
+                        (
+                            employee.working_minutes ||
+                            0
+                        ) +
+                        ' min'
+                    ) +
+
+                    buildEmployeeStat(
+                        'Late',
+                        (
+                            employee.late_minutes ||
+                            0
+                        ) +
+                        ' min'
+                    ) +
+
+                '</div>' +
+
+            '</div>';
+
+    }
+
+
+    container.innerHTML =
+        html;
+
+}
+
+
+function getStatusInfo(
+    status
+) {
+
+    if (
+        status === 'present'
+    ) {
+
+        return {
+            label: 'Present',
+            css: 'status-present'
+        };
+
+    }
+
+
+    if (
+        status === 'late'
+    ) {
+
+        return {
+            label: 'Late',
+            css: 'status-late'
+        };
+
+    }
+
+
+    if (
+        status === 'half_day'
+    ) {
+
+        return {
+            label: 'Half Day',
+            css: 'status-warning'
+        };
+
+    }
+
+
+    if (
+        status ===
+        'insufficient_hours'
+    ) {
+
+        return {
+            label: 'Insufficient Hours',
+            css: 'status-warning'
+        };
+
+    }
+
+
+    return {
+        label: 'Not Checked In',
+        css: 'status-none'
+    };
+
+}
+
+
+function buildEmployeeStat(
+    label,
+    value
+) {
+
+    return (
+
+        '<div class="employee-stat">' +
+
+            '<div class="employee-stat-label">' +
+                escapeHtml(label) +
+            '</div>' +
+
+            '<div class="employee-stat-value">' +
+                escapeHtml(
+                    String(value)
+                ) +
+            '</div>' +
+
+        '</div>'
+
+    );
+
+}
+
+
+function formatDate(
+    value
+) {
+
+    if (!value) {
+        return '-';
+    }
+
+
+    var parts =
+        value.split('-');
+
+
+    if (
+        parts.length !== 3
+    ) {
+        return value;
+    }
+
+
+    return (
+        parts[2] +
+        '-' +
+        parts[1] +
+        '-' +
+        parts[0]
+    );
+
+}
+
+
+function formatDateTime(
+    value
+) {
+
+    if (!value) {
+        return '-';
+    }
+
+
+    var parts =
+        value.split(' ');
+
+
+    if (
+        parts.length < 2
+    ) {
+        return value;
+    }
+
+
+    return (
+        formatDate(
+            parts[0]
+        ) +
+        ' ' +
+        formatTime(
+            parts[1]
+        )
+    );
+
+}
+
+
+function formatTime(
+    value
+) {
+
+    if (!value) {
+        return '-';
+    }
+
+
+    var parts =
+        value.split(':');
+
+
+    var hour =
+        parseInt(
+            parts[0],
+            10
+        );
+
+
+    var minute =
+        parts[1];
+
+
+    var suffix =
+        hour >= 12
+            ? 'PM'
+            : 'AM';
+
+
+    hour =
+        hour % 12;
+
+
+    if (
+        hour === 0
+    ) {
+        hour = 12;
+    }
+
+
+    return (
+        hour +
+        ':' +
+        minute +
+        ' ' +
+        suffix
+    );
+
+}
+
+
+function setText(
+    id,
+    value
+) {
+
+    var element =
+        document.getElementById(
+            id
+        );
+
+
+    if (element) {
+
+        element.textContent =
+            value;
+
+    }
+
+}
+
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value === null ||
+        value === undefined
+            ? ''
+            : value
+    )
+
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
+}]]></client_script>
+        <description>SmartAttend manager attendance dashboard&#13;
+</description>
+        <direct>false</direct>
+        <endpoint>x_1760545_smarta_0_smartattend_manager_dashboard.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+
+<j:jelly
+    xmlns:j="jelly:core"
+    xmlns:g="glide"
+    trim="false">
+
+<style>
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: #101828;
+}
+
+.dashboard-page {
+    min-height: 100vh;
+    padding: 28px;
+}
+
+.dashboard-container {
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+.brand {
+    color: #0b7285;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 8px 0 4px;
+}
+
+.subtitle {
+    color: #667085;
+    margin-bottom: 24px;
+}
+
+.manager-card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+}
+
+.manager-name {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.manager-date {
+    color: #667085;
+    margin-top: 5px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 26px 0 14px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.card {
+    background: white;
+    border-radius: 17px;
+    padding: 18px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+}
+
+.card-label {
+    color: #667085;
+    font-size: 12px;
+}
+
+.card-value {
+    font-size: 29px;
+    font-weight: 800;
+    margin-top: 8px;
+}
+
+.period-card {
+    background: #eef7f9;
+    border: 1px solid #cce9ee;
+    padding: 15px 18px;
+    border-radius: 14px;
+    margin-bottom: 14px;
+    color: #475467;
+}
+
+.employee-card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+}
+
+.employee-name {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.employee-meta {
+    color: #667085;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.employee-status {
+    margin-top: 15px;
+    border-radius: 999px;
+    padding: 9px 13px;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.status-none {
+    background: #f2f4f7;
+    color: #475467;
+}
+
+.status-present {
+    background: #ecfdf3;
+    color: #027a48;
+}
+
+.status-late {
+    background: #fff7ed;
+    color: #c2410c;
+}
+
+.status-warning {
+    background: #fef3f2;
+    color: #b42318;
+}
+
+.employee-time-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.employee-stat {
+    background: #f8fafc;
+    border: 1px solid #eaecf0;
+    border-radius: 12px;
+    padding: 11px;
+}
+
+.employee-stat-label {
+    color: #667085;
+    font-size: 11px;
+}
+
+.employee-stat-value {
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+#loadingBox {
+    padding: 35px;
+    background: white;
+    border-radius: 16px;
+    text-align: center;
+    color: #667085;
+}
+
+.error {
+    color: #b42318;
+}
+
+@media(max-width:900px) {
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .employee-time-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media(max-width:520px) {
+
+    .dashboard-page {
+        padding: 14px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .employee-time-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .title {
+        font-size: 27px;
+    }
+
+}
+
+</style>
+
+
+<div class="dashboard-page">
+
+    <div class="dashboard-container">
+
+        <div class="brand">
+            SmartAttend
+        </div>
+
+        <div class="title">
+            Attendance Dashboard
+        </div>
+
+        <div class="subtitle">
+            Live team attendance overview and seven-day performance.
+        </div>
+
+
+        <div
+            id="managerCard"
+            class="manager-card"
+            style="display:none;">
+
+            <div
+                id="managerName"
+                class="manager-name">
+            </div>
+
+            <div
+                id="dashboardDate"
+                class="manager-date">
+            </div>
+
+        </div>
+
+
+        <div
+            id="dashboardContent"
+            style="display:none;">
+
+
+            <div class="section-title">
+                Today
+            </div>
+
+
+            <div class="grid">
+
+                <div class="card">
+                    <div class="card-label">
+                        Total Employees
+                    </div>
+                    <div
+                        id="todayTotal"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-label">
+                        Checked In
+                    </div>
+                    <div
+                        id="todayCheckedIn"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-label">
+                        Checked Out
+                    </div>
+                    <div
+                        id="todayCheckedOut"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-label">
+                        Not Checked In
+                    </div>
+                    <div
+                        id="todayNotCheckedIn"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-label">
+                        Late
+                    </div>
+                    <div
+                        id="todayLate"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-label">
+                        Present
+                    </div>
+                    <div
+                        id="todayPresent"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-label">
+                        Half Day
+                    </div>
+                    <div
+                        id="todayHalfDay"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-label">
+                        Insufficient Hours
+                    </div>
+                    <div
+                        id="todayInsufficient"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="section-title">
+                Last 7 Days
+            </div>
+
+
+            <div
+                id="sevenDayPeriod"
+                class="period-card">
+            </div>
+
+
+            <div class="grid">
+
+                <div class="card">
+                    <div class="card-label">
+                        Records
+                    </div>
+                    <div
+                        id="sevenRecords"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-label">
+                        Present
+                    </div>
+                    <div
+                        id="sevenPresent"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-label">
+                        Late
+                    </div>
+                    <div
+                        id="sevenLate"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-label">
+                        Insufficient Hours
+                    </div>
+                    <div
+                        id="sevenInsufficient"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-label">
+                        Half Day
+                    </div>
+                    <div
+                        id="sevenHalfDay"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-label">
+                        Avg Working Minutes
+                    </div>
+                    <div
+                        id="sevenAvgWork"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-label">
+                        Total Late Minutes
+                    </div>
+                    <div
+                        id="sevenLateMinutes"
+                        class="card-value">
+                        0
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="section-title">
+                Team Today
+            </div>
+
+
+            <div id="employeeContainer">
+            </div>
+
+
+        </div>
+
+
+        <div id="loadingBox">
+            Loading attendance dashboard...
+        </div>
+
+    </div>
+
+</div>
+
+</j:jelly>]]></html>
+        <name>smartattend_manager_dashboard</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-13 05:13:56</sys_created_on>
+        <sys_id>6663b09b47f78bd07ace13ff016d4377</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>smartattend_manager_dashboard</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_ui_page_6663b09b47f78bd07ace13ff016d4377</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-13 05:13:56</sys_updated_on>
+    </sys_ui_page>
+</record_update>

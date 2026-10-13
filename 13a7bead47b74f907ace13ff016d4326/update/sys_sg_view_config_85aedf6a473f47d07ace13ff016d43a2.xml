@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_view_config">
+    <sys_sg_view_config action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <advanced>false</advanced>
+        <creation_method/>
+        <description>Manager view of attendance correction request details</description>
+        <name>Correction Request Details Card</name>
+        <scratchpad_script/>
+        <sys_class_name>sys_sg_view_config</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-11 09:45:17</sys_created_on>
+        <sys_id>85aedf6a473f47d07ace13ff016d43a2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Correction Request Details Card</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_sg_view_config_85aedf6a473f47d07ace13ff016d43a2</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 09:45:17</sys_updated_on>
+        <table>x_1760545_smarta_0_attendance_correction_request</table>
+        <template display_value="Default Empty State Template">7eb49d52b723101096aa25efce11a954</template>
+    </sys_sg_view_config>
+    <sys_translated_text action="delete_multiple" query="documentkey=85aedf6a473f47d07ace13ff016d43a2"/>
+</record_update>

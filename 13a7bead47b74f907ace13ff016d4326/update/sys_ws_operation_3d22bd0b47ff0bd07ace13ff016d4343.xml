@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>5203365e47b7c3d07ace13ff016d434e</enforce_acl>
+        <http_method>POST</http_method>
+        <name>AI Attendance Summary</name>
+        <operation_script><![CDATA[(function process(request, response) {
+
+    try {
+
+        // =====================================================
+        // READ REQUEST BODY
+        // =====================================================
+        var body = request.body.data || {};
+
+        var summary =
+            body.summary || {};
+
+        var period =
+            body.period || {};
+
+        var employees =
+            body.employees || [];
+
+
+        if (!body.summary) {
+
+            response.setStatus(400);
+
+            response.setBody({
+                success: false,
+                message: 'Attendance summary data is required.'
+            });
+
+            return;
+        }
+
+
+        // =====================================================
+        // BUILD SMARTATTEND AI PROMPT
+        // =====================================================
+        var prompt = '';
+
+        prompt +=
+            'You are SmartAttend AI, an attendance analytics assistant for managers.\n\n';
+
+        prompt +=
+            'Analyze only the verified attendance data provided below.\n';
+
+        prompt +=
+            'Do not invent causes, personal circumstances, medical information, ' +
+            'or missing facts.\n';
+
+        prompt +=
+            'Do not recommend termination, punishment, disciplinary action, ' +
+            'salary changes, PIPs, or other employment decisions.\n';
+
+        prompt +=
+            'Recommend only verification, discussion, schedule review, attendance review, ' +
+            'and reasonable manager follow-up.\n';
+
+        prompt +=
+            'Clearly separate observed facts from recommendations.\n';
+
+        prompt +=
+            'Treat small datasets cautiously.\n';
+
+        prompt +=
+            'Keep the complete response below 150 words.\n';
+
+        prompt +=
+            'Return plain text only. Do not use markdown headings or tables.\n\n';
+
+
+        prompt +=
+            'Manager: ' +
+            gs.getUserDisplayName() +
+            '\n';
+
+
+        prompt +=
+            'Period: ' +
+            (period.from || '') +
+            ' to ' +
+            (period.to || '') +
+            '\n\n';
+
+
+        prompt +=
+            'TEAM SUMMARY:\n' +
+            JSON.stringify(summary) +
+            '\n\n';
+
+
+        prompt +=
+            'EMPLOYEE STATISTICS:\n' +
+            JSON.stringify(employees) +
+            '\n\n';
+
+
+        prompt +=
+            'Provide:\n' +
+            '1. A concise team attendance observation.\n' +
+            '2. Important attendance patterns that may need manager attention.\n' +
+            '3. Up to three practical non-disciplinary recommendations.';
+
+
+        // =====================================================
+        // CREATE GEMINI REST MESSAGE
+        // =====================================================
+        var gemini =
+            new sn_ws.RESTMessageV2(
+                'SmartAttend Gemini',
+                'generate'
+            );
+
+			var geminiApiKey =
+			new global.SmartAttendGeminiSecret()
+				.getApiKey();
+
+			if (!geminiApiKey) {
+
+    response.setStatus(200);
+
+    response.setBody({
+        success: false,
+        fallback: true,
+        message: 'Gemini API key is not configured.'
+    });
+
+    return;
+}
+
+gemini.setRequestHeader(
+    'Content-Type',
+    'application/json'
+);
+
+gemini.setRequestHeader(
+    'x-goog-api-key',
+    geminiApiKey
+);
+
+		if (!geminiApiKey) {
+
+			response.setStatus(200);
+
+			response.setBody({
+				success: false,
+				fallback: true,
+				message: 'Gemini API key is not configured.'
+			});
+
+			return;
+		}
+
+		gemini.setRequestHeader(
+			'Content-Type',
+			'application/json'
+		);
+
+		gemini.setRequestHeader(
+			'x-goog-api-key',
+			geminiApiKey
+		);
+
+
+        // =====================================================
+        // BUILD VALID GEMINI JSON
+        // =====================================================
+        var geminiPayload = {
+
+            contents: [
+                {
+                    role: 'user',
+
+                    parts: [
+                        {
+                            text: prompt
+                        }
+                    ]
+                }
+            ],
+
+            generationConfig: {
+
+    temperature: 0.2,
+
+    maxOutputTokens: 1500,
+
+    thinkingConfig: {
+        thinkingLevel: 'low'
+    }
+
+}
+
+        };
+
+
+        // IMPORTANT:
+        // Build JSON safely here.
+        // Do NOT use setStringParameterNoEscape for the prompt.
+        gemini.setRequestBody(
+            JSON.stringify(geminiPayload)
+        );
+
+
+        // =====================================================
+        // CALL GEMINI
+        // =====================================================
+        var geminiResponse =
+            gemini.execute();
+
+
+        var statusCode =
+            geminiResponse.getStatusCode();
+
+
+        var responseBody =
+            geminiResponse.getBody();
+
+
+        gs.info(
+            '[SmartAttend AI] Gemini HTTP status=' +
+            statusCode
+        );
+
+
+        // =====================================================
+        // GEMINI ERROR / FALLBACK
+        // =====================================================
+        if (
+            statusCode < 200 ||
+            statusCode >= 300
+        ) {
+
+            gs.error(
+                '[SmartAttend AI] Gemini HTTP ' +
+                statusCode +
+                ': ' +
+                responseBody
+            );
+
+
+            response.setStatus(200);
+
+            response.setBody({
+
+                success: false,
+
+                fallback: true,
+
+                provider:
+                    'Gemini',
+
+                provider_status:
+                    statusCode,
+
+                message:
+                    'AI service is temporarily unavailable.'
+
+            });
+
+            return;
+        }
+
+
+        // =====================================================
+        // PARSE GEMINI RESPONSE
+        // =====================================================
+        var geminiData =
+            JSON.parse(responseBody);
+
+
+        if (
+            !geminiData.candidates ||
+            geminiData.candidates.length === 0
+        ) {
+
+            response.setStatus(200);
+
+            response.setBody({
+
+                success: false,
+
+                fallback: true,
+
+                message:
+                    'AI service returned no recommendation.'
+
+            });
+
+            return;
+        }
+
+
+        var content =
+            geminiData.candidates[0].content || {};
+
+
+        var parts =
+            content.parts || [];
+
+
+        var aiText = '';
+
+
+        // Gemini can return multiple parts.
+        // Collect only actual text.
+        for (
+            var i = 0;
+            i < parts.length;
+            i++
+        ) {
+
+            if (
+                parts[i] &&
+                parts[i].text
+            ) {
+
+                aiText +=
+                    parts[i].text;
+
+            }
+
+        }
+
+
+        aiText =
+            aiText.trim();
+
+
+        if (!aiText) {
+
+            response.setStatus(200);
+
+            response.setBody({
+
+                success: false,
+
+                fallback: true,
+
+                message:
+                    'AI service returned an empty recommendation.'
+
+            });
+
+            return;
+        }
+
+
+        // =====================================================
+        // SUCCESS
+        // =====================================================
+        response.setStatus(200);
+
+        response.setBody({
+
+            success: true,
+
+            provider:
+                'Gemini',
+
+            model:
+                'gemini-3.6-flash',
+
+            ai_text:
+                aiText
+
+        });
+
+
+    }
+    catch (e) {
+
+        gs.error(
+            '[SmartAttend AI] Exception: ' +
+            e.message
+        );
+
+
+        response.setStatus(200);
+
+        response.setBody({
+
+            success: false,
+
+            fallback: true,
+
+            message:
+                'AI recommendation could not be generated.'
+
+        });
+
+    }
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1760545_smarta_0/smartattend_api/ai-summary</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/ai-summary</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <support_trailing_slash>false</support_trailing_slash>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-12 15:09:14</sys_created_on>
+        <sys_id>3d22bd0b47ff0bd07ace13ff016d4343</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>AI Attendance Summary</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_ws_operation_3d22bd0b47ff0bd07ace13ff016d4343</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-13 10:40:13</sys_updated_on>
+        <web_service_definition display_value="SmartAttend API">6710d7e147bb4f907ace13ff016d431e</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

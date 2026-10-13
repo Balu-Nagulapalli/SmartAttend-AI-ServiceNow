@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_button_instance">
+    <sys_sg_button_instance action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <button display_value="Submit Attendance Correction">167e72a6473b47d07ace13ff016d4303</button>
+        <color_theme/>
+        <description/>
+        <disable_offline>false</disable_offline>
+        <field_name/>
+        <icon display_value="MS icon-Request-Solid">4752937a0fca6010729bb3c9c4767e68</icon>
+        <label>Correction Request</label>
+        <location>quick_action</location>
+        <name>Correction Request</name>
+        <order>300</order>
+        <parent>bac50026477307d07ace13ff016d4359</parent>
+        <parent_table>sys_sg_applet_launcher</parent_table>
+        <sys_class_name>sys_sg_button_instance</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-11 07:30:29</sys_created_on>
+        <sys_id>96cf7a6a473b47d07ace13ff016d43ec</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Correction Request</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_sg_button_instance_96cf7a6a473b47d07ace13ff016d43ec</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 07:30:29</sys_updated_on>
+        <table/>
+    </sys_sg_button_instance>
+    <sys_translated_text action="delete_multiple" query="documentkey=96cf7a6a473b47d07ace13ff016d43ec"/>
+</record_update>

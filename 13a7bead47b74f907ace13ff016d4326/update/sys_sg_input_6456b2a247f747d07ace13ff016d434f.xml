@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_input">
+    <sys_sg_input action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <autofill_variable/>
+        <category/>
+        <description/>
+        <label>Reason</label>
+        <mandatory>true</mandatory>
+        <name>reason</name>
+        <order>500</order>
+        <page display_value="Correction Request">8dd6326647f747d07ace13ff016d43bd</page>
+        <parameter_screen display_value="Attendance Correction Request">1edb9862473707d07ace13ff016d4318</parameter_screen>
+        <parameter_section/>
+        <placeholder/>
+        <readonly>false</readonly>
+        <sys_class_name>sys_sg_input</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-11 06:49:08</sys_created_on>
+        <sys_id>6456b2a247f747d07ace13ff016d434f</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Reason</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_sg_input_6456b2a247f747d07ace13ff016d434f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 07:17:47</sys_updated_on>
+        <type display_value="String">7debec1517021010f2b43b9fadb959e3</type>
+    </sys_sg_input>
+</record_update>

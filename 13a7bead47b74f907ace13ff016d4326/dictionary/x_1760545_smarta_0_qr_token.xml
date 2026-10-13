@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element attributes="enforce_dot_walk_cross_scope_access=true" db_object_id="fdb54fe9473b4f907ace13ff016d43a2" label="QR Token" max_length="40" name="x_1760545_smarta_0_qr_token" type="collection">
+        <element label="Used By Scanner" max_length="32" name="used_by_scanner" reference="x_1760545_smarta_0_scanner" type="reference"/>
+        <element label="Expires At" mandatory="true" max_length="40" name="expires_at" type="glide_date_time"/>
+        <element label="Created At" mandatory="true" max_length="40" name="created_at" type="glide_date_time"/>
+        <element label="Token" mandatory="true" max_length="128" name="token" type="string"/>
+        <element label="Employee" mandatory="true" max_length="32" name="employee" reference="sys_user" type="reference"/>
+        <element choice="3" label="Scan Action" max_length="40" name="scan_action" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Check Out" sequence="1" value="check_out"/>
+                <element inactive_on_update="false" label="Check In" sequence="0" value="check_in"/>
+            </choice>
+        </element>
+        <element choice="3" label="Status" mandatory="true" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Cancelled" sequence="3" value="cancelled"/>
+                <element inactive_on_update="false" label="Used" sequence="1" value="used"/>
+                <element inactive_on_update="false" label="Active" sequence="0" value="active"/>
+                <element inactive_on_update="false" label="Expired" sequence="2" value="expired"/>
+            </choice>
+        </element>
+        <element label="Attendance" max_length="32" name="attendance" reference="x_1760545_smarta_0_attendance" type="reference"/>
+        <element label="Used At" max_length="40" name="used_at" type="glide_date_time"/>
+        <index name="index">
+            <element name="attendance"/>
+        </index>
+        <index name="index2">
+            <element name="employee"/>
+        </index>
+        <index name="index3">
+            <element name="used_by_scanner"/>
+        </index>
+    </element>
+</database>

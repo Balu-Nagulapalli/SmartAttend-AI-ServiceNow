@@ -1,0 +1,1408 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[var smartAttendShifts = [];
+
+
+window.addEventListener(
+    'load',
+    function() {
+
+        loadShiftManagement();
+
+    }
+);
+
+
+// =============================================================
+// HEADERS
+// =============================================================
+function buildHeaders(
+    includeJson
+) {
+
+    var headers = {};
+
+
+    if (includeJson) {
+
+        headers[
+            'Content-Type'
+        ] =
+            'application/json';
+
+    }
+
+
+    if (
+        typeof window.g_ck !==
+            'undefined' &&
+        window.g_ck
+    ) {
+
+        headers[
+            'X-UserToken'
+        ] =
+            window.g_ck;
+
+    }
+
+
+    return headers;
+}
+
+
+// =============================================================
+// LOAD DATA
+// =============================================================
+function loadShiftManagement() {
+
+    fetch(
+        '/api/x_1760545_smarta_0/smartattend_api/shift-management',
+        {
+            method: 'GET',
+
+            credentials:
+                'same-origin',
+
+            headers:
+                buildHeaders(false)
+        }
+    )
+
+    .then(function(response) {
+
+        return response.json();
+
+    })
+
+    .then(function(data) {
+
+        if (
+            !data.result ||
+            !data.result.success
+        ) {
+
+            throw new Error(
+                'Unable to load shift management.'
+            );
+
+        }
+
+
+        renderShiftManagement(
+            data.result
+        );
+
+    })
+
+    .catch(function(error) {
+
+        showMessage(
+            error.message,
+            false
+        );
+
+
+        document.getElementById(
+            'loadingBox'
+        ).textContent =
+            'Unable to load shift management.';
+
+    });
+
+}
+
+
+// =============================================================
+// RENDER PAGE
+// =============================================================
+function renderShiftManagement(
+    data
+) {
+
+    smartAttendShifts =
+        data.shifts || [];
+
+
+    document.getElementById(
+        'loadingBox'
+    ).style.display =
+        'none';
+
+
+    document.getElementById(
+        'mainContent'
+    ).style.display =
+        'block';
+
+
+    document.getElementById(
+        'managerCard'
+    ).style.display =
+        'block';
+
+
+    document.getElementById(
+        'managerName'
+    ).textContent =
+        data.manager ||
+        'Manager';
+
+
+    renderShifts(
+        smartAttendShifts
+    );
+
+
+    renderEmployees(
+        data.employees || []
+    );
+
+}
+
+
+// =============================================================
+// RENDER SHIFTS
+// =============================================================
+function renderShifts(
+    shifts
+) {
+
+    var container =
+        document.getElementById(
+            'shiftContainer'
+        );
+
+
+    if (
+        !shifts ||
+        shifts.length === 0
+    ) {
+
+        container.innerHTML =
+            '<div class="shift-card">' +
+                'No active shifts available.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    var html = '';
+
+
+    for (
+        var i = 0;
+        i < shifts.length;
+        i++
+    ) {
+
+        var shift =
+            shifts[i];
+
+
+        html +=
+
+            '<div class="shift-card">' +
+
+                '<div class="shift-name">' +
+
+                    escapeHtml(
+                        shift.shift_name
+                    ) +
+
+                '</div>' +
+
+                '<div class="shift-number">' +
+
+                    escapeHtml(
+                        shift.number || ''
+                    ) +
+
+                '</div>' +
+
+                '<div class="shift-time">' +
+
+                    escapeHtml(
+                        shift.start_time
+                    ) +
+
+                    ' – ' +
+
+                    escapeHtml(
+                        shift.end_time
+                    ) +
+
+                '</div>' +
+
+                '<div class="shift-details">' +
+
+                    miniBox(
+                        'Grace',
+                        shift.grace_minutes +
+                        ' min'
+                    ) +
+
+                    miniBox(
+                        'Full Day',
+                        shift.full_day_minutes +
+                        ' min'
+                    ) +
+
+                    miniBox(
+                        'Half Day',
+                        shift.half_day_minutes +
+                        ' min'
+                    ) +
+
+                '</div>' +
+
+            '</div>';
+
+    }
+
+
+    container.innerHTML =
+        html;
+
+}
+
+
+// =============================================================
+// RENDER EMPLOYEES
+// =============================================================
+function renderEmployees(
+    employees
+) {
+
+    var container =
+        document.getElementById(
+            'employeeContainer'
+        );
+
+
+    if (
+        !employees ||
+        employees.length === 0
+    ) {
+
+        container.innerHTML =
+            '<div class="employee-card">' +
+                'No employees are assigned to you.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    var html = '';
+
+
+    for (
+        var i = 0;
+        i < employees.length;
+        i++
+    ) {
+
+        var employee =
+            employees[i];
+
+
+        html +=
+
+            '<div class="employee-card">' +
+
+                '<div class="employee-header">' +
+
+                    '<div>' +
+
+                        '<div class="employee-name">' +
+
+                            escapeHtml(
+                                employee.employee
+                            ) +
+
+                        '</div>' +
+
+                        '<div class="employee-meta">' +
+
+                            escapeHtml(
+                                employee.employee_code ||
+                                'No Employee Code'
+                            ) +
+
+                            ' • ' +
+
+                            escapeHtml(
+                                employee.department ||
+                                'No Department'
+                            ) +
+
+                        '</div>' +
+
+                    '</div>' +
+
+
+                    '<div class="current-shift">' +
+
+                        escapeHtml(
+                            employee.current_shift ||
+                            'Not Assigned'
+                        ) +
+
+                    '</div>' +
+
+                '</div>' +
+
+
+                '<div class="assignment-row">' +
+
+                    '<select id="shift_' +
+                        escapeHtml(
+                            employee.profile_id
+                        ) +
+                    '">' +
+
+                        buildShiftOptions(
+                            employee.current_shift_id
+                        ) +
+
+                    '</select>' +
+
+
+                    '<button onclick="assignShift(\'' +
+                        escapeJs(
+                            employee.profile_id
+                        ) +
+                    '\');">' +
+
+                        'Assign Shift' +
+
+                    '</button>' +
+
+                '</div>' +
+
+            '</div>';
+
+    }
+
+
+    container.innerHTML =
+        html;
+
+}
+
+
+// =============================================================
+// SHIFT OPTIONS
+// =============================================================
+function buildShiftOptions(
+    selectedShift
+) {
+
+    var html = '';
+
+
+    for (
+        var i = 0;
+        i < smartAttendShifts.length;
+        i++
+    ) {
+
+        var shift =
+            smartAttendShifts[i];
+
+
+        var selected =
+            shift.shift_id ===
+            selectedShift
+                ? ' selected="selected"'
+                : '';
+
+
+        html +=
+
+            '<option value="' +
+                escapeHtml(
+                    shift.shift_id
+                ) +
+            '"' +
+            selected +
+            '>' +
+
+                escapeHtml(
+                    shift.shift_name +
+                    ' (' +
+                    shift.start_time +
+                    ' - ' +
+                    shift.end_time +
+                    ')'
+                ) +
+
+            '</option>';
+
+    }
+
+
+    return html;
+
+}
+
+
+// =============================================================
+// CREATE SHIFT
+// =============================================================
+function createShift() {
+
+    var name =
+        document.getElementById(
+            'shiftName'
+        ).value.trim();
+
+
+    var start =
+        document.getElementById(
+            'startTime'
+        ).value;
+
+
+    var end =
+        document.getElementById(
+            'endTime'
+        ).value;
+
+
+    var grace =
+        parseInt(
+            document.getElementById(
+                'graceMinutes'
+            ).value,
+            10
+        );
+
+
+    var fullDay =
+        parseInt(
+            document.getElementById(
+                'fullDayMinutes'
+            ).value,
+            10
+        );
+
+
+    var halfDay =
+        parseInt(
+            document.getElementById(
+                'halfDayMinutes'
+            ).value,
+            10
+        );
+
+
+    var description =
+        document.getElementById(
+            'shiftDescription'
+        ).value.trim();
+
+
+    if (
+        !name ||
+        !start ||
+        !end
+    ) {
+
+        showMessage(
+            'Shift name, start time and end time are required.',
+            false
+        );
+
+        return;
+
+    }
+
+
+    var startMinutes =
+        timeToMinutes(
+            start
+        );
+
+
+    var endMinutes =
+        timeToMinutes(
+            end
+        );
+
+
+    var button =
+        document.getElementById(
+            'createShiftButton'
+        );
+
+
+    button.disabled =
+        true;
+
+
+    button.textContent =
+        'Creating...';
+
+
+    fetch(
+        '/api/x_1760545_smarta_0/smartattend_api/create-shift',
+        {
+            method: 'POST',
+
+            credentials:
+                'same-origin',
+
+            headers:
+                buildHeaders(true),
+
+            body:
+                JSON.stringify({
+
+                    shift_name:
+                        name,
+
+                    start_minutes:
+                        startMinutes,
+
+                    end_minutes:
+                        endMinutes,
+
+                    grace_minutes:
+                        grace,
+
+                    full_day_minutes:
+                        fullDay,
+
+                    half_day_minutes:
+                        halfDay,
+
+                    description:
+                        description,
+
+                    active:
+                        true
+
+                })
+        }
+    )
+
+    .then(function(response) {
+
+        return response.json();
+
+    })
+
+    .then(function(data) {
+
+        var result =
+            data.result;
+
+
+        if (
+            !result ||
+            !result.success
+        ) {
+
+            throw new Error(
+                result &&
+                result.message
+                    ? result.message
+                    : 'Unable to create shift.'
+            );
+
+        }
+
+
+        showMessage(
+            result.message,
+            true
+        );
+
+
+        clearShiftForm();
+
+
+        loadShiftManagement();
+
+    })
+
+    .catch(function(error) {
+
+        showMessage(
+            error.message,
+            false
+        );
+
+    })
+
+    .then(function() {
+
+        button.disabled =
+            false;
+
+
+        button.textContent =
+            'Create Shift';
+
+    });
+
+}
+
+
+// =============================================================
+// ASSIGN SHIFT
+// =============================================================
+function assignShift(
+    profileId
+) {
+
+    var select =
+        document.getElementById(
+            'shift_' +
+            profileId
+        );
+
+
+    if (!select) {
+
+        return;
+
+    }
+
+
+    var shiftId =
+        select.value;
+
+
+    if (!shiftId) {
+
+        showMessage(
+            'Select a shift first.',
+            false
+        );
+
+        return;
+
+    }
+
+
+    fetch(
+        '/api/x_1760545_smarta_0/smartattend_api/assign-shift',
+        {
+            method: 'POST',
+
+            credentials:
+                'same-origin',
+
+            headers:
+                buildHeaders(true),
+
+            body:
+                JSON.stringify({
+
+                    profile_id:
+                        profileId,
+
+                    shift_id:
+                        shiftId
+
+                })
+        }
+    )
+
+    .then(function(response) {
+
+        return response.json();
+
+    })
+
+    .then(function(data) {
+
+        var result =
+            data.result;
+
+
+        if (
+            !result ||
+            !result.success
+        ) {
+
+            throw new Error(
+                result &&
+                result.message
+                    ? result.message
+                    : 'Unable to assign shift.'
+            );
+
+        }
+
+
+        showMessage(
+            result.employee.employee +
+            ' assigned to ' +
+            result.employee.current_shift +
+            '.',
+            true
+        );
+
+
+        loadShiftManagement();
+
+    })
+
+    .catch(function(error) {
+
+        showMessage(
+            error.message,
+            false
+        );
+
+    });
+
+}
+
+
+// =============================================================
+// HELPERS
+// =============================================================
+function timeToMinutes(
+    value
+) {
+
+    var parts =
+        value.split(':');
+
+
+    return (
+        parseInt(
+            parts[0],
+            10
+        ) *
+        60
+    ) +
+    parseInt(
+        parts[1],
+        10
+    );
+
+}
+
+
+function clearShiftForm() {
+
+    document.getElementById(
+        'shiftName'
+    ).value = '';
+
+
+    document.getElementById(
+        'startTime'
+    ).value = '';
+
+
+    document.getElementById(
+        'endTime'
+    ).value = '';
+
+
+    document.getElementById(
+        'graceMinutes'
+    ).value = '10';
+
+
+    document.getElementById(
+        'fullDayMinutes'
+    ).value = '480';
+
+
+    document.getElementById(
+        'halfDayMinutes'
+    ).value = '240';
+
+
+    document.getElementById(
+        'shiftDescription'
+    ).value = '';
+
+}
+
+
+function miniBox(
+    label,
+    value
+) {
+
+    return (
+
+        '<div class="mini-box">' +
+
+            '<div class="mini-label">' +
+                escapeHtml(
+                    label
+                ) +
+            '</div>' +
+
+            '<div class="mini-value">' +
+                escapeHtml(
+                    String(value)
+                ) +
+            '</div>' +
+
+        '</div>'
+
+    );
+
+}
+
+
+function showMessage(
+    message,
+    success
+) {
+
+    var box =
+        document.getElementById(
+            'messageBox'
+        );
+
+
+    box.className =
+        success
+            ? 'message message-success'
+            : 'message message-error';
+
+
+    box.textContent =
+        message;
+
+
+    window.scrollTo(
+        0,
+        0
+    );
+
+}
+
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value === null ||
+        value === undefined
+            ? ''
+            : value
+    )
+
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
+}
+
+
+function escapeJs(
+    value
+) {
+
+    return String(value)
+        .replace(
+            /\\/g,
+            '\\\\'
+        )
+        .replace(
+            /'/g,
+            "\\'"
+        );
+
+}]]></client_script>
+        <description>Manager screen to create shifts and assign shifts to employees&#13;
+</description>
+        <direct>false</direct>
+        <endpoint>x_1760545_smarta_0_smartattend_shift_management.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+
+<j:jelly
+    xmlns:j="jelly:core"
+    xmlns:g="glide"
+    trim="false">
+
+<style>
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: #101828;
+}
+
+.shift-page {
+    min-height: 100vh;
+    padding: 28px;
+}
+
+.shift-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.brand {
+    color: #1570ef;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.title {
+    margin: 8px 0 4px;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.subtitle {
+    color: #667085;
+    margin-bottom: 24px;
+}
+
+.manager-card {
+    padding: 18px 20px;
+    background: white;
+    border-radius: 16px;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+}
+
+.manager-name {
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 28px 0 14px;
+}
+
+.shift-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.shift-card {
+    background: white;
+    border-radius: 17px;
+    padding: 18px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+}
+
+.shift-name {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.shift-number {
+    margin-top: 3px;
+    color: #667085;
+    font-size: 12px;
+}
+
+.shift-time {
+    font-size: 17px;
+    font-weight: 700;
+    margin-top: 14px;
+    color: #175cd3;
+}
+
+.shift-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.mini-box {
+    background: #f8fafc;
+    border: 1px solid #eaecf0;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.mini-label {
+    font-size: 10px;
+    color: #667085;
+}
+
+.mini-value {
+    margin-top: 4px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.create-box {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #475467;
+}
+
+input,
+textarea,
+select {
+    border: 1px solid #d0d5dd;
+    border-radius: 10px;
+    padding: 11px 12px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    background: white;
+    color: #101828;
+    box-sizing: border-box;
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #84adff;
+}
+
+.primary-button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 17px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    background: #1570ef;
+    color: white;
+}
+
+.primary-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.employee-card {
+    background: white;
+    border-radius: 17px;
+    padding: 18px;
+    margin-bottom: 13px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+}
+
+.employee-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.employee-name {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.employee-meta {
+    color: #667085;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.current-shift {
+    background: #ecfdf3;
+    color: #027a48;
+    border-radius: 999px;
+    padding: 7px 11px;
+    font-size: 11px;
+    font-weight: 800;
+    height: fit-content;
+}
+
+.assignment-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.assignment-row select {
+    flex: 1;
+}
+
+.assignment-row button {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 15px;
+    background: #101828;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.message {
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    display: none;
+}
+
+.message-success {
+    display: block;
+    background: #ecfdf3;
+    color: #027a48;
+}
+
+.message-error {
+    display: block;
+    background: #fef3f2;
+    color: #b42318;
+}
+
+#loadingBox {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    color: #667085;
+}
+
+@media(max-width:760px) {
+
+    .shift-page {
+        padding: 14px;
+    }
+
+    .shift-grid,
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .shift-details {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .employee-header {
+        flex-direction: column;
+    }
+
+    .assignment-row {
+        flex-direction: column;
+    }
+
+}
+
+</style>
+
+
+<div class="shift-page">
+
+    <div class="shift-container">
+
+        <div class="brand">
+            SmartAttend
+        </div>
+
+        <div class="title">
+            Shift Management
+        </div>
+
+        <div class="subtitle">
+            Create work shifts and assign them to your employees.
+        </div>
+
+
+        <div
+            id="messageBox"
+            class="message">
+        </div>
+
+
+        <div
+            id="managerCard"
+            class="manager-card"
+            style="display:none;">
+
+            <div
+                id="managerName"
+                class="manager-name">
+            </div>
+
+        </div>
+
+
+        <div id="loadingBox">
+            Loading shift management...
+        </div>
+
+
+        <div
+            id="mainContent"
+            style="display:none;">
+
+
+            <div class="section-title">
+                Existing Shifts
+            </div>
+
+            <div
+                id="shiftContainer"
+                class="shift-grid">
+            </div>
+
+
+            <div class="section-title">
+                Create Shift
+            </div>
+
+            <div class="create-box">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Shift Name</label>
+                        <input
+                            id="shiftName"
+                            type="text"
+                            placeholder="Morning Shift" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Grace Minutes</label>
+                        <input
+                            id="graceMinutes"
+                            type="number"
+                            value="10"
+                            min="0"
+                            max="180" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Start Time</label>
+                        <input
+                            id="startTime"
+                            type="time" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>End Time</label>
+                        <input
+                            id="endTime"
+                            type="time" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Full Day Minutes</label>
+                        <input
+                            id="fullDayMinutes"
+                            type="number"
+                            value="480"
+                            min="1" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Half Day Minutes</label>
+                        <input
+                            id="halfDayMinutes"
+                            type="number"
+                            value="240"
+                            min="1" />
+                    </div>
+
+
+                    <div class="form-group full">
+                        <label>Description</label>
+
+                        <textarea
+                            id="shiftDescription"
+                            placeholder="Optional shift description"></textarea>
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <button
+                            id="createShiftButton"
+                            class="primary-button"
+                            onclick="createShift();">
+
+                            Create Shift
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section-title">
+                Employee Shift Assignments
+            </div>
+
+            <div id="employeeContainer">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</j:jelly>]]></html>
+        <name>smartattend_shift_management</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-13 06:36:51</sys_created_on>
+        <sys_id>6f56cddf477b8bd07ace13ff016d432f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>smartattend_shift_management</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_ui_page_6f56cddf477b8bd07ace13ff016d432f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-13 06:36:51</sys_updated_on>
+    </sys_ui_page>
+</record_update>

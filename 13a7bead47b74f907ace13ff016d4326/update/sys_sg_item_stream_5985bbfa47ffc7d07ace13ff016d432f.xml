@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_item_stream">
+    <sys_sg_item_stream action="INSERT_OR_UPDATE">
+        <data_item display_value="Today's Attendance Data">2560fbbe47bfc7d07ace13ff016d4318</data_item>
+        <interleaved_field/>
+        <name>Today's Attendance - List stream</name>
+        <sys_class_name>sys_sg_item_stream</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-12 06:03:43</sys_created_on>
+        <sys_id>5985bbfa47ffc7d07ace13ff016d432f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Today's Attendance - List stream</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_sg_item_stream_5985bbfa47ffc7d07ace13ff016d432f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-12 06:03:43</sys_updated_on>
+        <table>x_1760545_smarta_0_attendance</table>
+    </sys_sg_item_stream>
+</record_update>

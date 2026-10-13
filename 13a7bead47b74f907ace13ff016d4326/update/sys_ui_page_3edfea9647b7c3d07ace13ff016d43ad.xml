@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[window.addEventListener(
+    'load',
+    function() {
+
+        loadAttendanceHistory();
+
+    }
+);
+
+
+// =============================================================
+// LOAD ATTENDANCE HISTORY
+// =============================================================
+function loadAttendanceHistory() {
+
+    var loadingBox =
+        document.getElementById(
+            'loadingBox'
+        );
+
+    var historyContainer =
+        document.getElementById(
+            'historyContainer'
+        );
+
+    var summaryCard =
+        document.getElementById(
+            'summaryCard'
+        );
+
+
+    fetch(
+        '/api/x_1760545_smarta_0/smartattend_api/my-attendance',
+        {
+            method: 'GET',
+
+            credentials:
+                'same-origin',
+
+            headers: {
+
+                'X-UserToken':
+                    window.g_ck || ''
+            }
+        }
+    )
+
+    .then(function(response) {
+
+        return response
+            .json()
+            .then(function(data) {
+
+                return {
+
+                    ok:
+                        response.ok,
+
+                    data:
+                        data
+                };
+
+            });
+
+    })
+
+    .then(function(result) {
+
+        if (
+            !result.ok ||
+            !result.data.result ||
+            !result.data.result.success
+        ) {
+
+            throw new Error(
+                'Unable to load attendance history.'
+            );
+        }
+
+
+        var data =
+            result.data.result;
+
+
+        // -----------------------------------------------------
+        // Employee summary
+        // -----------------------------------------------------
+        document.getElementById(
+            'employeeName'
+        ).innerHTML =
+            data.employee || 'Employee';
+
+
+        document.getElementById(
+            'recordCount'
+        ).innerHTML =
+            'Showing ' +
+            parseInt(
+                data.count || 0,
+                10
+            ) +
+            ' attendance record(s)';
+
+
+        summaryCard.style.display =
+            'block';
+
+
+        loadingBox.style.display =
+            'none';
+
+
+        // -----------------------------------------------------
+        // No attendance
+        // -----------------------------------------------------
+        if (
+            !data.attendance ||
+            data.attendance.length === 0
+        ) {
+
+            historyContainer.innerHTML =
+                '<div class="empty">' +
+                    'No attendance records found.' +
+                '</div>';
+
+            historyContainer.style.display =
+                'block';
+
+            return;
+        }
+
+
+        // -----------------------------------------------------
+        // Render records
+        // -----------------------------------------------------
+        var html = '';
+
+
+        for (
+            var i = 0;
+            i < data.attendance.length;
+            i++
+        ) {
+
+            var record =
+                data.attendance[i];
+
+
+            html +=
+                buildAttendanceCard(
+                    record
+                );
+        }
+
+
+        historyContainer.innerHTML =
+            html;
+
+
+        historyContainer.style.display =
+            'block';
+
+    })
+
+    .catch(function(error) {
+
+        console.error(
+            'Attendance History Error:',
+            error
+        );
+
+
+        loadingBox.className =
+            'error';
+
+
+        loadingBox.innerHTML =
+            error.message ||
+            'Unable to load attendance history.';
+
+    });
+}
+
+
+
+// =============================================================
+// BUILD ATTENDANCE CARD
+// =============================================================
+function buildAttendanceCard(
+    record
+) {
+
+    var statusText =
+        formatStatus(
+            record.status
+        );
+
+
+    var statusClass =
+        getStatusClass(
+            record.status
+        );
+
+
+    var checkIn =
+        formatDateTime(
+            record.check_in
+        );
+
+
+    var checkOut =
+        formatDateTime(
+            record.check_out
+        );
+
+
+    var workingMinutes =
+        record.working_minutes
+            ? record.working_minutes
+            : '-';
+
+
+    var lateMinutes =
+        record.late_minutes
+            ? record.late_minutes
+            : '0';
+
+
+    return (
+
+        '<div class="attendance-card">' +
+
+            '<div class="attendance-top">' +
+
+                '<div>' +
+
+                    '<div class="attendance-date">' +
+                        escapeHtml(
+                            formatDate(
+                                record.attendance_date
+                            )
+                        ) +
+                    '</div>' +
+
+                    '<div class="detail-label">' +
+                        escapeHtml(
+                            record.number || ''
+                        ) +
+                    '</div>' +
+
+                '</div>' +
+
+                '<div class="status-badge ' +
+                    statusClass +
+                '">' +
+
+                    escapeHtml(
+                        statusText
+                    ) +
+
+                '</div>' +
+
+            '</div>' +
+
+
+            '<div class="details-grid">' +
+
+
+                buildDetailBox(
+                    'Check In',
+                    checkIn || '-'
+                ) +
+
+
+                buildDetailBox(
+                    'Check Out',
+                    checkOut || '-'
+                ) +
+
+
+                buildDetailBox(
+                    'Late Minutes',
+                    lateMinutes
+                ) +
+
+
+                buildDetailBox(
+                    'Working Minutes',
+                    workingMinutes
+                ) +
+
+
+                buildDetailBox(
+                    'Scanner',
+                    record.scanner || '-'
+                ) +
+
+
+            '</div>' +
+
+        '</div>'
+
+    );
+}
+
+
+
+// =============================================================
+// DETAIL BOX
+// =============================================================
+function buildDetailBox(
+    label,
+    value
+) {
+
+    return (
+
+        '<div class="detail-box">' +
+
+            '<div class="detail-label">' +
+                escapeHtml(label) +
+            '</div>' +
+
+            '<div class="detail-value">' +
+                escapeHtml(
+                    String(value)
+                ) +
+            '</div>' +
+
+        '</div>'
+
+    );
+}
+
+
+
+// =============================================================
+// FORMAT STATUS
+// =============================================================
+function formatStatus(
+    status
+) {
+
+    if (status === 'present') {
+        return 'Present';
+    }
+
+    if (status === 'late') {
+        return 'Late';
+    }
+
+    if (status === 'half_day') {
+        return 'Half Day';
+    }
+
+    if (
+        status ===
+        'insufficient_hours'
+    ) {
+
+        return 'Insufficient Hours';
+    }
+
+    return status || '-';
+}
+
+
+
+// =============================================================
+// STATUS STYLE
+// =============================================================
+function getStatusClass(
+    status
+) {
+
+    if (status === 'present') {
+        return 'status-present';
+    }
+
+    if (status === 'late') {
+        return 'status-late';
+    }
+
+    if (status === 'half_day') {
+        return 'status-half';
+    }
+
+    return 'status-insufficient';
+}
+
+
+
+// =============================================================
+// FORMAT DATE
+// =============================================================
+function formatDate(
+    dateValue
+) {
+
+    if (!dateValue) {
+        return '-';
+    }
+
+
+    var parts =
+        dateValue.split('-');
+
+
+    if (parts.length !== 3) {
+        return dateValue;
+    }
+
+
+    return (
+        parts[2] +
+        '-' +
+        parts[1] +
+        '-' +
+        parts[0]
+    );
+}
+
+
+
+// =============================================================
+// FORMAT DATETIME
+// =============================================================
+function formatDateTime(
+    dateTime
+) {
+
+    if (!dateTime) {
+        return '';
+    }
+
+
+    var parts =
+        dateTime.split(' ');
+
+
+    if (
+        parts.length < 2
+    ) {
+
+        return dateTime;
+    }
+
+
+    return parts[1];
+}
+
+
+
+// =============================================================
+// BASIC HTML ESCAPE
+// =============================================================
+function escapeHtml(
+    value
+) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            '&amp;'
+        )
+
+        .replace(
+            /</g,
+            '&lt;'
+        )
+
+        .replace(
+            />/g,
+            '&gt;'
+        )
+
+        .replace(
+            /"/g,
+            '&quot;'
+        )
+
+        .replace(
+            /'/g,
+            '&#039;'
+        );
+}]]></client_script>
+        <description>Employee SmartAttend attendance history page&#13;
+</description>
+        <direct>false</direct>
+        <endpoint>x_1760545_smarta_0_smartattend_history.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+
+<j:jelly
+    xmlns:j="jelly:core"
+    xmlns:g="glide"
+    trim="false">
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .brand {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #667085;
+        }
+
+        h1 {
+            margin: 8px 0 5px;
+            color: #101828;
+        }
+
+        .subtitle {
+            color: #667085;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
+        }
+
+        .employee-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #101828;
+        }
+
+        .record-count {
+            margin-top: 6px;
+            color: #667085;
+        }
+
+        #loadingBox {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            color: #667085;
+        }
+
+        #historyContainer {
+            display: none;
+        }
+
+        .attendance-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        .attendance-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .attendance-date {
+            font-size: 18px;
+            font-weight: 700;
+            color: #101828;
+        }
+
+        .status-badge {
+            display: inline-block;
+            border-radius: 999px;
+            padding: 7px 12px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .status-present {
+            background: #ecfdf3;
+            color: #027a48;
+        }
+
+        .status-late {
+            background: #fffaeb;
+            color: #b54708;
+        }
+
+        .status-half {
+            background: #eff8ff;
+            color: #175cd3;
+        }
+
+        .status-insufficient {
+            background: #fef3f2;
+            color: #b42318;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+            border: 1px solid #eaecf0;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #667085;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: #101828;
+        }
+
+        .empty {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 35px;
+            text-align: center;
+            color: #667085;
+        }
+
+        .error {
+            color: #b42318;
+        }
+
+        @media (max-width: 600px) {
+
+            .page {
+                padding: 14px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .attendance-top {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+
+    <div class="page">
+
+        <div class="container">
+
+            <div class="header">
+
+                <div class="brand">
+                    SmartAttend AI
+                </div>
+
+                <h1>
+                    My Attendance
+                </h1>
+
+                <div class="subtitle">
+                    View your recent check-in and check-out history.
+                </div>
+
+            </div>
+
+
+            <div
+                class="summary-card"
+                id="summaryCard"
+                style="display:none;">
+
+                <div
+                    class="employee-name"
+                    id="employeeName">
+                </div>
+
+                <div
+                    class="record-count"
+                    id="recordCount">
+                </div>
+
+            </div>
+
+
+            <div id="loadingBox">
+                Loading attendance history...
+            </div>
+
+
+            <div id="historyContainer">
+            </div>
+
+        </div>
+
+    </div>
+
+</j:jelly>]]></html>
+        <name>smartattend_history</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-10 11:43:35</sys_created_on>
+        <sys_id>3edfea9647b7c3d07ace13ff016d43ad</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>smartattend_history</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_ui_page_3edfea9647b7c3d07ace13ff016d43ad</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-10 11:43:35</sys_updated_on>
+    </sys_ui_page>
+</record_update>

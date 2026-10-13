@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>5203365e47b7c3d07ace13ff016d434e</enforce_acl>
+        <http_method>GET</http_method>
+        <name>Manager Attendance Dashboard</name>
+        <operation_script><![CDATA[(function process(request, response) {
+
+    try {
+
+        var managerId =
+            gs.getUserID();
+
+
+        // =====================================================
+        // INDIA DATE
+        // =====================================================
+        var now =
+            new GlideDateTime();
+
+        var indiaNow =
+            new GlideDateTime(now);
+
+        indiaNow.addSeconds(19800);
+
+        var indiaValue =
+            indiaNow.getValue();
+
+        var today =
+            indiaValue.substring(0, 10);
+
+
+        // Last 7 days including today
+        var startDateTime =
+            new GlideDateTime(indiaNow);
+
+        startDateTime.addDaysUTC(-6);
+
+        var startDate =
+            startDateTime
+                .getValue()
+                .substring(0, 10);
+
+
+        // =====================================================
+        // GET EMPLOYEES UNDER CURRENT MANAGER
+        // =====================================================
+        var profile =
+            new GlideRecord(
+                'x_1760545_smarta_0_employee_profile'
+            );
+
+        profile.addQuery(
+            'manager',
+            managerId
+        );
+
+        profile.addQuery(
+            'active',
+            true
+        );
+
+        profile.orderBy(
+            'employee'
+        );
+
+        profile.query();
+
+
+        var employeeIds = [];
+        var employeeInfo = {};
+
+
+        while (profile.next()) {
+
+            var employeeId =
+                profile.getValue(
+                    'employee'
+                );
+
+
+            employeeIds.push(
+                employeeId
+            );
+
+
+            employeeInfo[
+                employeeId
+            ] = {
+
+                employee_id:
+                    employeeId,
+
+                employee:
+                    profile.employee
+                        .getDisplayValue(),
+
+                employee_code:
+                    profile.getValue(
+                        'employee_code'
+                    ) || '',
+
+                department:
+                    profile.getValue(
+                        'department'
+                    ) || '',
+
+                shift:
+                    profile.shift
+                        .getDisplayValue() || ''
+
+            };
+
+        }
+
+
+        // =====================================================
+        // TODAY SUMMARY
+        // =====================================================
+        var todaySummary = {
+
+            total_employees:
+                employeeIds.length,
+
+            checked_in:
+                0,
+
+            checked_out:
+                0,
+
+            not_checked_in:
+                employeeIds.length,
+
+            late:
+                0,
+
+            present:
+                0,
+
+            half_day:
+                0,
+
+            insufficient_hours:
+                0
+
+        };
+
+
+        var todayRows = [];
+
+
+        for (
+            var i = 0;
+            i < employeeIds.length;
+            i++
+        ) {
+
+            var empId =
+                employeeIds[i];
+
+
+            var info =
+                employeeInfo[
+                    empId
+                ];
+
+
+            var attendance =
+                new GlideRecord(
+                    'x_1760545_smarta_0_attendance'
+                );
+
+            attendance.addQuery(
+                'employee',
+                empId
+            );
+
+            attendance.addQuery(
+                'attendance_date',
+                today
+            );
+
+            attendance.setLimit(1);
+
+            attendance.query();
+
+
+            var row = {
+
+                employee_id:
+                    empId,
+
+                employee:
+                    info.employee,
+
+                employee_code:
+                    info.employee_code,
+
+                department:
+                    info.department,
+
+                shift:
+                    info.shift,
+
+                status:
+                    'not_checked_in',
+
+                check_in:
+                    '',
+
+                check_out:
+                    '',
+
+                working_minutes:
+                    0,
+
+                late_minutes:
+                    0
+
+            };
+
+
+            if (
+                attendance.next()
+            ) {
+
+                todaySummary
+                    .not_checked_in--;
+
+
+                if (
+                    attendance.getValue(
+                        'check_in'
+                    )
+                ) {
+
+                    todaySummary
+                        .checked_in++;
+
+                }
+
+
+                if (
+                    attendance.getValue(
+                        'check_out'
+                    )
+                ) {
+
+                    todaySummary
+                        .checked_out++;
+
+                }
+
+
+                var status =
+                    attendance.getValue(
+                        'status'
+                    ) || '';
+
+
+                row.status =
+                    status;
+
+
+                row.check_in =
+                    convertToIndiaTime(
+                        attendance.getValue(
+                            'check_in'
+                        )
+                    );
+
+
+                row.check_out =
+                    convertToIndiaTime(
+                        attendance.getValue(
+                            'check_out'
+                        )
+                    );
+
+
+                row.working_minutes =
+                    parseInt(
+                        attendance.getValue(
+                            'working_minutes'
+                        ) || 0,
+                        10
+                    );
+
+
+                row.late_minutes =
+                    parseInt(
+                        attendance.getValue(
+                            'late_minutes'
+                        ) || 0,
+                        10
+                    );
+
+
+                if (
+                    status === 'late'
+                ) {
+
+                    todaySummary.late++;
+
+                }
+
+                else if (
+                    status === 'present'
+                ) {
+
+                    todaySummary.present++;
+
+                }
+
+                else if (
+                    status === 'half_day'
+                ) {
+
+                    todaySummary.half_day++;
+
+                }
+
+                else if (
+                    status ===
+                    'insufficient_hours'
+                ) {
+
+                    todaySummary
+                        .insufficient_hours++;
+
+                }
+
+            }
+
+
+            todayRows.push(
+                row
+            );
+
+        }
+
+
+        // =====================================================
+        // LAST 7 DAYS SUMMARY
+        // =====================================================
+        var sevenDay = {
+
+            from:
+                startDate,
+
+            to:
+                today,
+
+            attendance_records:
+                0,
+
+            present:
+                0,
+
+            late:
+                0,
+
+            half_day:
+                0,
+
+            insufficient_hours:
+                0,
+
+            total_late_minutes:
+                0,
+
+            total_working_minutes:
+                0,
+
+            average_working_minutes:
+                0
+
+        };
+
+
+        if (
+            employeeIds.length > 0
+        ) {
+
+            var history =
+                new GlideRecord(
+                    'x_1760545_smarta_0_attendance'
+                );
+
+
+            history.addQuery(
+                'employee',
+                'IN',
+                employeeIds.join(',')
+            );
+
+
+            history.addQuery(
+                'attendance_date',
+                '>=',
+                startDate
+            );
+
+
+            history.addQuery(
+                'attendance_date',
+                '<=',
+                today
+            );
+
+
+            history.query();
+
+
+            while (
+                history.next()
+            ) {
+
+                sevenDay
+                    .attendance_records++;
+
+
+                var historyStatus =
+                    history.getValue(
+                        'status'
+                    ) || '';
+
+
+                if (
+                    historyStatus ===
+                    'present'
+                ) {
+
+                    sevenDay.present++;
+
+                }
+
+                else if (
+                    historyStatus ===
+                    'late'
+                ) {
+
+                    sevenDay.late++;
+
+                }
+
+                else if (
+                    historyStatus ===
+                    'half_day'
+                ) {
+
+                    sevenDay.half_day++;
+
+                }
+
+                else if (
+                    historyStatus ===
+                    'insufficient_hours'
+                ) {
+
+                    sevenDay
+                        .insufficient_hours++;
+
+                }
+
+
+                sevenDay
+                    .total_late_minutes +=
+                    parseInt(
+                        history.getValue(
+                            'late_minutes'
+                        ) || 0,
+                        10
+                    );
+
+
+                sevenDay
+                    .total_working_minutes +=
+                    parseInt(
+                        history.getValue(
+                            'working_minutes'
+                        ) || 0,
+                        10
+                    );
+
+            }
+
+        }
+
+
+        if (
+            sevenDay
+                .attendance_records > 0
+        ) {
+
+            sevenDay
+                .average_working_minutes =
+                Math.round(
+
+                    sevenDay
+                        .total_working_minutes /
+
+                    sevenDay
+                        .attendance_records
+
+                );
+
+        }
+
+
+        // =====================================================
+        // RESPONSE
+        // =====================================================
+        response.setStatus(200);
+
+        response.setBody({
+
+            success:
+                true,
+
+            manager:
+                gs.getUserDisplayName(),
+
+            today:
+                today,
+
+            today_summary:
+                todaySummary,
+
+            seven_day_summary:
+                sevenDay,
+
+            employees:
+                todayRows
+
+        });
+
+
+        // =====================================================
+        // HELPER
+        // =====================================================
+        function convertToIndiaTime(
+            value
+        ) {
+
+            if (!value) {
+                return '';
+            }
+
+
+            var dt =
+                new GlideDateTime(
+                    value
+                );
+
+
+            dt.addSeconds(
+                19800
+            );
+
+
+            return dt.getValue();
+
+        }
+
+
+    }
+    catch (e) {
+
+        gs.error(
+            '[SmartAttend Dashboard] ' +
+            e.message
+        );
+
+
+        response.setStatus(500);
+
+        response.setBody({
+
+            success:
+                false,
+
+            message:
+                'Unable to load manager attendance dashboard.'
+
+        });
+
+    }
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1760545_smarta_0/smartattend_api/manager-dashboard</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/manager-dashboard</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <support_trailing_slash>false</support_trailing_slash>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-13 05:08:26</sys_created_on>
+        <sys_id>b842f8d747f78bd07ace13ff016d43ce</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Manager Attendance Dashboard</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_ws_operation_b842f8d747f78bd07ace13ff016d43ce</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-13 05:08:26</sys_updated_on>
+        <web_service_definition display_value="SmartAttend API">6710d7e147bb4f907ace13ff016d431e</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

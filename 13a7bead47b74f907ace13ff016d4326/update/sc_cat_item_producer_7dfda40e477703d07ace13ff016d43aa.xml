@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item_producer">
+    <sc_cat_item_producer action="INSERT_OR_UPDATE">
+        <access_type>restricted</access_type>
+        <active>true</active>
+        <allow_edit>false</allow_edit>
+        <availability>on_desktop</availability>
+        <billable>false</billable>
+        <can_cancel>false</can_cancel>
+        <category display_value="SmartAttend Services">348de4ca477703d07ace13ff016d4303</category>
+        <cc_render_type>system</cc_render_type>
+        <checked_out/>
+        <cost>0</cost>
+        <custom_cart/>
+        <delivery_plan display_value="DEFAULT">523da512c611228900811a37c97c2014</delivery_plan>
+        <delivery_plan_script/>
+        <delivery_time>1970-01-03 00:00:00</delivery_time>
+        <description/>
+        <display_price_property>non_zero</display_price_property>
+        <entitlement_script/>
+        <flow_designer_flow/>
+        <fulfillment_automation_level>unspecified</fulfillment_automation_level>
+        <group/>
+        <hide_sp>false</hide_sp>
+        <icon/>
+        <ignore_price>true</ignore_price>
+        <image/>
+        <location/>
+        <make_item_non_conversational>false</make_item_non_conversational>
+        <mandatory_attachment>false</mandatory_attachment>
+        <meta/>
+        <mobile_hide_price>false</mobile_hide_price>
+        <mobile_picture/>
+        <mobile_picture_type>use_desktop_picture</mobile_picture_type>
+        <model/>
+        <name>Attendance Correction Request</name>
+        <no_attachment_v2>false</no_attachment_v2>
+        <no_cart>false</no_cart>
+        <no_cart_v2>false</no_cart_v2>
+        <no_delivery_time_v2>false</no_delivery_time_v2>
+        <no_order>false</no_order>
+        <no_order_now>false</no_order_now>
+        <no_proceed_checkout>false</no_proceed_checkout>
+        <no_quantity>false</no_quantity>
+        <no_quantity_v2>false</no_quantity_v2>
+        <no_save_as_draft>false</no_save_as_draft>
+        <no_search>false</no_search>
+        <no_wishlist_v2>false</no_wishlist_v2>
+        <omit_price>false</omit_price>
+        <order>0</order>
+        <ordered_item_link/>
+        <owner display_value="System Administrator">6816f79cc0a8016401c5a33be04be441</owner>
+        <picture/>
+        <post_insert_script><![CDATA[/**
+* This script is executed after the record is generated. 
+* `current` Is the GlideRecord produced by Record Producer. Use `current.update()` to update the record
+* To access the variables, use `producer.var1` where var1 is the name of the variable
+* To access the Record Producer use `cat_item`
+*/]]></post_insert_script>
+        <preview>JavaScript: popupOpenStandard("com.glideapp.servicecatalog_cat_item_view.do?v=1&amp;sysparm_id=7dfda40e477703d07ace13ff016d43aa&amp;sysparm_preview=true", "summary");</preview>
+        <price>0</price>
+        <published_ref/>
+        <recurring_frequency/>
+        <redirect_url>generated_record</redirect_url>
+        <request_method/>
+        <roles/>
+        <save_options/>
+        <save_script><![CDATA[/**
+* This script is executed at every step save in Catalog Builder. 
+* This script is executed before `Script` is executed.
+* `current` Is the GlideRecord produced by Record Producer. 
+* To access the variables, use `producer.var1` where var1 is the name of the variable
+* To access the Record Producer use `cat_item`
+*/]]></save_script>
+        <sc_catalogs>e0d08b13c3330100c8b837659bba8fb4</sc_catalogs>
+        <sc_ic_item_staging/>
+        <sc_ic_version/>
+        <sc_template/>
+        <script><![CDATA[(function executeProducer() {
+
+    // =========================================================
+    // 1. GET LOGGED-IN EMPLOYEE
+    // =========================================================
+    var employeeId = gs.getUserID();
+
+    if (!employeeId) {
+        gs.addErrorMessage('Unable to identify the logged-in employee.');
+        current.setAbortAction(true);
+        return;
+    }
+
+
+    // =========================================================
+    // 2. GET SELECTED ATTENDANCE RECORD
+    // =========================================================
+    var attendanceId = String(producer.attendance_record || '');
+
+    if (!attendanceId) {
+        gs.addErrorMessage('Please select an attendance record.');
+        current.setAbortAction(true);
+        return;
+    }
+
+    var attendance = new GlideRecord(
+        'x_1760545_smarta_0_attendance'
+    );
+
+    if (!attendance.get(attendanceId)) {
+        gs.addErrorMessage(
+            'Selected attendance record was not found.'
+        );
+        current.setAbortAction(true);
+        return;
+    }
+
+
+    // =========================================================
+    // 3. SECURITY CHECK
+    // Employee can request correction only for own attendance
+    // =========================================================
+    if (
+        attendance.getValue('employee') !== employeeId
+    ) {
+        gs.addErrorMessage(
+            'You can only request corrections for your own attendance.'
+        );
+        current.setAbortAction(true);
+        return;
+    }
+
+
+    // =========================================================
+    // 4. FIND ACTIVE EMPLOYEE PROFILE
+    // =========================================================
+    var profile = new GlideRecord(
+        'x_1760545_smarta_0_employee_profile'
+    );
+
+    profile.addQuery('employee', employeeId);
+    profile.addQuery('active', true);
+    profile.setLimit(1);
+    profile.query();
+
+    if (!profile.next()) {
+        gs.addErrorMessage(
+            'Active SmartAttend employee profile was not found.'
+        );
+        current.setAbortAction(true);
+        return;
+    }
+
+
+    // =========================================================
+    // 5. GET EMPLOYEE MANAGER
+    // =========================================================
+    var managerId = profile.getValue('manager');
+
+    if (!managerId) {
+        gs.addErrorMessage(
+            'Manager is not configured in your SmartAttend employee profile.'
+        );
+        current.setAbortAction(true);
+        return;
+    }
+
+
+    // =========================================================
+    // 6. GET PRODUCER VALUES
+    // =========================================================
+    var requestedStatus =
+        String(producer.requested_status || '');
+
+    var requestedCheckIn =
+        String(producer.requested_check_in || '');
+
+    var requestedCheckOut =
+        String(producer.requested_check_out || '');
+
+    var reason =
+        String(producer.reason || '');
+
+
+    // =========================================================
+    // 7. VALIDATE REQUIRED VALUES
+    // =========================================================
+    if (!requestedStatus) {
+        gs.addErrorMessage(
+            'Please select the requested attendance status.'
+        );
+        current.setAbortAction(true);
+        return;
+    }
+
+    if (!reason) {
+        gs.addErrorMessage(
+            'Please enter a reason for the correction.'
+        );
+        current.setAbortAction(true);
+        return;
+    }
+
+
+    // =========================================================
+    // 8. POPULATE ATTENDANCE CORRECTION REQUEST
+    // =========================================================
+
+    current.setValue(
+        'employee',
+        employeeId
+    );
+
+    current.setValue(
+        'attendance',
+        attendance.getUniqueValue()
+    );
+
+    current.setValue(
+        'attendance_date',
+        attendance.getValue('attendance_date')
+    );
+
+    current.setValue(
+        'current_status',
+        attendance.getValue('status')
+    );
+
+    current.setValue(
+        'requested_status',
+        requestedStatus
+    );
+
+
+    // Only set optional fields when employee entered a value
+    if (requestedCheckIn) {
+        current.setValue(
+            'requested_check_in',
+            requestedCheckIn
+        );
+    }
+
+    if (requestedCheckOut) {
+        current.setValue(
+            'requested_check_out',
+            requestedCheckOut
+        );
+    }
+
+
+    current.setValue(
+        'reason',
+        reason
+    );
+
+    current.setValue(
+        'manager',
+        managerId
+    );
+
+    current.setValue(
+        'state',
+        'submitted'
+    );
+
+
+    // Optional success message
+    gs.addInfoMessage(
+        'Attendance correction request submitted successfully.'
+    );
+
+})();]]></script>
+        <secondary_owners/>
+        <short_description>Request correction of an incorrect or incomplete SmartAttend attendance record.</short_description>
+        <show_variable_help_on_load>false</show_variable_help_on_load>
+        <start_closed>false</start_closed>
+        <state/>
+        <sys_class_name>sc_cat_item_producer</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 07:42:47</sys_created_on>
+        <sys_id>7dfda40e477703d07ace13ff016d43aa</sys_id>
+        <sys_mod_count>13</sys_mod_count>
+        <sys_name>Attendance Correction Request</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sc_cat_item_producer_7dfda40e477703d07ace13ff016d43aa</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 09:03:55</sys_updated_on>
+        <table_name>x_1760545_smarta_0_attendance_correction_request</table_name>
+        <taxonomy_topic/>
+        <template/>
+        <template_manager_roles/>
+        <type>item</type>
+        <use_sc_layout>true</use_sc_layout>
+        <vendor/>
+        <version>14</version>
+        <view/>
+        <visible_bundle>true</visible_bundle>
+        <visible_guide>true</visible_guide>
+        <visible_standalone>true</visible_standalone>
+        <workflow/>
+    </sc_cat_item_producer>
+    <sys_translated_text action="delete_multiple" query="documentkey=7dfda40e477703d07ace13ff016d43aa"/>
+    <fx_price action="delete_multiple" query="id=7dfda40e477703d07ace13ff016d43aa"/>
+    <fx_price action="INSERT_OR_UPDATE">
+        <amount>0</amount>
+        <currency display_value="INR">INR</currency>
+        <field>price</field>
+        <id>7dfda40e477703d07ace13ff016d43aa</id>
+        <parent/>
+        <reference_amount>0</reference_amount>
+        <reference_currency display_value="USD">USD</reference_currency>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 07:42:48</sys_created_on>
+        <sys_id>936f24ce477703d07ace13ff016d4344</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 07:42:48</sys_updated_on>
+        <table>sc_cat_item_producer</table>
+        <type>calculated</type>
+    </fx_price>
+</record_update>

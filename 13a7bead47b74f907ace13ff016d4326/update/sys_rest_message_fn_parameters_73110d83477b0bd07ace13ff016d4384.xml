@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message_fn_parameters">
+    <sys_rest_message_fn_parameters action="INSERT_OR_UPDATE">
+        <name>prompt</name>
+        <rest_message_function display_value="generate">9e5dbc03477b0bd07ace13ff016d4343</rest_message_function>
+        <sys_class_name>sys_rest_message_fn_parameters</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-12 11:34:02</sys_created_on>
+        <sys_id>73110d83477b0bd07ace13ff016d4384</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>prompt</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_rest_message_fn_parameters_73110d83477b0bd07ace13ff016d4384</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-12 11:36:59</sys_updated_on>
+        <type>string</type>
+        <value>Analyze this attendance data and give a concise manager recommendation.&#13;
+Team has 2 employees, 5 attendance records, 3 late records,&#13;
+1 insufficient-hours record, 882 total late minutes,&#13;
+and average working time of 57 minutes.&#13;
+Give 2-3 short actionable recommendations for the manager.</value>
+    </sys_rest_message_fn_parameters>
+</record_update>

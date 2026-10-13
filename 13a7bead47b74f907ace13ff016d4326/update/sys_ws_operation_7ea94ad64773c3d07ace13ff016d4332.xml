@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>d6e0536547bb4f907ace13ff016d435b</enforce_acl>
+        <http_method>GET</http_method>
+        <name>QR Status</name>
+        <operation_script><![CDATA[(function process(request, response) {
+
+    // =========================================================
+    // 1. GET LOGGED-IN EMPLOYEE
+    // =========================================================
+    var employeeId = gs.getUserID();
+
+
+    // =========================================================
+    // 2. READ TOKEN
+    // =========================================================
+    var token = request.queryParams.token;
+
+
+    if (!token) {
+
+        response.setStatus(400);
+
+        response.setBody({
+            success: false,
+            message: 'QR token is required'
+        });
+
+        return;
+    }
+
+
+    // =========================================================
+    // 3. FIND TOKEN BELONGING TO THIS EMPLOYEE
+    // =========================================================
+    var qr = new GlideRecord(
+        'x_1760545_smarta_0_qr_token'
+    );
+
+    qr.addQuery('token', token);
+    qr.addQuery('employee', employeeId);
+    qr.setLimit(1);
+    qr.query();
+
+
+    if (!qr.next()) {
+
+        response.setStatus(404);
+
+        response.setBody({
+            success: false,
+            message: 'QR token not found'
+        });
+
+        return;
+    }
+
+
+    var tokenStatus =
+        qr.getValue('status');
+
+
+    // =========================================================
+    // 4. ACTIVE TOKEN
+    // =========================================================
+    if (tokenStatus == 'active') {
+
+        var now =
+            new GlideDateTime();
+
+        var expiresAt =
+            new GlideDateTime(
+                qr.getValue('expires_at')
+            );
+
+
+        if (
+            expiresAt.getNumericValue() <
+            now.getNumericValue()
+        ) {
+
+            qr.setValue(
+                'status',
+                'expired'
+            );
+
+            qr.update();
+
+
+            response.setStatus(200);
+
+            response.setBody({
+                success: true,
+                token_status: 'expired'
+            });
+
+            return;
+        }
+
+
+        response.setStatus(200);
+
+        response.setBody({
+            success: true,
+            token_status: 'active'
+        });
+
+        return;
+    }
+
+
+    // =========================================================
+    // 5. EXPIRED / CANCELLED
+    // =========================================================
+    if (
+        tokenStatus == 'expired' ||
+        tokenStatus == 'cancelled'
+    ) {
+
+        response.setStatus(200);
+
+        response.setBody({
+            success: true,
+            token_status: tokenStatus
+        });
+
+        return;
+    }
+
+
+    // =========================================================
+    // 6. USED TOKEN
+    // =========================================================
+    if (tokenStatus == 'used') {
+
+        var attendanceId =
+            qr.getValue('attendance');
+
+        var result = {
+
+            success: true,
+
+            token_status: 'used',
+
+            action:
+                qr.getValue('scan_action'),
+
+            scanner:
+                qr.used_by_scanner
+                    .getDisplayValue(),
+
+            used_at:
+                qr.getValue('used_at')
+        };
+
+
+        // -----------------------------------------------------
+        // Get Attendance details
+        // -----------------------------------------------------
+        if (attendanceId) {
+
+            var attendance =
+                new GlideRecord(
+                    'x_1760545_smarta_0_attendance'
+                );
+
+
+            if (
+                attendance.get(
+                    attendanceId
+                )
+            ) {
+
+                result.attendance_id =
+                    attendance.getUniqueValue();
+
+                result.employee =
+                    attendance.employee
+                        .getDisplayValue();
+
+                result.status =
+                    attendance.getValue(
+                        'status'
+                    );
+
+                result.late_minutes =
+                    attendance.getValue(
+                        'late_minutes'
+                    );
+
+                result.working_minutes =
+                    attendance.getValue(
+                        'working_minutes'
+                    );
+
+                result.check_in =
+                    attendance.getValue(
+                        'check_in'
+                    );
+
+                result.check_out =
+                    attendance.getValue(
+                        'check_out'
+                    );
+            }
+        }
+
+
+        response.setStatus(200);
+
+        response.setBody(result);
+
+        return;
+    }
+
+
+    // =========================================================
+    // 7. FALLBACK
+    // =========================================================
+    response.setStatus(200);
+
+    response.setBody({
+        success: true,
+        token_status:
+            tokenStatus || 'unknown'
+    });
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1760545_smarta_0/smartattend_api/qr-status</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/qr-status</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <support_trailing_slash>false</support_trailing_slash>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-10 08:56:30</sys_created_on>
+        <sys_id>7ea94ad64773c3d07ace13ff016d4332</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>QR Status</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_ws_operation_7ea94ad64773c3d07ace13ff016d4332</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-10 08:57:04</sys_updated_on>
+        <web_service_definition display_value="SmartAttend API">6710d7e147bb4f907ace13ff016d431e</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

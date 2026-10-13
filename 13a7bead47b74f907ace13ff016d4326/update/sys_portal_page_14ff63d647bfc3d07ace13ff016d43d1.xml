@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update node_type="sys_portal_page" unload_date="2026-10-13 11:03:41">
+    <sys_portal_page action="INSERT_OR_UPDATE">
+        <layout/>
+        <order/>
+        <read_roles/>
+        <roles/>
+        <selectable>false</selectable>
+        <sys_class_name>sys_portal_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-10 16:22:23</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>14ff63d647bfc3d07ace13ff016d43d1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>New Tab 1</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_portal_page_14ff63d647bfc3d07ace13ff016d43d1</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-10 16:22:23</sys_updated_on>
+        <title>New Tab 1</title>
+        <user/>
+        <view>new_tab_1</view>
+        <related_items_node>
+            <sys_portal action="INSERT_OR_UPDATE">
+                <dropzone/>
+                <offset/>
+                <page display_value="New Tab 1">14ff63d647bfc3d07ace13ff016d43d1</page>
+                <summary>SmartAttend - Attendance Trend</summary>
+                <sys_created_by>admin</sys_created_by>
+                <sys_created_on>2026-10-10 16:25:34</sys_created_on>
+                <sys_id>b6a0335a47bfc3d07ace13ff016d4306</sys_id>
+                <sys_mod_count>1</sys_mod_count>
+                <sys_updated_by>admin</sys_updated_by>
+                <sys_updated_on>2026-10-10 16:25:34</sys_updated_on>
+                <related_items_node>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>renderer</name>
+                        <portal_section display_value="Created 2026-10-10 09:25:34">b6a0335a47bfc3d07ace13ff016d4306</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:25:34</sys_created_on>
+                        <sys_id>32a0335a47bfc3d07ace13ff016d430b</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:25:34</sys_updated_on>
+                        <value>com.glide.ui.portal.RenderReport</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>report_type</name>
+                        <portal_section display_value="Created 2026-10-10 09:25:34">b6a0335a47bfc3d07ace13ff016d4306</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:25:34</sys_created_on>
+                        <sys_id>36a0335a47bfc3d07ace13ff016d430c</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:25:34</sys_updated_on>
+                        <value>line</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>help_text_window</name>
+                        <portal_section display_value="Created 2026-10-10 09:25:34">b6a0335a47bfc3d07ace13ff016d4306</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:25:34</sys_created_on>
+                        <sys_id>76a0335a47bfc3d07ace13ff016d430b</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:25:34</sys_updated_on>
+                        <value>report_widget_description</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>title</name>
+                        <portal_section display_value="Created 2026-10-10 09:25:34">b6a0335a47bfc3d07ace13ff016d4306</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:25:34</sys_created_on>
+                        <sys_id>7aa0335a47bfc3d07ace13ff016d430c</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:25:34</sys_updated_on>
+                        <value>SmartAttend - Attendance Trend</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>is_using_database_view</name>
+                        <portal_section display_value="Created 2026-10-10 09:25:34">b6a0335a47bfc3d07ace13ff016d4306</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:25:34</sys_created_on>
+                        <sys_id>7aa0335a47bfc3d07ace13ff016d4336</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:25:34</sys_updated_on>
+                        <value/>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>can_publish</name>
+                        <portal_section display_value="Created 2026-10-10 09:25:34">b6a0335a47bfc3d07ace13ff016d4306</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:25:34</sys_created_on>
+                        <sys_id>baa0335a47bfc3d07ace13ff016d430b</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:25:34</sys_updated_on>
+                        <value>false</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>sys_id</name>
+                        <portal_section display_value="Created 2026-10-10 09:25:34">b6a0335a47bfc3d07ace13ff016d4306</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:25:34</sys_created_on>
+                        <sys_id>f2a0335a47bfc3d07ace13ff016d430a</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:25:34</sys_updated_on>
+                        <value>c4e143d2473bc3d07ace13ff016d4315</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>can_subscribe</name>
+                        <portal_section display_value="Created 2026-10-10 09:25:34">b6a0335a47bfc3d07ace13ff016d4306</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:25:34</sys_created_on>
+                        <sys_id>fea0335a47bfc3d07ace13ff016d430b</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:25:34</sys_updated_on>
+                        <value>true</value>
+                    </sys_portal_preferences>
+                </related_items_node>
+            </sys_portal>
+            <sys_portal action="INSERT_OR_UPDATE">
+                <dropzone/>
+                <offset/>
+                <page display_value="New Tab 1">14ff63d647bfc3d07ace13ff016d43d1</page>
+                <summary>SmartAttend - Late Employees</summary>
+                <sys_created_by>admin</sys_created_by>
+                <sys_created_on>2026-10-10 16:24:16</sys_created_on>
+                <sys_id>bb50331a47bfc3d07ace13ff016d43c0</sys_id>
+                <sys_mod_count>1</sys_mod_count>
+                <sys_updated_by>admin</sys_updated_by>
+                <sys_updated_on>2026-10-10 16:24:17</sys_updated_on>
+                <related_items_node>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>title</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:16">bb50331a47bfc3d07ace13ff016d43c0</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:17</sys_created_on>
+                        <sys_id>0460731a47bfc3d07ace13ff016d439a</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:17</sys_updated_on>
+                        <value>SmartAttend - Late Employees</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>help_text_window</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:16">bb50331a47bfc3d07ace13ff016d43c0</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:17</sys_created_on>
+                        <sys_id>3350731a47bfc3d07ace13ff016d4399</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:17</sys_updated_on>
+                        <value>report_widget_description</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>can_publish</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:16">bb50331a47bfc3d07ace13ff016d43c0</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:17</sys_created_on>
+                        <sys_id>4460731a47bfc3d07ace13ff016d4399</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:17</sys_updated_on>
+                        <value>false</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>can_subscribe</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:16">bb50331a47bfc3d07ace13ff016d43c0</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:17</sys_created_on>
+                        <sys_id>8860731a47bfc3d07ace13ff016d4399</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:17</sys_updated_on>
+                        <value>true</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>sys_id</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:16">bb50331a47bfc3d07ace13ff016d43c0</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:16</sys_created_on>
+                        <sys_id>bf50731a47bfc3d07ace13ff016d4397</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:16</sys_updated_on>
+                        <value>097b7e9e47f7c3d07ace13ff016d434a</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>is_using_database_view</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:16">bb50331a47bfc3d07ace13ff016d43c0</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:17</sys_created_on>
+                        <sys_id>c860731a47bfc3d07ace13ff016d439e</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:17</sys_updated_on>
+                        <value/>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>report_type</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:16">bb50331a47bfc3d07ace13ff016d43c0</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:17</sys_created_on>
+                        <sys_id>cc60731a47bfc3d07ace13ff016d4399</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:17</sys_updated_on>
+                        <value>bar</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>renderer</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:16">bb50331a47bfc3d07ace13ff016d43c0</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:17</sys_created_on>
+                        <sys_id>fb50731a47bfc3d07ace13ff016d4398</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:17</sys_updated_on>
+                        <value>com.glide.ui.portal.RenderReport</value>
+                    </sys_portal_preferences>
+                </related_items_node>
+            </sys_portal>
+            <sys_portal action="INSERT_OR_UPDATE">
+                <dropzone/>
+                <offset/>
+                <page display_value="New Tab 1">14ff63d647bfc3d07ace13ff016d43d1</page>
+                <summary>SmartAttend - Working Minutes by Employee</summary>
+                <sys_created_by>admin</sys_created_by>
+                <sys_created_on>2026-10-10 16:24:52</sys_created_on>
+                <sys_id>e080b71a47bfc3d07ace13ff016d4361</sys_id>
+                <sys_mod_count>1</sys_mod_count>
+                <sys_updated_by>admin</sys_updated_by>
+                <sys_updated_on>2026-10-10 16:24:53</sys_updated_on>
+                <related_items_node>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>sys_id</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:52">e080b71a47bfc3d07ace13ff016d4361</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:52</sys_created_on>
+                        <sys_id>2080b71a47bfc3d07ace13ff016d4365</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:52</sys_updated_on>
+                        <value>016d3292473bc3d07ace13ff016d43fd</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>report_type</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:52">e080b71a47bfc3d07ace13ff016d4361</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:53</sys_created_on>
+                        <sys_id>2c80f71a47bfc3d07ace13ff016d4308</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:53</sys_updated_on>
+                        <value>bar</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>renderer</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:52">e080b71a47bfc3d07ace13ff016d4361</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:52</sys_created_on>
+                        <sys_id>6c80b71a47bfc3d07ace13ff016d4365</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:52</sys_updated_on>
+                        <value>com.glide.ui.portal.RenderReport</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>help_text_window</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:52">e080b71a47bfc3d07ace13ff016d4361</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:52</sys_created_on>
+                        <sys_id>6c80f71a47bfc3d07ace13ff016d4307</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:52</sys_updated_on>
+                        <value>report_widget_description</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>title</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:52">e080b71a47bfc3d07ace13ff016d4361</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:53</sys_created_on>
+                        <sys_id>7080f71a47bfc3d07ace13ff016d4309</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:53</sys_updated_on>
+                        <value>SmartAttend - Working Minutes by Employee</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>can_publish</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:52">e080b71a47bfc3d07ace13ff016d4361</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:52</sys_created_on>
+                        <sys_id>a080f71a47bfc3d07ace13ff016d4308</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:52</sys_updated_on>
+                        <value>false</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>is_using_database_view</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:52">e080b71a47bfc3d07ace13ff016d4361</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:53</sys_created_on>
+                        <sys_id>b880f71a47bfc3d07ace13ff016d430d</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:53</sys_updated_on>
+                        <value/>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>can_subscribe</name>
+                        <portal_section display_value="Created 2026-10-10 09:24:52">e080b71a47bfc3d07ace13ff016d4361</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:24:52</sys_created_on>
+                        <sys_id>e480f71a47bfc3d07ace13ff016d4308</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:24:52</sys_updated_on>
+                        <value>true</value>
+                    </sys_portal_preferences>
+                </related_items_node>
+            </sys_portal>
+            <sys_portal action="INSERT_OR_UPDATE">
+                <dropzone/>
+                <offset/>
+                <page display_value="New Tab 1">14ff63d647bfc3d07ace13ff016d43d1</page>
+                <summary>SmartAttend - Attendance by Status</summary>
+                <sys_created_by>admin</sys_created_by>
+                <sys_created_on>2026-10-10 16:23:10</sys_created_on>
+                <sys_id>f3103bd647bfc3d07ace13ff016d4343</sys_id>
+                <sys_mod_count>1</sys_mod_count>
+                <sys_updated_by>admin</sys_updated_by>
+                <sys_updated_on>2026-10-10 16:23:11</sys_updated_on>
+                <related_items_node>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>is_using_database_view</name>
+                        <portal_section display_value="Created 2026-10-10 09:23:10">f3103bd647bfc3d07ace13ff016d4343</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:23:11</sys_created_on>
+                        <sys_id>33103bd647bfc3d07ace13ff016d4352</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:23:11</sys_updated_on>
+                        <value/>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>renderer</name>
+                        <portal_section display_value="Created 2026-10-10 09:23:10">f3103bd647bfc3d07ace13ff016d4343</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:23:11</sys_created_on>
+                        <sys_id>37103bd647bfc3d07ace13ff016d434b</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:23:11</sys_updated_on>
+                        <value>com.glide.ui.portal.RenderReport</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>report_type</name>
+                        <portal_section display_value="Created 2026-10-10 09:23:10">f3103bd647bfc3d07ace13ff016d4343</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:23:11</sys_created_on>
+                        <sys_id>3b103bd647bfc3d07ace13ff016d434c</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:23:11</sys_updated_on>
+                        <value>donut</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>help_text_window</name>
+                        <portal_section display_value="Created 2026-10-10 09:23:10">f3103bd647bfc3d07ace13ff016d4343</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:23:11</sys_created_on>
+                        <sys_id>7b103bd647bfc3d07ace13ff016d434b</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:23:11</sys_updated_on>
+                        <value>report_widget_description</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>title</name>
+                        <portal_section display_value="Created 2026-10-10 09:23:10">f3103bd647bfc3d07ace13ff016d4343</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:23:11</sys_created_on>
+                        <sys_id>7f103bd647bfc3d07ace13ff016d434c</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:23:11</sys_updated_on>
+                        <value>SmartAttend - Attendance by Status</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>sys_id</name>
+                        <portal_section display_value="Created 2026-10-10 09:23:10">f3103bd647bfc3d07ace13ff016d4343</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:23:10</sys_created_on>
+                        <sys_id>b3103bd647bfc3d07ace13ff016d4348</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:23:10</sys_updated_on>
+                        <value>e2fa361e47f7c3d07ace13ff016d43e7</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>can_publish</name>
+                        <portal_section display_value="Created 2026-10-10 09:23:10">f3103bd647bfc3d07ace13ff016d4343</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:23:11</sys_created_on>
+                        <sys_id>bf103bd647bfc3d07ace13ff016d434b</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:23:11</sys_updated_on>
+                        <value>true</value>
+                    </sys_portal_preferences>
+                    <sys_portal_preferences action="INSERT_OR_UPDATE">
+                        <name>can_subscribe</name>
+                        <portal_section display_value="Created 2026-10-10 09:23:10">f3103bd647bfc3d07ace13ff016d4343</portal_section>
+                        <sys_created_by>admin</sys_created_by>
+                        <sys_created_on>2026-10-10 16:23:11</sys_created_on>
+                        <sys_id>f3103bd647bfc3d07ace13ff016d434c</sys_id>
+                        <sys_mod_count>0</sys_mod_count>
+                        <sys_updated_by>admin</sys_updated_by>
+                        <sys_updated_on>2026-10-10 16:23:11</sys_updated_on>
+                        <value>true</value>
+                    </sys_portal_preferences>
+                </related_items_node>
+            </sys_portal>
+        </related_items_node>
+    </sys_portal_page>
+</record_update>

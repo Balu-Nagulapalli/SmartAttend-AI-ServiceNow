@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_write_back_action_item">
+    <sys_sg_write_back_action_item action="INSERT_OR_UPDATE">
+        <attach_in_activity_stream/>
+        <description/>
+        <execution_script><![CDATA[(function WriteBackAction(parm_input, parm_variable, actionResult) {
+
+    try {
+
+        // -----------------------------------------------------
+        // GET CURRENT CORRECTION REQUEST SYS_ID
+        // Support both Mobile parameter locations
+        // -----------------------------------------------------
+        var requestSysId = '';
+
+        if (
+            parm_variable &&
+            parm_variable['request_sys_id']
+        ) {
+            requestSysId =
+                parm_variable['request_sys_id'];
+        }
+
+        else if (
+            parm_input &&
+            parm_input['request_sys_id']
+        ) {
+            requestSysId =
+                parm_input['request_sys_id'];
+        }
+
+
+        gs.info(
+            '[SmartAttend Approve] request_sys_id=' +
+            requestSysId
+        );
+
+
+        var managerId =
+            gs.getUserID();
+
+
+        gs.info(
+            '[SmartAttend Approve] logged_user=' +
+            managerId
+        );
+
+
+        if (!requestSysId) {
+
+            gs.error(
+                '[SmartAttend Approve] ERROR: request_sys_id is empty'
+            );
+
+            return;
+        }
+
+
+        // -----------------------------------------------------
+        // GET CORRECTION REQUEST
+        // -----------------------------------------------------
+        var correction =
+            new GlideRecord(
+                'x_1760545_smarta_0_attendance_correction_request'
+            );
+
+
+        if (!correction.get(requestSysId)) {
+
+            gs.error(
+                '[SmartAttend Approve] ERROR: correction request not found'
+            );
+
+            return;
+        }
+
+
+        gs.info(
+            '[SmartAttend Approve] correction=' +
+            correction.getValue('number')
+        );
+
+
+        gs.info(
+            '[SmartAttend Approve] correction_manager=' +
+            correction.getValue('manager')
+        );
+
+
+        // -----------------------------------------------------
+        // SECURITY CHECK
+        // -----------------------------------------------------
+        if (
+            correction.getValue('manager') !==
+            managerId
+        ) {
+
+            gs.error(
+                '[SmartAttend Approve] ERROR: logged user is not request manager'
+            );
+
+            return;
+        }
+
+
+        // -----------------------------------------------------
+        // FIND PENDING APPROVAL
+        // -----------------------------------------------------
+        var approval =
+            new GlideRecord(
+                'sysapproval_approver'
+            );
+
+
+        approval.addQuery(
+            'approver',
+            managerId
+        );
+
+
+        approval.addQuery(
+            'state',
+            'requested'
+        );
+
+
+        // A custom-table approval commonly uses document_id.
+        // Also allow sysapproval as a fallback.
+        var approvalRef =
+            approval.addQuery(
+                'document_id',
+                requestSysId
+            );
+
+        approvalRef.addOrCondition(
+            'sysapproval',
+            requestSysId
+        );
+
+
+        approval.query();
+
+
+        gs.info(
+            '[SmartAttend Approve] approvals_found=' +
+            approval.getRowCount()
+        );
+
+
+        if (!approval.next()) {
+
+            gs.error(
+                '[SmartAttend Approve] ERROR: no pending approval found'
+            );
+
+            return;
+        }
+
+
+        gs.info(
+            '[SmartAttend Approve] approval_sys_id=' +
+            approval.getUniqueValue()
+        );
+
+
+        // -----------------------------------------------------
+        // APPROVE
+        // -----------------------------------------------------
+        approval.setValue(
+            'state',
+            'approved'
+        );
+
+
+        approval.setValue(
+            'comments',
+            'Approved from SmartAttend Now Mobile.'
+        );
+
+
+        var updateResult =
+            approval.update();
+
+
+        gs.info(
+            '[SmartAttend Approve] update_result=' +
+            updateResult
+        );
+
+
+        if (!updateResult) {
+
+            gs.error(
+                '[SmartAttend Approve] ERROR: approval update failed'
+            );
+
+            return;
+        }
+
+
+        gs.info(
+            '[SmartAttend Approve] SUCCESS: approval completed'
+        );
+
+
+    }
+
+    catch (e) {
+
+        gs.error(
+            '[SmartAttend Approve] EXCEPTION: ' +
+            e.message
+        );
+
+    }
+
+})(
+    parm_input,
+    parm_variable,
+    actionResult
+);]]></execution_script>
+        <name>SmartAttend - Approve Correction</name>
+        <parameter_screen/>
+        <query_condition/>
+        <sys_class_name>sys_sg_write_back_action_item</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-11 10:18:07</sys_created_on>
+        <sys_id>4a26ef2a477f47d07ace13ff016d43e0</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>SmartAttend - Approve Correction</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_sg_write_back_action_item_4a26ef2a477f47d07ace13ff016d43e0</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 13:06:56</sys_updated_on>
+        <table>x_1760545_smarta_0_attendance_correction_request</table>
+        <template/>
+        <type>script</type>
+        <use_current_record_as_condition>true</use_current_record_as_condition>
+        <use_fields_for_ref_lookup>true</use_fields_for_ref_lookup>
+    </sys_sg_write_back_action_item>
+    <sys_translated_text action="delete_multiple" query="documentkey=4a26ef2a477f47d07ace13ff016d43e0"/>
+</record_update>

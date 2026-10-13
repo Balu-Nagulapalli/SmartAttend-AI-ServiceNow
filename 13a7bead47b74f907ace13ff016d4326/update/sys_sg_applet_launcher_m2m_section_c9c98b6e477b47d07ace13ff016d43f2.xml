@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_applet_launcher_m2m_section">
+    <sys_sg_applet_launcher_m2m_section action="INSERT_OR_UPDATE">
+        <applet_launcher display_value="SmartAttend Manager">8e98cb6a477b47d07ace13ff016d4336</applet_launcher>
+        <order/>
+        <section display_value="Manager Actions">45c9c36e477b47d07ace13ff016d4359</section>
+        <sys_class_name>sys_sg_applet_launcher_m2m_section</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-11 08:14:05</sys_created_on>
+        <sys_id>c9c98b6e477b47d07ace13ff016d43f2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_sg_applet_launcher_m2m_section_c9c98b6e477b47d07ace13ff016d43f2</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 08:14:05</sys_updated_on>
+    </sys_sg_applet_launcher_m2m_section>
+</record_update>
