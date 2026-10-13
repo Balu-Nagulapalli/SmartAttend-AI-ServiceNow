@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_1760545_smarta_0_attendance_correction_request</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>SmartAttend - Build Correction Reference</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous) {
+
+    try {
+
+        // =====================================================
+        // REQUEST NUMBER
+        // =====================================================
+        var number =
+            current.getValue('number') ||
+            'Correction Request';
+
+
+        // =====================================================
+        // CREATED DATE/TIME -> IST
+        // =====================================================
+        var created =
+            current.getValue('sys_created_on');
+
+        var formattedCreated =
+            '-';
+
+
+        if (created) {
+
+            var indiaDateTime =
+                new GlideDateTime(created);
+
+            // UTC + 05:30
+            indiaDateTime.addSeconds(19800);
+
+
+            var indiaValue =
+                indiaDateTime.getValue();
+
+
+            var datePart =
+                indiaValue.substring(
+                    0,
+                    10
+                );
+
+
+            var timePart =
+                indiaValue.substring(
+                    11,
+                    16
+                );
+
+
+            formattedCreated =
+                formatDate(
+                    datePart
+                ) +
+                ' ' +
+                formatTime12Hour(
+                    timePart
+                );
+
+        }
+
+
+        // =====================================================
+        // REQUESTED STATUS
+        // =====================================================
+        var requestedStatusRaw =
+            current.getDisplayValue(
+                'requested_status'
+            ) ||
+            current.getValue(
+                'requested_status'
+            ) ||
+            '-';
+
+
+        var requestedStatus =
+            humanizeChoice(
+                requestedStatusRaw
+            );
+
+
+        // =====================================================
+        // REQUEST STATE
+        // =====================================================
+        var stateRaw =
+            current.getDisplayValue(
+                'state'
+            ) ||
+            current.getValue(
+                'state'
+            ) ||
+            '-';
+
+
+        var state =
+            humanizeChoice(
+                stateRaw
+            );
+
+
+        // =====================================================
+        // FINAL REFERENCE LABEL
+        // =====================================================
+        var referenceLabel =
+            number +
+            ' • ' +
+            formattedCreated +
+            ' • ' +
+            requestedStatus +
+            ' • ' +
+            state;
+
+
+        current.setValue(
+            'reference_label',
+            referenceLabel
+        );
+
+
+        // =====================================================
+        // DATE FORMAT
+        // 2026-10-12 -> 12-Oct-2026
+        // =====================================================
+        function formatDate(value) {
+
+            if (!value) {
+                return '-';
+            }
+
+
+            var parts =
+                String(value)
+                    .split('-');
+
+
+            if (
+                parts.length !== 3
+            ) {
+                return value;
+            }
+
+
+            var months = [
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec'
+            ];
+
+
+            var monthIndex =
+                parseInt(
+                    parts[1],
+                    10
+                ) - 1;
+
+
+            if (
+                monthIndex < 0 ||
+                monthIndex > 11
+            ) {
+                return value;
+            }
+
+
+            return (
+                parts[2] +
+                '-' +
+                months[monthIndex] +
+                '-' +
+                parts[0]
+            );
+
+        }
+
+
+        // =====================================================
+        // TIME FORMAT
+        // 16:53 -> 4:53 PM
+        // =====================================================
+        function formatTime12Hour(value) {
+
+            if (!value) {
+                return '-';
+            }
+
+
+            var parts =
+                String(value)
+                    .split(':');
+
+
+            if (
+                parts.length < 2
+            ) {
+                return value;
+            }
+
+
+            var hour =
+                parseInt(
+                    parts[0],
+                    10
+                );
+
+
+            var minute =
+                parts[1];
+
+
+            var suffix =
+                hour >= 12
+                    ? 'PM'
+                    : 'AM';
+
+
+            hour =
+                hour % 12;
+
+
+            if (
+                hour === 0
+            ) {
+                hour = 12;
+            }
+
+
+            return (
+                hour +
+                ':' +
+                minute +
+                ' ' +
+                suffix
+            );
+
+        }
+
+
+        // =====================================================
+        // HUMANIZE CHOICE
+        //
+        // half_day           -> Half Day
+        // insufficient_hours -> Insufficient Hours
+        // pending_approval    -> Pending Approval
+        // =====================================================
+        function humanizeChoice(value) {
+
+            if (
+                !value ||
+                value === '-'
+            ) {
+                return '-';
+            }
+
+
+            var text =
+                String(value)
+                    .replace(
+                        /_/g,
+                        ' '
+                    )
+                    .replace(
+                        /-/g,
+                        ' '
+                    );
+
+
+            var words =
+                text.split(' ');
+
+
+            for (
+                var i = 0;
+                i < words.length;
+                i++
+            ) {
+
+                if (words[i]) {
+
+                    words[i] =
+                        words[i]
+                            .charAt(0)
+                            .toUpperCase() +
+                        words[i]
+                            .substring(1)
+                            .toLowerCase();
+
+                }
+
+            }
+
+
+            return words.join(' ');
+
+        }
+
+
+    }
+    catch (e) {
+
+        gs.error(
+            '[SmartAttend Correction Reference] ' +
+            e.message
+        );
+
+    }
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-13 03:01:07</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>fe259cdb47f38bd07ace13ff016d433d</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>SmartAttend - Build Correction Reference</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_script_fe259cdb47f38bd07ace13ff016d433d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-13 04:41:19</sys_updated_on>
+        <template/>
+        <when>before</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=fe259cdb47f38bd07ace13ff016d433d"/>
+</record_update>

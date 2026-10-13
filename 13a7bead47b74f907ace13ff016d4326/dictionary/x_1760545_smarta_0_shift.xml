@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element attributes="enforce_dot_walk_cross_scope_access=true" db_object_id="5ef506f94733cf907ace13ff016d4394" label="Shift" max_length="40" name="x_1760545_smarta_0_shift" type="collection">
+        <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Full Day Minutes" mandatory="true" max_length="40" name="full_day_minutes" type="integer"/>
+        <element label="Start Time" mandatory="true" max_length="40" name="start_time" type="glide_time"/>
+        <element label="Description" max_length="500" name="description" type="string"/>
+        <element label="Active" mandatory="true" max_length="40" name="active" type="boolean"/>
+        <element label="Half Day Minutes" mandatory="true" max_length="40" name="half_day_minutes" type="integer"/>
+        <element label="Grace Minutes" mandatory="true" max_length="40" name="grace_minutes" type="integer"/>
+        <element label="Start Minutes" mandatory="true" max_length="40" name="start_minutes" type="integer"/>
+        <element label="End Minutes" mandatory="true" max_length="40" name="end_minutes" type="integer"/>
+        <element label="End Time" mandatory="true" max_length="40" name="end_time" type="glide_time"/>
+        <element display="true" label="Shift Name" mandatory="true" max_length="100" name="shift_name" type="string"/>
+    </element>
+</database>

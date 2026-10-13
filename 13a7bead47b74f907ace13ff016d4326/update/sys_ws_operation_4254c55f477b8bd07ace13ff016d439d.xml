@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>5203365e47b7c3d07ace13ff016d434e</enforce_acl>
+        <http_method>POST</http_method>
+        <name>Create Shift</name>
+        <operation_script><![CDATA[(function process(request, response) {
+
+    try {
+
+        // =====================================================
+        // SECURITY
+        // =====================================================
+        if (
+            !gs.hasRole(
+                'x_1760545_smarta_0.smartattend_manager'
+            )
+        ) {
+
+            response.setStatus(403);
+
+            response.setBody({
+                success: false,
+                message: 'Manager access is required.'
+            });
+
+            return;
+        }
+
+
+        // =====================================================
+        // REQUEST BODY
+        // =====================================================
+        var body =
+            request.body.data || {};
+
+
+        var shiftName =
+            String(
+                body.shift_name || ''
+            ).trim();
+
+
+        var startMinutes =
+            parseInt(
+                body.start_minutes,
+                10
+            );
+
+
+        var endMinutes =
+            parseInt(
+                body.end_minutes,
+                10
+            );
+
+
+        var graceMinutes =
+            parseInt(
+                body.grace_minutes || 0,
+                10
+            );
+
+
+        var fullDayMinutes =
+            parseInt(
+                body.full_day_minutes || 480,
+                10
+            );
+
+
+        var halfDayMinutes =
+            parseInt(
+                body.half_day_minutes || 240,
+                10
+            );
+
+
+        var description =
+            String(
+                body.description || ''
+            ).trim();
+
+
+        // Default Active = true
+        var active =
+            body.active === false
+                ? false
+                : true;
+
+
+        // =====================================================
+        // VALIDATION
+        // =====================================================
+        if (!shiftName) {
+
+            returnError(
+                400,
+                'Shift name is required.'
+            );
+
+            return;
+        }
+
+
+        if (
+            isNaN(startMinutes) ||
+            startMinutes < 0 ||
+            startMinutes > 1439
+        ) {
+
+            returnError(
+                400,
+                'Valid start time is required.'
+            );
+
+            return;
+        }
+
+
+        if (
+            isNaN(endMinutes) ||
+            endMinutes < 0 ||
+            endMinutes > 1439
+        ) {
+
+            returnError(
+                400,
+                'Valid end time is required.'
+            );
+
+            return;
+        }
+
+
+        // Phase 1:
+        // Same-day shifts only
+        if (
+            endMinutes <= startMinutes
+        ) {
+
+            returnError(
+                400,
+                'End time must be later than start time.'
+            );
+
+            return;
+        }
+
+
+        if (
+            graceMinutes < 0 ||
+            graceMinutes > 180
+        ) {
+
+            returnError(
+                400,
+                'Grace minutes must be between 0 and 180.'
+            );
+
+            return;
+        }
+
+
+        if (
+            halfDayMinutes <= 0 ||
+            fullDayMinutes <= 0
+        ) {
+
+            returnError(
+                400,
+                'Half-day and full-day minutes must be greater than zero.'
+            );
+
+            return;
+        }
+
+
+        if (
+            halfDayMinutes >= fullDayMinutes
+        ) {
+
+            returnError(
+                400,
+                'Half-day minutes must be less than full-day minutes.'
+            );
+
+            return;
+        }
+
+
+        var shiftDuration =
+            endMinutes -
+            startMinutes;
+
+
+        if (
+            fullDayMinutes >
+            shiftDuration
+        ) {
+
+            returnError(
+                400,
+                'Full-day minutes cannot exceed the shift duration.'
+            );
+
+            return;
+        }
+
+
+        // =====================================================
+        // DUPLICATE SHIFT NAME CHECK
+        // =====================================================
+        var duplicate =
+            new GlideRecord(
+                'x_1760545_smarta_0_shift'
+            );
+
+
+        duplicate.addQuery(
+            'shift_name',
+            shiftName
+        );
+
+
+        duplicate.addQuery(
+            'active',
+            true
+        );
+
+
+        duplicate.setLimit(1);
+
+        duplicate.query();
+
+
+        if (
+            duplicate.next()
+        ) {
+
+            returnError(
+                409,
+                'An active shift with this name already exists.'
+            );
+
+            return;
+        }
+
+
+        // =====================================================
+        // CREATE SHIFT
+        // =====================================================
+        var shift =
+            new GlideRecord(
+                'x_1760545_smarta_0_shift'
+            );
+
+
+        shift.initialize();
+
+
+        shift.setValue(
+            'shift_name',
+            shiftName
+        );
+
+
+        shift.setValue(
+            'start_minutes',
+            startMinutes
+        );
+
+
+        shift.setValue(
+            'end_minutes',
+            endMinutes
+        );
+
+
+        shift.setValue(
+            'grace_minutes',
+            graceMinutes
+        );
+
+
+        shift.setValue(
+            'full_day_minutes',
+            fullDayMinutes
+        );
+
+
+        shift.setValue(
+            'half_day_minutes',
+            halfDayMinutes
+        );
+
+
+        shift.setValue(
+            'active',
+            active
+        );
+
+
+        shift.setValue(
+            'description',
+            description
+        );
+
+
+        var shiftId =
+            shift.insert();
+
+
+        if (!shiftId) {
+
+            returnError(
+                500,
+                'Unable to create shift.'
+            );
+
+            return;
+        }
+
+
+        // Reload so auto-number/display fields are available
+        shift.get(
+            shiftId
+        );
+
+
+        // =====================================================
+        // SUCCESS
+        // =====================================================
+        response.setStatus(201);
+
+        response.setBody({
+
+            success: true,
+
+            message:
+                'Shift created successfully.',
+
+            shift: {
+
+                shift_id:
+                    shift.getUniqueValue(),
+
+                number:
+                    shift.getValue(
+                        'number'
+                    ) || '',
+
+                shift_name:
+                    shift.getValue(
+                        'shift_name'
+                    ),
+
+                start_minutes:
+                    startMinutes,
+
+                end_minutes:
+                    endMinutes,
+
+                start_time:
+                    minutesToTime(
+                        startMinutes
+                    ),
+
+                end_time:
+                    minutesToTime(
+                        endMinutes
+                    ),
+
+                grace_minutes:
+                    graceMinutes,
+
+                full_day_minutes:
+                    fullDayMinutes,
+
+                half_day_minutes:
+                    halfDayMinutes,
+
+                active:
+                    active,
+
+                description:
+                    description
+
+            }
+
+        });
+
+
+        // =====================================================
+        // HELPERS
+        // =====================================================
+        function returnError(
+            status,
+            message
+        ) {
+
+            response.setStatus(
+                status
+            );
+
+            response.setBody({
+                success: false,
+                message: message
+            });
+
+        }
+
+
+        function minutesToTime(
+            totalMinutes
+        ) {
+
+            var hour =
+                Math.floor(
+                    totalMinutes / 60
+                );
+
+
+            var minute =
+                totalMinutes % 60;
+
+
+            var suffix =
+                hour >= 12
+                    ? 'PM'
+                    : 'AM';
+
+
+            var displayHour =
+                hour % 12;
+
+
+            if (
+                displayHour === 0
+            ) {
+
+                displayHour = 12;
+
+            }
+
+
+            var displayMinute =
+                minute < 10
+                    ? '0' + minute
+                    : String(minute);
+
+
+            return (
+                displayHour +
+                ':' +
+                displayMinute +
+                ' ' +
+                suffix
+            );
+
+        }
+
+
+    }
+    catch (e) {
+
+        gs.error(
+            '[SmartAttend Create Shift] ' +
+            e.message
+        );
+
+
+        response.setStatus(500);
+
+        response.setBody({
+
+            success: false,
+
+            message:
+                'Unable to create shift.'
+
+        });
+
+    }
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1760545_smarta_0/smartattend_api/create-shift</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/create-shift</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <support_trailing_slash>false</support_trailing_slash>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-13 06:27:33</sys_created_on>
+        <sys_id>4254c55f477b8bd07ace13ff016d439d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Create Shift</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_ws_operation_4254c55f477b8bd07ace13ff016d439d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-13 06:27:33</sys_updated_on>
+        <web_service_definition display_value="SmartAttend API">6710d7e147bb4f907ace13ff016d431e</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

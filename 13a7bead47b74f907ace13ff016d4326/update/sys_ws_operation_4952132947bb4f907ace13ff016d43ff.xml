@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl/>
+        <http_method>POST</http_method>
+        <name>Generate Attendance QR</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+
+    var userId = gs.getUserID();
+
+    if (!userId) {
+        response.setStatus(401);
+        response.setBody({
+            success: false,
+            message: 'Authentication required'
+        });
+        return;
+    }
+
+    // --------------------------------------------------
+    // 1. Cancel any previous ACTIVE QR for this employee
+    // --------------------------------------------------
+    var oldQr = new GlideRecord('x_1760545_smarta_0_qr_token');
+    oldQr.addQuery('employee', userId);
+    oldQr.addQuery('status', 'active');
+    oldQr.query();
+
+    while (oldQr.next()) {
+        oldQr.setValue('status', 'cancelled');
+        oldQr.update();
+    }
+
+    // --------------------------------------------------
+    // 2. Generate secure random one-time token
+    // --------------------------------------------------
+    var token = GlideSecureRandomUtil.getSecureRandomString(32);
+
+    // --------------------------------------------------
+    // 3. Set creation + expiry time
+    // --------------------------------------------------
+    var createdAt = new GlideDateTime();
+
+    var expiresAt = new GlideDateTime(createdAt);
+    expiresAt.addSeconds(20);
+
+    // --------------------------------------------------
+    // 4. Create QR Token record
+    // --------------------------------------------------
+    var qr = new GlideRecord('x_1760545_smarta_0_qr_token');
+    qr.initialize();
+
+    qr.setValue('token', token);
+    qr.setValue('employee', userId);
+    qr.setValue('status', 'active');
+    qr.setValue('created_at', createdAt.getValue());
+    qr.setValue('expires_at', expiresAt.getValue());
+
+    var qrSysId = qr.insert();
+
+    if (!qrSysId) {
+        response.setStatus(500);
+        response.setBody({
+            success: false,
+            message: 'Unable to create attendance QR'
+        });
+        return;
+    }
+
+    // --------------------------------------------------
+    // 5. Return token to employee application
+    // --------------------------------------------------
+    response.setStatus(201);
+
+    response.setBody({
+        success: true,
+        token: token,
+        expires_in: 20,
+        expires_at: expiresAt.getValue()
+    });
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1760545_smarta_0/smartattend_api/generate-qr</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/generate-qr</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <support_trailing_slash>false</support_trailing_slash>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-08 06:18:30</sys_created_on>
+        <sys_id>4952132947bb4f907ace13ff016d43ff</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Generate Attendance QR</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_ws_operation_4952132947bb4f907ace13ff016d43ff</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-13 09:08:55</sys_updated_on>
+        <web_service_definition display_value="SmartAttend API">6710d7e147bb4f907ace13ff016d431e</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

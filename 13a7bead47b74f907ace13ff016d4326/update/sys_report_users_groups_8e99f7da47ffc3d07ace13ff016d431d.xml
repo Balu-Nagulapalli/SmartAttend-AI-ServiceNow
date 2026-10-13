@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_report_users_groups">
+    <sys_report_users_groups action="INSERT_OR_UPDATE">
+        <group_id/>
+        <report_id display_value="SmartAttend - Late Employees">097b7e9e47f7c3d07ace13ff016d434a</report_id>
+        <sys_class_name>sys_report_users_groups</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-10 17:04:34</sys_created_on>
+        <sys_id>8e99f7da47ffc3d07ace13ff016d431d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>097b7e9e47f7c3d07ace13ff016d434a</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_report_users_groups_8e99f7da47ffc3d07ace13ff016d431d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-10 17:04:34</sys_updated_on>
+        <user_id display_value="Test Manager">a2aca84a477703d07ace13ff016d4379</user_id>
+    </sys_report_users_groups>
+</record_update>

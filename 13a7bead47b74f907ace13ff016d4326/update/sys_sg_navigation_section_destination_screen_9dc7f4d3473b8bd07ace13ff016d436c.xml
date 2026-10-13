@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_navigation_section_destination_screen">
+    <sys_sg_navigation_section_destination_screen action="INSERT_OR_UPDATE">
+        <applet display_value="Attendance Dashboard">0837f093473b8bd07ace13ff016d430c</applet>
+        <background_color/>
+        <background_color_variable/>
+        <foreground_color/>
+        <foreground_color_variable/>
+        <icon display_value="Todays Attendance">0da2f37247ffc7d07ace13ff016d438b</icon>
+        <image/>
+        <name>Attendance Dashboard</name>
+        <sys_class_name>sys_sg_navigation_section_destination_screen</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-13 05:31:40</sys_created_on>
+        <sys_id>9dc7f4d3473b8bd07ace13ff016d436c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Attendance Dashboard</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_sg_navigation_section_destination_screen_9dc7f4d3473b8bd07ace13ff016d436c</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-13 05:31:40</sys_updated_on>
+    </sys_sg_navigation_section_destination_screen>
+</record_update>

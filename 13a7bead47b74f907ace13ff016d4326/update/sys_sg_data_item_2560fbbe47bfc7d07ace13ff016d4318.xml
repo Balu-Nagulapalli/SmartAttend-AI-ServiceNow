@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_data_item">
+    <sys_sg_data_item action="INSERT_OR_UPDATE">
+        <condition_type>script</condition_type>
+        <description/>
+        <group_by/>
+        <instance_relative_url_qc/>
+        <name>Today's Attendance Data</name>
+        <offline_query_condition/>
+        <offline_query_condition_script/>
+        <query_condition/>
+        <query_condition_script><![CDATA[(function getQueryString(input) {
+
+    var now = new GlideDateTime();
+
+    var indiaNow = new GlideDateTime(now);
+    indiaNow.addSeconds(19800);
+
+    var today = indiaNow.getValue().substring(0, 10);
+
+    return 'employee=' +
+        gs.getUserID() +
+        '^attendance_date=' +
+        today;
+
+})(input);]]></query_condition_script>
+        <sys_class_name>sys_sg_data_item</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-12 05:41:21</sys_created_on>
+        <sys_id>2560fbbe47bfc7d07ace13ff016d4318</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Today's Attendance Data</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_sg_data_item_2560fbbe47bfc7d07ace13ff016d4318</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-12 06:11:19</sys_updated_on>
+        <table>x_1760545_smarta_0_attendance</table>
+    </sys_sg_data_item>
+    <sys_translated_text action="delete_multiple" query="documentkey=2560fbbe47bfc7d07ace13ff016d4318"/>
+</record_update>

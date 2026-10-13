@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_write_back_action_item">
+    <sys_sg_write_back_action_item action="INSERT_OR_UPDATE">
+        <attach_in_activity_stream/>
+        <description/>
+        <execution_script><![CDATA[(function WriteBackAction(parm_input, parm_variable, actionResult) {
+
+    try {
+
+        var employeeId = gs.getUserID();
+
+        var attendanceId =
+            parm_input['attendance_record'];
+
+        var requestedStatus =
+            parm_input['requested_status'];
+
+        var requestedCheckIn =
+            parm_input['requested_check_in'];
+
+        var requestedCheckOut =
+            parm_input['requested_check_out'];
+
+        var reason =
+            parm_input['reason'];
+
+
+        // =====================================================
+        // REQUIRED INPUT VALIDATION
+        // =====================================================
+        if (!attendanceId) {
+
+            gs.addErrorMessage(
+                'Attendance record is required.'
+            );
+
+            return;
+        }
+
+
+        if (!requestedStatus) {
+
+            gs.addErrorMessage(
+                'Requested status is required.'
+            );
+
+            return;
+        }
+
+
+        if (!reason) {
+
+            gs.addErrorMessage(
+                'Reason is required.'
+            );
+
+            return;
+        }
+
+
+        // =====================================================
+        // VALIDATE ATTENDANCE
+        // =====================================================
+        var attendance =
+            new GlideRecord(
+                'x_1760545_smarta_0_attendance'
+            );
+
+
+        if (!attendance.get(attendanceId)) {
+
+            gs.addErrorMessage(
+                'Attendance record was not found.'
+            );
+
+            return;
+        }
+
+
+        if (
+            attendance.getValue('employee') !==
+            employeeId
+        ) {
+
+            gs.addErrorMessage(
+                'You cannot request a correction for another employee.'
+            );
+
+            return;
+        }
+
+
+        // =====================================================
+        // GET ACTIVE EMPLOYEE PROFILE
+        // =====================================================
+        var profile =
+            new GlideRecord(
+                'x_1760545_smarta_0_employee_profile'
+            );
+
+
+        profile.addQuery(
+            'employee',
+            employeeId
+        );
+
+
+        profile.addQuery(
+            'active',
+            true
+        );
+
+
+        profile.setLimit(1);
+
+        profile.query();
+
+
+        if (!profile.next()) {
+
+            gs.addErrorMessage(
+                'Active employee profile was not found.'
+            );
+
+            return;
+        }
+
+
+        var managerId =
+            profile.getValue(
+                'manager'
+            );
+
+
+        if (!managerId) {
+
+            gs.addErrorMessage(
+                'Manager is not configured in your SmartAttend employee profile.'
+            );
+
+            return;
+        }
+
+
+        // =====================================================
+        // CREATE CORRECTION REQUEST
+        // =====================================================
+        var requestGR =
+            new GlideRecord(
+                'x_1760545_smarta_0_attendance_correction_request'
+            );
+
+
+        requestGR.initialize();
+
+
+        requestGR.setValue(
+            'employee',
+            employeeId
+        );
+
+
+        requestGR.setValue(
+            'attendance',
+            attendance.getUniqueValue()
+        );
+
+
+        requestGR.setValue(
+            'attendance_date',
+            attendance.getValue(
+                'attendance_date'
+            )
+        );
+
+
+        requestGR.setValue(
+            'current_status',
+            attendance.getValue(
+                'status'
+            )
+        );
+
+
+        requestGR.setValue(
+            'requested_status',
+            requestedStatus
+        );
+
+
+        if (requestedCheckIn) {
+
+            requestGR.setValue(
+                'requested_check_in',
+                requestedCheckIn
+            );
+
+        }
+
+
+        if (requestedCheckOut) {
+
+            requestGR.setValue(
+                'requested_check_out',
+                requestedCheckOut
+            );
+
+        }
+
+
+        requestGR.setValue(
+            'reason',
+            reason
+        );
+
+
+        requestGR.setValue(
+            'manager',
+            managerId
+        );
+
+
+        requestGR.setValue(
+            'state',
+            'submitted'
+        );
+
+
+        requestGR.setValue(
+            'approval',
+            'requested'
+        );
+
+
+        var requestId =
+            requestGR.insert();
+
+
+        if (!requestId) {
+
+            gs.addErrorMessage(
+                'Unable to create attendance correction request.'
+            );
+
+            return;
+        }
+
+
+        // =====================================================
+        // START APPROVAL FLOW EXPLICITLY
+        // =====================================================
+
+        /*
+         * SmartAttend - Attendance Correction Approval
+         *
+         * Flow sys_id:
+         * 55188582477b03d07ace13ff016d4324
+         */
+        var flowSysId =
+            '55188582477b03d07ace13ff016d4324';
+
+
+        var flowRecord =
+            new GlideRecord(
+                'x_1760545_smarta_0_attendance_correction_request'
+            );
+
+
+        if (!flowRecord.get(requestId)) {
+
+            gs.error(
+                '[SmartAttend Mobile] Created request could not be reloaded: ' +
+                requestId
+            );
+
+            gs.addErrorMessage(
+                'Correction request was created, but approval processing could not start.'
+            );
+
+            return;
+        }
+
+
+        // -----------------------------------------------------
+        // Resolve scope + internal flow name from sys_hub_flow
+        // -----------------------------------------------------
+        var hubFlow =
+            new GlideRecord(
+                'sys_hub_flow'
+            );
+
+
+        if (!hubFlow.get(flowSysId)) {
+
+            gs.error(
+                '[SmartAttend Mobile] Flow definition not found. sys_id=' +
+                flowSysId
+            );
+
+            gs.addErrorMessage(
+                'Correction request was created, but the approval flow could not be found.'
+            );
+
+            return;
+        }
+
+
+        var internalName =
+            hubFlow.getValue(
+                'internal_name'
+            );
+
+
+        var scopeName =
+            hubFlow.getElement(
+                'sys_scope.scope'
+            ).toString();
+
+
+        var scopedFlowName =
+            scopeName +
+            '.' +
+            internalName;
+
+
+        gs.info(
+            '[SmartAttend Mobile] Starting flow: ' +
+            scopedFlowName +
+            ' for request=' +
+            requestId
+        );
+
+
+        // -----------------------------------------------------
+        // Inputs expected by a Record-triggered Flow
+        // -----------------------------------------------------
+        var flowInputs = {};
+
+
+        flowInputs['current'] =
+            flowRecord;
+
+
+        flowInputs['table_name'] =
+            flowRecord.getTableName();
+
+
+        // -----------------------------------------------------
+        // Run asynchronously because Ask For Approval waits
+        // -----------------------------------------------------
+        var flowResult =
+            sn_fd.FlowAPI
+                .getRunner()
+                .flow(
+                    scopedFlowName
+                )
+                .inBackground()
+                .withInputs(
+                    flowInputs
+                )
+                .run();
+
+
+        gs.info(
+            '[SmartAttend Mobile] Flow started. Context=' +
+            flowResult.getContextId()
+        );
+
+
+        // =====================================================
+        // SUCCESS
+        // =====================================================
+        gs.addInfoMessage(
+            'Attendance correction request submitted successfully.'
+        );
+
+
+    }
+    catch (e) {
+
+        gs.error(
+            '[SmartAttend Mobile] Submit correction exception: ' +
+            e.message
+        );
+
+
+        gs.addErrorMessage(
+            'Unable to complete the attendance correction request.'
+        );
+
+    }
+
+
+})(parm_input, parm_variable, actionResult);]]></execution_script>
+        <name>SmartAttend - Submit Correction Request</name>
+        <parameter_screen display_value="Attendance Correction Request">1edb9862473707d07ace13ff016d4318</parameter_screen>
+        <query_condition/>
+        <sys_class_name>sys_sg_write_back_action_item</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-11 07:24:44</sys_created_on>
+        <sys_id>1e7e7e66473b47d07ace13ff016d4318</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>SmartAttend - Submit Correction Request</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_sg_write_back_action_item_1e7e7e66473b47d07ace13ff016d4318</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 17:51:41</sys_updated_on>
+        <table>x_1760545_smarta_0_attendance_correction_request</table>
+        <template/>
+        <type>script</type>
+        <use_current_record_as_condition>true</use_current_record_as_condition>
+        <use_fields_for_ref_lookup>true</use_fields_for_ref_lookup>
+    </sys_sg_write_back_action_item>
+    <sys_translated_text action="delete_multiple" query="documentkey=1e7e7e66473b47d07ace13ff016d4318"/>
+</record_update>

@@ -1,0 +1,1720 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[window.addEventListener(
+    'load',
+    function() {
+
+        loadAttendanceInsights();
+
+    }
+);
+
+
+// =============================================================
+// LOAD VERIFIED MANAGER INSIGHTS
+// =============================================================
+function loadAttendanceInsights() {
+
+    fetch(
+        '/api/x_1760545_smarta_0/smartattend_api/manager-insights',
+        {
+            method: 'GET',
+
+            credentials: 'same-origin',
+
+            headers: buildHeaders(false)
+        }
+    )
+
+    .then(function(response) {
+
+        return response.text()
+            .then(function(text) {
+
+                var data = null;
+
+                try {
+
+                    data =
+                        JSON.parse(text);
+
+                }
+                catch (e) {
+
+                    throw new Error(
+                        'Invalid manager insight response.'
+                    );
+
+                }
+
+
+                return {
+                    ok: response.ok,
+                    status: response.status,
+                    data: data
+                };
+
+            });
+
+    })
+
+    .then(function(result) {
+
+        if (
+            !result.ok ||
+            !result.data ||
+            !result.data.result ||
+            !result.data.result.success
+        ) {
+
+            throw new Error(
+                'Unable to load attendance insights.'
+            );
+
+        }
+
+
+        var insightData =
+            result.data.result;
+
+
+        // Show trusted statistics first
+        renderInsights(
+            insightData
+        );
+
+
+        // Then request Gemini recommendation
+        loadAIManagerSummary(
+            insightData
+        );
+
+    })
+
+    .catch(function(error) {
+
+        showPageError(
+            error.message ||
+            'Unable to load attendance insights.'
+        );
+
+    });
+
+}
+
+
+// =============================================================
+// HEADERS
+// =============================================================
+function buildHeaders(
+    includeJson
+) {
+
+    var headers = {};
+
+
+    if (includeJson) {
+
+        headers[
+            'Content-Type'
+        ] =
+            'application/json';
+
+    }
+
+
+    // g_ck may not always be exposed by every mobile web view.
+    // credentials:same-origin still carries the logged-in session.
+    if (
+        typeof window.g_ck !==
+            'undefined' &&
+        window.g_ck
+    ) {
+
+        headers[
+            'X-UserToken'
+        ] =
+            window.g_ck;
+
+    }
+
+
+    return headers;
+
+}
+
+
+// =============================================================
+// RENDER VERIFIED ANALYTICS
+// =============================================================
+function renderInsights(data) {
+
+    var loadingBox =
+        document.getElementById(
+            'loadingBox'
+        );
+
+
+    if (loadingBox) {
+
+        loadingBox.style.display =
+            'none';
+
+    }
+
+
+    setDisplay(
+        'managerBox',
+        'block'
+    );
+
+
+    setDisplay(
+        'summaryGrid',
+        'grid'
+    );
+
+
+    setDisplay(
+        'aiSummaryBox',
+        'block'
+    );
+
+
+    setDisplay(
+        'employeeTitle',
+        'block'
+    );
+
+
+    // ---------------------------------------------------------
+    // MANAGER
+    // ---------------------------------------------------------
+    setText(
+        'managerName',
+        data.manager ||
+        'Manager'
+    );
+
+
+    var period =
+        data.period || {};
+
+
+    setText(
+        'periodText',
+
+        'Last ' +
+        (period.days || 7) +
+        ' days • ' +
+        formatDate(
+            period.from
+        ) +
+        ' to ' +
+        formatDate(
+            period.to
+        )
+    );
+
+
+    // ---------------------------------------------------------
+    // SUMMARY
+    // ---------------------------------------------------------
+    var summary =
+        data.summary || {};
+
+
+    setText(
+        'totalEmployees',
+        summary.total_employees || 0
+    );
+
+
+    setText(
+        'attendanceRecords',
+        summary.total_attendance_records || 0
+    );
+
+
+    setText(
+        'lateRecords',
+        summary.late_records || 0
+    );
+
+
+    setText(
+        'insufficientRecords',
+        summary.insufficient_hours_records || 0
+    );
+
+
+    setText(
+        'averageMinutes',
+        summary.average_working_minutes || 0
+    );
+
+
+    // ---------------------------------------------------------
+    // SAFE FALLBACK FIRST
+    // ---------------------------------------------------------
+    setAISummaryTitle(
+        '✨ Manager Insight Summary'
+    );
+
+
+    setAISummaryText(
+        buildManagerSummary(
+            data
+        )
+    );
+
+
+    setAISummaryMeta(
+        'Verified SmartAttend attendance statistics'
+    );
+
+
+    // ---------------------------------------------------------
+    // EMPLOYEES
+    // ---------------------------------------------------------
+    renderEmployees(
+        data.employees || []
+    );
+
+}
+
+
+// =============================================================
+// GEMINI AI MANAGER SUMMARY
+// =============================================================
+function loadAIManagerSummary(data) {
+
+    setAISummaryTitle(
+        '✨ AI Manager Summary'
+    );
+
+
+    setAISummaryText(
+        'Generating AI attendance recommendation...'
+    );
+
+
+    setAISummaryMeta(
+        'Gemini is analysing verified SmartAttend statistics'
+    );
+
+
+    fetch(
+        '/api/x_1760545_smarta_0/smartattend_api/ai-summary',
+        {
+            method: 'POST',
+
+            credentials:
+                'same-origin',
+
+            headers:
+                buildHeaders(true),
+
+            body:
+                JSON.stringify({
+
+                    summary:
+                        data.summary || {},
+
+                    period:
+                        data.period || {},
+
+                    employees:
+                        data.employees || []
+
+                })
+        }
+    )
+
+    .then(function(response) {
+
+        return response.text()
+            .then(function(text) {
+
+                var json = null;
+
+
+                try {
+
+                    json =
+                        JSON.parse(text);
+
+                }
+                catch (e) {
+
+                    return {
+
+                        ok: false,
+
+                        status:
+                            response.status,
+
+                        parse_error:
+                            true,
+
+                        raw:
+                            text
+
+                    };
+
+                }
+
+
+                return {
+
+                    ok:
+                        response.ok,
+
+                    status:
+                        response.status,
+
+                    data:
+                        json
+
+                };
+
+            });
+
+    })
+
+    .then(function(result) {
+
+        // -----------------------------------------------------
+        // INVALID RESPONSE
+        // -----------------------------------------------------
+        if (
+            result.parse_error
+        ) {
+
+            console.warn(
+                'SmartAttend AI invalid response:',
+                result.raw
+            );
+
+
+            showFallbackSummary(
+                data,
+                'AI response could not be parsed'
+            );
+
+            return;
+        }
+
+
+        var apiResult =
+            result.data &&
+            result.data.result
+                ? result.data.result
+                : null;
+
+
+        // -----------------------------------------------------
+        // GEMINI SUCCESS
+        // -----------------------------------------------------
+        if (
+            result.ok &&
+            apiResult &&
+            apiResult.success &&
+            apiResult.ai_text
+        ) {
+
+            setAISummaryTitle(
+                '✨ AI Manager Summary'
+            );
+
+
+            setAISummaryText(
+                cleanAIText(
+                    apiResult.ai_text
+                )
+            );
+
+
+            setAISummaryMeta(
+                'Generated by ' +
+                (
+                    apiResult.provider ||
+                    'Gemini'
+                ) +
+                ' • ' +
+                (
+                    apiResult.model ||
+                    'gemini-3.6-flash'
+                )
+            );
+
+
+            return;
+
+        }
+
+
+        // -----------------------------------------------------
+        // AI PROVIDER FAILURE
+        // -----------------------------------------------------
+        console.warn(
+            'SmartAttend AI fallback:',
+            apiResult
+        );
+
+
+        var fallbackReason =
+            'AI temporarily unavailable';
+
+
+        if (
+            apiResult &&
+            apiResult.provider_status
+        ) {
+
+            fallbackReason +=
+                ' • HTTP ' +
+                apiResult.provider_status;
+
+        }
+
+
+        showFallbackSummary(
+            data,
+            fallbackReason
+        );
+
+    })
+
+    .catch(function(error) {
+
+        console.warn(
+            'Gemini AI request failed:',
+            error
+        );
+
+
+        showFallbackSummary(
+            data,
+            'AI request unavailable'
+        );
+
+    });
+
+}
+
+
+// =============================================================
+// CLEAN AI RESPONSE
+// =============================================================
+function cleanAIText(text) {
+
+    if (!text) {
+
+        return '';
+
+    }
+
+
+    var cleaned =
+        String(text);
+
+
+    // Remove common markdown formatting.
+    cleaned =
+        cleaned.replace(
+            /\*\*/g,
+            ''
+        );
+
+
+    cleaned =
+        cleaned.replace(
+            /^###\s*/gm,
+            ''
+        );
+
+
+    cleaned =
+        cleaned.replace(
+            /^##\s*/gm,
+            ''
+        );
+
+
+    cleaned =
+        cleaned.replace(
+            /^#\s*/gm,
+            ''
+        );
+
+
+    cleaned =
+        cleaned.replace(
+            /^---$/gm,
+            ''
+        );
+
+
+    return cleaned.trim();
+
+}
+
+
+// =============================================================
+// RULE-BASED FALLBACK
+// =============================================================
+function showFallbackSummary(
+    data,
+    reason
+) {
+
+    setAISummaryTitle(
+        '✨ Manager Insight Summary'
+    );
+
+
+    setAISummaryText(
+        buildManagerSummary(
+            data
+        )
+    );
+
+
+    setAISummaryMeta(
+        reason ||
+        'Verified SmartAttend attendance statistics'
+    );
+
+}
+
+
+// =============================================================
+// SUMMARY TITLE
+// =============================================================
+function setAISummaryTitle(text) {
+
+    setText(
+        'aiSummaryTitle',
+        text
+    );
+
+}
+
+
+// =============================================================
+// SUMMARY TEXT
+// =============================================================
+function setAISummaryText(text) {
+
+    setText(
+        'aiSummaryText',
+        text || ''
+    );
+
+}
+
+
+// =============================================================
+// SUMMARY META
+// =============================================================
+function setAISummaryMeta(text) {
+
+    setText(
+        'aiSummaryMeta',
+        text || ''
+    );
+
+}
+
+
+// =============================================================
+// VERIFIED RULE-BASED SUMMARY
+// =============================================================
+function buildManagerSummary(data) {
+
+    var s =
+        data.summary || {};
+
+
+    var period =
+        data.period || {};
+
+
+    var messages = [];
+
+
+    messages.push(
+        'The team has ' +
+        Number(
+            s.total_employees || 0
+        ) +
+        ' active employees and ' +
+        Number(
+            s.total_attendance_records || 0
+        ) +
+        ' attendance records during the last ' +
+        Number(
+            period.days || 7
+        ) +
+        ' days.'
+    );
+
+
+    if (
+        Number(
+            s.late_records || 0
+        ) > 0
+    ) {
+
+        messages.push(
+            Number(
+                s.late_records
+            ) +
+            ' late attendance record(s) were detected.'
+        );
+
+    }
+
+
+    if (
+        Number(
+            s.insufficient_hours_records || 0
+        ) > 0
+    ) {
+
+        messages.push(
+            Number(
+                s.insufficient_hours_records
+            ) +
+            ' record(s) have insufficient working hours.'
+        );
+
+    }
+
+
+    if (
+        Number(
+            s.total_late_minutes || 0
+        ) > 0
+    ) {
+
+        messages.push(
+            'The team accumulated ' +
+            Number(
+                s.total_late_minutes
+            ) +
+            ' late minutes.'
+        );
+
+    }
+
+
+    if (
+        Number(
+            s.average_working_minutes || 0
+        ) > 0
+    ) {
+
+        messages.push(
+            'Average recorded working time is ' +
+            Number(
+                s.average_working_minutes
+            ) +
+            ' minutes.'
+        );
+
+    }
+
+
+    if (
+        Number(
+            s.late_records || 0
+        ) === 0 &&
+        Number(
+            s.insufficient_hours_records || 0
+        ) === 0
+    ) {
+
+        messages.push(
+            'No significant attendance issues were detected.'
+        );
+
+    }
+
+
+    return messages.join(
+        ' '
+    );
+
+}
+
+
+// =============================================================
+// EMPLOYEE CARDS
+// =============================================================
+function renderEmployees(
+    employees
+) {
+
+    var container =
+        document.getElementById(
+            'employeeContainer'
+        );
+
+
+    if (!container) {
+
+        return;
+
+    }
+
+
+    if (
+        !employees ||
+        employees.length === 0
+    ) {
+
+        container.innerHTML =
+            '<div class="employee-card">' +
+            'No employees are assigned to this manager.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    var html = '';
+
+
+    for (
+        var i = 0;
+        i < employees.length;
+        i++
+    ) {
+
+        html +=
+            buildEmployeeCard(
+                employees[i]
+            );
+
+    }
+
+
+    container.innerHTML =
+        html;
+
+}
+
+
+// =============================================================
+// BUILD EMPLOYEE CARD
+// =============================================================
+function buildEmployeeCard(
+    employee
+) {
+
+    var stats =
+        employee.statistics || {};
+
+
+    var severity =
+        getSeverity(
+            stats
+        );
+
+
+    var badgeClass =
+        'badge-good';
+
+
+    if (
+        severity ===
+        'Needs Attention'
+    ) {
+
+        badgeClass =
+            'badge-high';
+
+    }
+    else if (
+        severity ===
+        'Monitor'
+    ) {
+
+        badgeClass =
+            'badge-medium';
+
+    }
+
+
+    var code =
+        employee.employee_code ||
+        'No Employee Code';
+
+
+    var department =
+        employee.department ||
+        'No Department';
+
+
+    var shift =
+        employee.shift ||
+        '-';
+
+
+    return (
+
+        '<div class="employee-card">' +
+
+            '<div class="employee-header">' +
+
+                '<div>' +
+
+                    '<div class="employee-name">' +
+
+                        escapeHtml(
+                            employee.employee ||
+                            '-'
+                        ) +
+
+                    '</div>' +
+
+                    '<div class="employee-meta">' +
+
+                        escapeHtml(code) +
+
+                        ' • ' +
+
+                        escapeHtml(
+                            department
+                        ) +
+
+                        ' • ' +
+
+                        escapeHtml(
+                            shift
+                        ) +
+
+                    '</div>' +
+
+                '</div>' +
+
+
+                '<div class="badge ' +
+                    badgeClass +
+                '">' +
+
+                    escapeHtml(
+                        severity
+                    ) +
+
+                '</div>' +
+
+            '</div>' +
+
+
+            '<div class="stats-grid">' +
+
+                buildStat(
+                    'Records',
+                    stats.attendance_records || 0
+                ) +
+
+                buildStat(
+                    'Present',
+                    stats.present || 0
+                ) +
+
+                buildStat(
+                    'Late',
+                    stats.late || 0
+                ) +
+
+                buildStat(
+                    'Avg Work',
+                    (
+                        stats.average_working_minutes ||
+                        0
+                    ) +
+                    ' min'
+                ) +
+
+                buildStat(
+                    'Late Minutes',
+                    stats.total_late_minutes || 0
+                ) +
+
+            '</div>' +
+
+
+            '<div class="insight-list">' +
+
+                buildEmployeeInsights(
+                    stats
+                ) +
+
+            '</div>' +
+
+        '</div>'
+
+    );
+
+}
+
+
+// =============================================================
+// EMPLOYEE RULE INSIGHTS
+// =============================================================
+function buildEmployeeInsights(
+    stats
+) {
+
+    var insights =
+        stats.insights || [];
+
+
+    if (
+        insights.length === 0
+    ) {
+
+        return (
+
+            '<div class="insight-item healthy-insight">' +
+
+                'No major attendance risk detected.' +
+
+            '</div>'
+
+        );
+
+    }
+
+
+    var html = '';
+
+
+    for (
+        var i = 0;
+        i < insights.length;
+        i++
+    ) {
+
+        html +=
+
+            '<div class="insight-item">' +
+
+                escapeHtml(
+                    insights[i]
+                ) +
+
+            '</div>';
+
+    }
+
+
+    return html;
+
+}
+
+
+// =============================================================
+// SEVERITY
+// =============================================================
+function getSeverity(
+    stats
+) {
+
+    var late =
+        Number(
+            stats.late || 0
+        );
+
+
+    var insufficient =
+        Number(
+            stats.insufficient_hours || 0
+        );
+
+
+    var lateMinutes =
+        Number(
+            stats.total_late_minutes || 0
+        );
+
+
+    if (
+        late >= 2 ||
+        insufficient >= 2 ||
+        lateMinutes >= 120
+    ) {
+
+        return 'Needs Attention';
+
+    }
+
+
+    if (
+        late > 0 ||
+        insufficient > 0 ||
+        lateMinutes > 0
+    ) {
+
+        return 'Monitor';
+
+    }
+
+
+    return 'Healthy';
+
+}
+
+
+// =============================================================
+// STAT BOX
+// =============================================================
+function buildStat(
+    label,
+    value
+) {
+
+    return (
+
+        '<div class="stat-box">' +
+
+            '<div class="stat-label">' +
+
+                escapeHtml(
+                    label
+                ) +
+
+            '</div>' +
+
+            '<div class="stat-value">' +
+
+                escapeHtml(
+                    String(value)
+                ) +
+
+            '</div>' +
+
+        '</div>'
+
+    );
+
+}
+
+
+// =============================================================
+// FORMAT DATE
+// =============================================================
+function formatDate(
+    value
+) {
+
+    if (!value) {
+
+        return '-';
+
+    }
+
+
+    var parts =
+        value.split('-');
+
+
+    if (
+        parts.length !== 3
+    ) {
+
+        return value;
+
+    }
+
+
+    return (
+        parts[2] +
+        '-' +
+        parts[1] +
+        '-' +
+        parts[0]
+    );
+
+}
+
+
+// =============================================================
+// DOM HELPERS
+// =============================================================
+function setText(
+    id,
+    value
+) {
+
+    var element =
+        document.getElementById(
+            id
+        );
+
+
+    if (element) {
+
+        element.textContent =
+            value === null ||
+            value === undefined
+                ? ''
+                : String(value);
+
+    }
+
+}
+
+
+function setDisplay(
+    id,
+    value
+) {
+
+    var element =
+        document.getElementById(
+            id
+        );
+
+
+    if (element) {
+
+        element.style.display =
+            value;
+
+    }
+
+}
+
+
+// =============================================================
+// PAGE ERROR
+// =============================================================
+function showPageError(
+    message
+) {
+
+    var loadingBox =
+        document.getElementById(
+            'loadingBox'
+        );
+
+
+    if (!loadingBox) {
+
+        return;
+
+    }
+
+
+    loadingBox.style.display =
+        'block';
+
+
+    loadingBox.className =
+        'error';
+
+
+    loadingBox.textContent =
+        message;
+
+}
+
+
+// =============================================================
+// HTML ESCAPE
+// =============================================================
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value === null ||
+        value === undefined
+            ? ''
+            : value
+    )
+
+    .replace(
+        /&/g,
+        '&amp;'
+    )
+
+    .replace(
+        /</g,
+        '&lt;'
+    )
+
+    .replace(
+        />/g,
+        '&gt;'
+    )
+
+    .replace(
+        /"/g,
+        '&quot;'
+    )
+
+    .replace(
+        /'/g,
+        '&#039;'
+    );
+
+}]]></client_script>
+        <description>AI-powered attendance insights for managers</description>
+        <direct>false</direct>
+        <endpoint>x_1760545_smarta_0_smartattend_ai_insights.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+
+<j:jelly
+    xmlns:j="jelly:core"
+    xmlns:g="glide"
+    trim="false">
+
+<style>
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #101828;
+}
+
+.ai-page {
+    min-height: 100vh;
+    padding: 28px;
+}
+
+.ai-container {
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+.ai-brand {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #6941c6;
+    text-transform: uppercase;
+}
+
+.ai-title {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 8px 0 4px;
+}
+
+.ai-subtitle {
+    color: #667085;
+    margin-bottom: 24px;
+}
+
+.ai-manager {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.ai-manager-name {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.ai-period {
+    margin-top: 4px;
+    color: #667085;
+    font-size: 14px;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.summary-card {
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+}
+
+.summary-label {
+    color: #667085;
+    font-size: 12px;
+}
+
+.summary-value {
+    font-size: 28px;
+    font-weight: 800;
+    margin-top: 8px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 26px 0 14px;
+}
+
+.ai-summary-box {
+    background: linear-gradient(
+        135deg,
+        #f4f3ff,
+        #eef4ff
+    );
+    border: 1px solid #d9d6fe;
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 25px;
+}
+
+.ai-summary-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #5925dc;
+}
+
+.ai-summary-text {
+    margin-top: 12px;
+    line-height: 1.7;
+    color: #344054;
+    white-space: pre-line;
+    word-break: break-word;
+}
+
+.ai-summary-meta {
+    margin-top: 12px;
+    color: #667085;
+    font-size: 11px;
+}
+
+.employee-card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+}
+
+.employee-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.employee-name {
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.employee-meta {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #667085;
+}
+
+.badge {
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    height: fit-content;
+}
+
+.badge-high {
+    background: #fef3f2;
+    color: #b42318;
+}
+
+.badge-medium {
+    background: #fffaeb;
+    color: #b54708;
+}
+
+.badge-good {
+    background: #ecfdf3;
+    color: #027a48;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.stat-box {
+    background: #f8fafc;
+    border: 1px solid #eaecf0;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: #667085;
+}
+
+.stat-value {
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.insight-list {
+    margin-top: 16px;
+}
+
+.insight-item {
+    padding: 10px 12px;
+    background: #fff7ed;
+    border-left: 4px solid #f79009;
+    border-radius: 8px;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.healthy-insight {
+    background: #ecfdf3;
+    border-left-color: #12b76a;
+}
+
+#loadingBox {
+    background: white;
+    padding: 35px;
+    text-align: center;
+    border-radius: 16px;
+    color: #667085;
+}
+
+.error {
+    color: #b42318;
+}
+
+@media(max-width:900px) {
+
+    .summary-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .stats-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+@media(max-width:520px) {
+
+    .ai-page {
+        padding: 14px;
+    }
+
+    .summary-grid,
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .employee-header {
+        flex-direction: column;
+    }
+
+}
+
+</style>
+
+
+<div class="ai-page">
+
+    <div class="ai-container">
+
+        <div class="ai-brand">
+            SmartAttend AI
+        </div>
+
+        <div class="ai-title">
+            AI Attendance Insights
+        </div>
+
+        <div class="ai-subtitle">
+            Attendance intelligence and manager recommendations.
+        </div>
+
+
+        <div
+            id="managerBox"
+            class="ai-manager"
+            style="display:none;">
+
+            <div
+                id="managerName"
+                class="ai-manager-name">
+            </div>
+
+            <div
+                id="periodText"
+                class="ai-period">
+            </div>
+
+        </div>
+
+
+        <div
+            id="summaryGrid"
+            class="summary-grid"
+            style="display:none;">
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Employees
+                </div>
+
+                <div
+                    id="totalEmployees"
+                    class="summary-value">
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Attendance Records
+                </div>
+
+                <div
+                    id="attendanceRecords"
+                    class="summary-value">
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Late Records
+                </div>
+
+                <div
+                    id="lateRecords"
+                    class="summary-value">
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Insufficient Hours
+                </div>
+
+                <div
+                    id="insufficientRecords"
+                    class="summary-value">
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Avg Working Minutes
+                </div>
+
+                <div
+                    id="averageMinutes"
+                    class="summary-value">
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="aiSummaryBox"
+            class="ai-summary-box"
+            style="display:none;">
+
+            <div
+                id="aiSummaryTitle"
+                class="ai-summary-title">
+
+                ✨ Manager Insight Summary
+
+            </div>
+
+
+            <div
+                id="aiSummaryText"
+                class="ai-summary-text">
+            </div>
+
+
+            <div
+                id="aiSummaryMeta"
+                class="ai-summary-meta">
+            </div>
+
+        </div>
+
+
+        <div
+            id="employeeTitle"
+            class="section-title"
+            style="display:none;">
+
+            Employee Insights
+
+        </div>
+
+
+        <div id="loadingBox">
+            Analysing attendance data...
+        </div>
+
+
+        <div id="employeeContainer">
+        </div>
+
+    </div>
+
+</div>
+
+</j:jelly>]]></html>
+        <name>smartattend_ai_insights</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-10 17:23:40</sys_created_on>
+        <sys_id>36adbfd2473307d07ace13ff016d4356</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>smartattend_ai_insights</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_ui_page_36adbfd2473307d07ace13ff016d4356</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-12 15:49:31</sys_updated_on>
+    </sys_ui_page>
+</record_update>

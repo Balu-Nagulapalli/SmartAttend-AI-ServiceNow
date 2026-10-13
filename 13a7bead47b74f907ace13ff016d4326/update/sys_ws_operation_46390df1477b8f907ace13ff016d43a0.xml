@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>ba4041b1473b8f907ace13ff016d43ec</enforce_acl>
+        <http_method>POST</http_method>
+        <name>Scan Attendance QR</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+
+    // =========================================================
+    // 1. READ TOKEN SENT BY KIOSK
+    // =========================================================
+    var body = request.body.data || {};
+    var token = body.token;
+
+    if (!token) {
+        response.setStatus(400);
+        response.setBody({
+            success: false,
+            message: 'QR token is required'
+        });
+        return;
+    }
+
+    // Logged-in kiosk user
+    var kioskUserId = gs.getUserID();
+
+
+    // =========================================================
+    // 2. FIND REGISTERED SCANNER FOR LOGGED-IN KIOSK
+    // =========================================================
+    var scanner = new GlideRecord(
+        'x_1760545_smarta_0_scanner'
+    );
+
+    scanner.addQuery('kiosk_user', kioskUserId);
+    scanner.addQuery('active', true);
+    scanner.setLimit(1);
+    scanner.query();
+
+    if (!scanner.next()) {
+        response.setStatus(403);
+        response.setBody({
+            success: false,
+            message: 'This kiosk is not registered or is inactive'
+        });
+        return;
+    }
+
+
+    // =========================================================
+    // 3. FIND QR TOKEN
+    // =========================================================
+    var qr = new GlideRecord(
+        'x_1760545_smarta_0_qr_token'
+    );
+
+    qr.addQuery('token', token);
+    qr.setLimit(1);
+    qr.query();
+
+    if (!qr.next()) {
+        response.setStatus(404);
+        response.setBody({
+            success: false,
+            message: 'Invalid QR code'
+        });
+        return;
+    }
+
+
+    // =========================================================
+    // 4. QR MUST STILL BE ACTIVE
+    // =========================================================
+    if (qr.getValue('status') != 'active') {
+        response.setStatus(400);
+        response.setBody({
+            success: false,
+            message: 'QR code is no longer active'
+        });
+        return;
+    }
+
+
+    // =========================================================
+    // 5. CHECK QR EXPIRY
+    // =========================================================
+    var now = new GlideDateTime();
+
+    var expiresAt =
+        new GlideDateTime(qr.getValue('expires_at'));
+
+    if (
+        expiresAt.getNumericValue() <
+        now.getNumericValue()
+    ) {
+
+        qr.setValue('status', 'expired');
+        qr.update();
+
+        response.setStatus(400);
+        response.setBody({
+            success: false,
+            message: 'QR code has expired'
+        });
+        return;
+    }
+
+
+    // =========================================================
+    // 6. FIND EMPLOYEE LINKED WITH QR
+    // =========================================================
+    var employeeId =
+        qr.getValue('employee');
+
+
+    // =========================================================
+    // 6A. FIND EMPLOYEE PROFILE
+    // =========================================================
+    var profile = new GlideRecord(
+        'x_1760545_smarta_0_employee_profile'
+    );
+
+    profile.addQuery('employee', employeeId);
+    profile.addQuery('active', true);
+    profile.setLimit(1);
+    profile.query();
+
+    if (!profile.next()) {
+        response.setStatus(400);
+        response.setBody({
+            success: false,
+            message: 'Active employee profile not found'
+        });
+        return;
+    }
+
+
+    // =========================================================
+    // 6B. GET EMPLOYEE SHIFT
+    // =========================================================
+    var shiftId =
+        profile.getValue('shift');
+
+    var shift = new GlideRecord(
+        'x_1760545_smarta_0_shift'
+    );
+
+    if (
+        !shift.get(shiftId) ||
+        shift.getValue('active') != '1'
+    ) {
+        response.setStatus(400);
+        response.setBody({
+            success: false,
+            message: 'Employee shift is not configured or inactive'
+        });
+        return;
+    }
+
+
+    // =========================================================
+    // 7. CALCULATE INDIA DATE/TIME
+    // =========================================================
+
+    /*
+        ServiceNow stores Date/Time internally in UTC.
+
+        India Standard Time:
+        UTC + 5 hours 30 minutes
+
+        5 hours 30 minutes
+        = 330 minutes
+        = 19,800 seconds
+    */
+
+    var indiaNow =
+        new GlideDateTime(now);
+
+    indiaNow.addSeconds(19800);
+
+    var indiaValue =
+        indiaNow.getValue();
+
+    /*
+        Example indiaValue:
+
+        2026-10-09 11:42:30
+    */
+
+
+    // ---------------------------------------------------------
+    // Attendance date in India
+    // ---------------------------------------------------------
+    var attendanceDate =
+        indiaValue.substring(0, 10);
+
+
+    // ---------------------------------------------------------
+    // Extract India hour
+    // ---------------------------------------------------------
+    var currentHour =
+        parseInt(
+            indiaValue.substring(11, 13),
+            10
+        );
+
+
+    // ---------------------------------------------------------
+    // Extract India minute
+    // ---------------------------------------------------------
+    var currentMinute =
+        parseInt(
+            indiaValue.substring(14, 16),
+            10
+        );
+
+
+    // ---------------------------------------------------------
+    // Convert current time to minutes from midnight
+    //
+    // Example:
+    // 09:22
+    //
+    // 9 × 60 + 22
+    // = 562
+    // ---------------------------------------------------------
+    var currentMinutes =
+        (currentHour * 60) +
+        currentMinute;
+
+
+    // =========================================================
+    // 7A. READ SHIFT CONFIGURATION
+    // =========================================================
+
+    /*
+        General Shift example:
+
+        Start Minutes = 540
+        Grace Minutes = 10
+
+        540 = 09:00 AM
+    */
+
+    var shiftStartMinutes =
+        parseInt(
+            shift.getValue('start_minutes'),
+            10
+        );
+
+    var graceMinutes =
+        parseInt(
+            shift.getValue('grace_minutes'),
+            10
+        ) || 0;
+
+
+    // Validate Start Minutes
+    if (isNaN(shiftStartMinutes)) {
+        response.setStatus(400);
+        response.setBody({
+            success: false,
+            message: 'Shift start minutes are not configured'
+        });
+        return;
+    }
+
+
+    // ---------------------------------------------------------
+    // Calculate grace cutoff
+    //
+    // Example:
+    //
+    // Shift start = 540
+    // Grace       = 10
+    //
+    // Cutoff      = 550
+    //              = 09:10 AM
+    // ---------------------------------------------------------
+    var graceCutoffMinutes =
+        shiftStartMinutes +
+        graceMinutes;
+
+
+    // =========================================================
+    // 7B. DETERMINE PRESENT / LATE
+    // =========================================================
+
+    var attendanceStatus = 'present';
+    var lateMinutes = 0;
+
+
+    /*
+        Example:
+
+        Current time = 09:22
+        Current Minutes = 562
+
+        Grace cutoff = 550
+
+        562 > 550
+        therefore employee is Late
+    */
+
+    if (
+        currentMinutes >
+        graceCutoffMinutes
+    ) {
+
+        attendanceStatus = 'late';
+
+        /*
+            Late Minutes are calculated
+            from actual shift start.
+
+            562 - 540 = 22 minutes late
+        */
+
+        lateMinutes =
+            currentMinutes -
+            shiftStartMinutes;
+    }
+
+
+    // =========================================================
+    // 8. FIND TODAY'S ATTENDANCE
+    // =========================================================
+    var attendance = new GlideRecord(
+        'x_1760545_smarta_0_attendance'
+    );
+
+    attendance.addQuery(
+        'employee',
+        employeeId
+    );
+
+    attendance.addQuery(
+        'attendance_date',
+        attendanceDate
+    );
+
+    attendance.setLimit(1);
+    attendance.query();
+
+
+    var attendanceId;
+    var action;
+
+
+    // =========================================================
+    // 9. FIRST SCAN = CHECK-IN
+    // =========================================================
+    if (!attendance.next()) {
+
+        attendance.initialize();
+
+        attendance.setValue(
+            'employee',
+            employeeId
+        );
+
+        attendance.setValue(
+            'attendance_date',
+            attendanceDate
+        );
+
+        /*
+            Keep actual Date/Time stored
+            using ServiceNow DateTime.
+        */
+        attendance.setValue(
+            'check_in',
+            now.getValue()
+        );
+
+        attendance.setValue(
+            'status',
+            attendanceStatus
+        );
+
+        attendance.setValue(
+            'late_minutes',
+            lateMinutes
+        );
+
+        attendance.setValue(
+            'scanner',
+            scanner.getUniqueValue()
+        );
+
+
+        attendanceId =
+            attendance.insert();
+
+
+        if (!attendanceId) {
+
+            response.setStatus(500);
+
+            response.setBody({
+                success: false,
+                message: 'Unable to create attendance record'
+            });
+
+            return;
+        }
+
+
+        action = 'check_in';
+    }
+
+
+// =========================================================
+// 10. SECOND SCAN = CHECK-OUT
+// =========================================================
+else {
+
+    if (!attendance.getValue('check_out')) {
+
+        // Save check-out time
+        attendance.setValue(
+            'check_out',
+            now.getValue()
+        );
+
+
+        // -------------------------------------------------
+        // Calculate total working minutes
+        // -------------------------------------------------
+        var checkIn =
+            new GlideDateTime(
+                attendance.getValue('check_in')
+            );
+
+        var workingMilliseconds =
+            now.getNumericValue() -
+            checkIn.getNumericValue();
+
+        var workingMinutes =
+            Math.floor(
+                workingMilliseconds / 60000
+            );
+
+        attendance.setValue(
+            'working_minutes',
+            workingMinutes
+        );
+
+
+        // -------------------------------------------------
+        // Read shift working-hour rules
+        // -------------------------------------------------
+        var fullDayMinutes =
+            parseInt(
+                shift.getValue('full_day_minutes'),
+                10
+            ) || 0;
+
+        var halfDayMinutes =
+            parseInt(
+                shift.getValue('half_day_minutes'),
+                10
+            ) || 0;
+
+
+        // -------------------------------------------------
+        // Validate shift configuration
+        // -------------------------------------------------
+        if (
+            fullDayMinutes <= 0 ||
+            halfDayMinutes <= 0
+        ) {
+
+            response.setStatus(400);
+
+            response.setBody({
+                success: false,
+                message: 'Shift full-day or half-day minutes are not configured'
+            });
+
+            return;
+        }
+
+
+        // -------------------------------------------------
+        // Determine final attendance status
+        // -------------------------------------------------
+
+        var currentStatus =
+            attendance.getValue('status');
+
+        var finalStatus =
+            currentStatus;
+
+
+        // Full working day
+        if (
+            workingMinutes >=
+            fullDayMinutes
+        ) {
+
+            /*
+                Keep the original status.
+
+                Examples:
+
+                Present → Present
+                Late    → Late
+            */
+
+            finalStatus =
+                currentStatus;
+        }
+
+        // Half-day working duration
+        else if (
+            workingMinutes >=
+            halfDayMinutes
+        ) {
+
+            finalStatus =
+                'half_day';
+        }
+
+        // Less than minimum half-day duration
+        else {
+
+            finalStatus =
+                'insufficient_hours';
+        }
+
+
+        attendance.setValue(
+            'status',
+            finalStatus
+        );
+
+
+        attendance.update();
+
+
+        attendanceId =
+            attendance.getUniqueValue();
+
+        action = 'check_out';
+    }
+
+    else {
+
+        response.setStatus(400);
+
+        response.setBody({
+            success: false,
+            message: 'Attendance is already completed for today'
+        });
+
+        return;
+    }
+}
+
+    // =========================================================
+	// MARK QR AS USED AND LINK ATTENDANCE RESULT
+	// =========================================================
+	qr.setValue(
+		'status',
+		'used'
+	);
+
+	qr.setValue(
+		'used_at',
+		now.getValue()
+	);
+
+	qr.setValue(
+		'used_by_scanner',
+		scanner.getUniqueValue()
+	);
+
+	qr.setValue(
+		'attendance',
+		attendanceId
+	);
+
+	qr.setValue(
+		'scan_action',
+		action
+	);
+
+	qr.update();
+
+
+    // =========================================================
+    // 12. UPDATE SCANNER LAST SEEN
+    // =========================================================
+    scanner.setValue(
+        'last_seen',
+        now.getValue()
+    );
+
+    scanner.update();
+
+
+    // =========================================================
+    // 13. RETURN SUCCESS RESPONSE
+    // =========================================================
+    response.setStatus(200);
+
+    response.setBody({
+
+        success: true,
+
+        action: action,
+
+        message:
+            action == 'check_in'
+                ? 'Check-in successful'
+                : 'Check-out successful',
+
+        attendance_id:
+            attendanceId,
+
+        employee:
+            qr.employee.getDisplayValue(),
+
+        scanner:
+            scanner.getDisplayValue(),
+
+        status:
+            action == 'check_in'
+                ? attendanceStatus
+                : attendance.getValue('status'),
+
+        late_minutes:
+            action == 'check_in'
+                ? lateMinutes
+                : attendance.getValue('late_minutes'),
+
+        attendance_date:
+            attendanceDate,
+
+        time:
+            indiaValue
+    });
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1760545_smarta_0/smartattend_api/scan</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/scan</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <support_trailing_slash>false</support_trailing_slash>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-08 14:58:31</sys_created_on>
+        <sys_id>46390df1477b8f907ace13ff016d43a0</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Scan Attendance QR</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_ws_operation_46390df1477b8f907ace13ff016d43a0</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-10 08:55:10</sys_updated_on>
+        <web_service_definition display_value="SmartAttend API">6710d7e147bb4f907ace13ff016d431e</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

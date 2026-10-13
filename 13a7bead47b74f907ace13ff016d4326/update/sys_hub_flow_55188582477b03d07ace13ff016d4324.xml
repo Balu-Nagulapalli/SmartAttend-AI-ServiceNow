@@ -1,0 +1,1294 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_hub_flow">
+    <sys_hub_flow action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <acls/>
+        <active>true</active>
+        <allow_high_security_roles>false</allow_high_security_roles>
+        <annotation/>
+        <attributes>browserActivatedIn=chrome,integrationActivatedIn=standalone,labelCacheCleanUpExecuted=true,timeFromCreateToActivate=198022000,viewActivatedIn=naturalLanguage</attributes>
+        <authored_on_release_version>29000</authored_on_release_version>
+        <callable_by_client_api>false</callable_by_client_api>
+        <category/>
+        <copied_from/>
+        <copied_from_name/>
+        <description/>
+        <display_name_after_preview/>
+        <flow_priority>MEDIUM</flow_priority>
+        <generation_source/>
+        <internal_name>smartattend__attendance_correction_approval</internal_name>
+        <label_cache>[{"name":"Created_1.current.requested_check_out","label":"Trigger - Record Created➛Attendance Correction Request Record➛Requested Check Out","reference":"","reference_display":"Requested Check Out","type":"glide_date_time","base_type":"glide_date_time","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"requested_check_out","usedInstances":{"3ff0d56f-97c7-4c09-ae59-bf897253a1d6":["condition"],"046997c7-4776-4aa7-8028-34e452a2b403":["check_out"]}},{"name":"Created_1.current.requested_check_in","label":"Trigger - Record Created➛Attendance Correction Request Record➛Requested Check In","reference":"","reference_display":"Requested Check In","type":"glide_date_time","base_type":"glide_date_time","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"requested_check_in","usedInstances":{"c11f5f99-0499-4e0f-8943-df30a10e0cdc":["condition"],"bc434eb5-3e8c-4c1e-b0c4-109e20605f40":["check_in"]}},{"name":"Created_1.table_name","label":"Trigger - Record Created➛Attendance Correction Request Table","reference":"x_1760545_smarta_0_attendance_correction_request","reference_display":"Attendance Correction Request","type":"table_name","base_type":"table_name","usedInstances":{"4153cee6-77e7-42e5-bda6-f3c4d516bda2":["condition"]},"attributes":{"test_input_hidden":"true"}},{"name":"Created_1.current.requested_status","label":"Trigger - Record Created➛Attendance Correction Request Record➛Requested Status","reference":"","reference_display":"Requested Status","type":"choice","base_type":"choice","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"requested_status","usedInstances":{"10845b2e-d407-4573-903f-f4f7309965e0":["status"]}},{"name":"Created_1.current.attendance","label":"Trigger - Record Created➛Attendance Correction Request Record➛Attendance","reference":"x_1760545_smarta_0_attendance","reference_display":"Attendance","type":"reference","base_type":"reference","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"attendance","usedInstances":{"10845b2e-d407-4573-903f-f4f7309965e0":["record"],"bc434eb5-3e8c-4c1e-b0c4-109e20605f40":["record"],"046997c7-4776-4aa7-8028-34e452a2b403":["record"]}},{"name":"f3389dd6-7a8e-4737-91d2-315197629206.approval_state","label":"2 - Ask For Approval➛Approval State","reference_display":"Approval State","type":"choice","base_type":"choice","choices":[{"label":"-- None --","value":"","order":0.0},{"label":"Not Yet Requested","value":"not requested","order":1.0},{"label":"Requested","value":"requested","order":2.0},{"label":"Approved","value":"approved","order":3.0},{"label":"Rejected","value":"rejected","order":4.0},{"label":"Cancelled","value":"cancelled","order":5.0},{"label":"No Longer Required","value":"not_required","order":6.0},{"label":"Skipped","value":"skipped","order":7.0}],"usedInstances":{"d9d5ccea-c0cf-4922-8b75-4f8898b4529b":["condition"]},"attributes":{"element_mapping_provider":"com.glide.flow_design.action.data.FlowDesignVariableMapper"}},{"name":"Created_1.current.manager","label":"Trigger - Record Created➛Attendance Correction Request Record➛Manager","reference":"sys_user","reference_display":"User","type":"reference","base_type":"reference","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"manager","usedInstances":{"f3389dd6-7a8e-4737-91d2-315197629206":["approval_conditions"]}},{"name":"2978e728-6e59-4e56-a10b-1f14dcfc80fd.record.manager","label":"1➛Attendance Correction Request Record➛Manager","reference":"sys_user","reference_display":"User","type":"reference","base_type":"reference","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"manager","usedInstances":{}},{"name":"Created_1.current.reason","label":"Trigger - Record Created➛Attendance Correction Request Record➛Reason","reference":"","reference_display":"Reason","type":"string","base_type":"string","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"reason","usedInstances":{"f3389dd6-7a8e-4737-91d2-315197629206":["approval_reason"]}},{"name":"Created_1.current","label":"Trigger - Record Created➛Attendance Correction Request Record","reference":"x_1760545_smarta_0_attendance_correction_request","reference_display":"Attendance Correction Request","type":"reference","base_type":"reference","usedInstances":{"2978e728-6e59-4e56-a10b-1f14dcfc80fd":["record"],"f3389dd6-7a8e-4737-91d2-315197629206":["record"],"1fc10eee-bb67-476c-94f3-2144b8144d46":["record"],"7f034761-4d3e-4741-8e99-6af574dc0013":["record"],"10845b2e-d407-4573-903f-f4f7309965e0":["record"],"bc434eb5-3e8c-4c1e-b0c4-109e20605f40":["record"],"4992142f-ae0a-49fd-86da-7226ceb9f509":["record"],"20ead245-c63b-4e99-95e1-ad2954284b1e":["record"]},"attributes":{}}]</label_cache>
+        <master_snapshot>dea3a5ca473f03d07ace13ff016d4351</master_snapshot>
+        <master_snapshot_digest/>
+        <name>SmartAttend - Attendance Correction Approval</name>
+        <natlang/>
+        <outputs/>
+        <pre_compiled>false</pre_compiled>
+        <remote_trigger_id>3f7b3cb2473b87d07ace13ff016d43e0</remote_trigger_id>
+        <run_as>system</run_as>
+        <run_with_roles/>
+        <sc_callable>false</sc_callable>
+        <show_draft_actions>false</show_draft_actions>
+        <show_triggered_flows>false</show_triggered_flows>
+        <status>draft</status>
+        <substatus/>
+        <sys_class_name>sys_hub_flow</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 09:30:31</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>55188582477b03d07ace13ff016d4324</sys_id>
+        <sys_mod_count>60</sys_mod_count>
+        <sys_name>SmartAttend - Attendance Correction Approval</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_hub_flow_55188582477b03d07ace13ff016d4324</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 17:34:52</sys_updated_on>
+        <type>flow</type>
+        <updation_source/>
+        <version>2</version>
+        <version_record>511a8d3247bb87d07ace13ff016d4332</version_record>
+    </sys_hub_flow>
+    <sys_translated_text action="delete_multiple" query="documentkey=55188582477b03d07ace13ff016d4324"/>
+    <sys_variable_value action="delete_multiple" query="document_key=55188582477b03d07ace13ff016d4324"/>
+    <sys_flow_record_trigger action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition table="x_1760545_smarta_0_attendance_correction_request">state=submitted<item display_value="Submitted" endquery="false" field="state" goto="false" newquery="false" operator="=" or="false" value="submitted"/>
+        </condition>
+        <name/>
+        <on_delete>false</on_delete>
+        <on_insert>true</on_insert>
+        <on_update>false</on_update>
+        <published_version/>
+        <run_flow_in>background</run_flow_in>
+        <run_on_extended>false</run_on_extended>
+        <run_when_setting>both</run_when_setting>
+        <run_when_user_list/>
+        <run_when_user_setting>any</run_when_user_setting>
+        <sys_class_name>sys_flow_record_trigger</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-11 16:30:58</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>3f7b3cb2473b87d07ace13ff016d43e0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_overrides/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:58</sys_updated_on>
+        <table>x_1760545_smarta_0_attendance_correction_request</table>
+        <trigger_definition/>
+    </sys_flow_record_trigger>
+    <sys_trigger_runner_mapping action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <data>{"run_flow_in":"background","run_when_user_list":[],"run_when_setting":"both","run_when_user_setting":"any","run_on_extended":"false"}</data>
+        <identifier>55188582477b03d07ace13ff016d4324</identifier>
+        <identifier_type>flow</identifier_type>
+        <runner>FDTriggerRunner</runner>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-11 16:30:58</sys_created_on>
+        <sys_id>7b7b7cb2473b87d07ace13ff016d432c</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 17:09:51</sys_updated_on>
+        <trigger display_value="">3f7b3cb2473b87d07ace13ff016d43e0</trigger>
+    </sys_trigger_runner_mapping>
+    <sys_trigger_runner_mapping action="delete_multiple" query="identifier=55188582477b03d07ace13ff016d4324^sys_idNOT IN7b7b7cb2473b87d07ace13ff016d432c"/>
+    <sys_hub_flow_stage action="delete_multiple" query="flow=55188582477b03d07ace13ff016d4324"/>
+    <sys_flow_cat_variable_model action="delete_multiple" query="id=55188582477b03d07ace13ff016d4324^sys_idNOT IN59180982477b03d07ace13ff016d4301"/>
+    <sys_flow_cat_variable_model action="INSERT_OR_UPDATE">
+        <id>55188582477b03d07ace13ff016d4324</id>
+        <name>SmartAttend - Attendance Correction Approval</name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 09:30:31</sys_created_on>
+        <sys_id>59180982477b03d07ace13ff016d4301</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_scope/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 09:30:31</sys_updated_on>
+    </sys_flow_cat_variable_model>
+    <sys_flow_cat_variable action="delete_multiple" query="flow_catalog_model=59180982477b03d07ace13ff016d4301"/>
+    <sys_hub_flow_input action="delete_multiple" query="model=55188582477b03d07ace13ff016d4324^sys_idNOT IN097845c2477b03d07ace13ff016d4325,d17845c2477b03d07ace13ff016d4386"/>
+    <sys_hub_flow_input action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <array>false</array>
+        <array_denormalized>false</array_denormalized>
+        <attributes>element_mapping_provider=com.glide.flow_design.action.data.FlowDesignVariableMapper,uiType=document_id,uiTypeLabel=Document ID</attributes>
+        <audit>false</audit>
+        <calculation><![CDATA[(function calculatedFieldValue(current) {
+
+	// Add your code here
+	return '';  // return the calculated value
+
+})(current);]]></calculation>
+        <choice/>
+        <choice_field/>
+        <choice_table/>
+        <column_label/>
+        <comments/>
+        <create_roles/>
+        <default_value/>
+        <defaultsort/>
+        <delete_roles/>
+        <dependent>table_name</dependent>
+        <dependent_on_field>table_name</dependent_on_field>
+        <display>false</display>
+        <dynamic_creation>false</dynamic_creation>
+        <dynamic_creation_script/>
+        <dynamic_default_value/>
+        <dynamic_ref_qual/>
+        <element>current</element>
+        <element_reference>false</element_reference>
+        <foreign_database/>
+        <formula/>
+        <function_definition/>
+        <function_field>false</function_field>
+        <help/>
+        <hint/>
+        <internal_type display_value="">document_id</internal_type>
+        <label>Record</label>
+        <mandatory>true</mandatory>
+        <max_length>200</max_length>
+        <model display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</model>
+        <model_id>55188582477b03d07ace13ff016d4324</model_id>
+        <model_table>sys_hub_flow</model_table>
+        <name>var__m_sys_hub_flow_input_55188582477b03d07ace13ff016d4324</name>
+        <next_element/>
+        <order>100</order>
+        <primary>false</primary>
+        <read_only>false</read_only>
+        <read_only_option/>
+        <read_roles/>
+        <reference/>
+        <reference_cascade_rule/>
+        <reference_floats>false</reference_floats>
+        <reference_key/>
+        <reference_qual/>
+        <reference_qual_condition/>
+        <reference_type/>
+        <sizeclass/>
+        <spell_check>false</spell_check>
+        <staged>false</staged>
+        <sys_class_name>sys_hub_flow_input</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 09:32:09</sys_created_on>
+        <sys_id>097845c2477b03d07ace13ff016d4325</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name/>
+        <sys_package/>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 11:30:58</sys_updated_on>
+        <table_reference>false</table_reference>
+        <text_index>false</text_index>
+        <unique>false</unique>
+        <use_dependent_field>true</use_dependent_field>
+        <use_dynamic_default>false</use_dynamic_default>
+        <use_reference_qualifier>simple</use_reference_qualifier>
+        <virtual>false</virtual>
+        <virtual_type>script</virtual_type>
+        <widget/>
+        <write_roles/>
+        <xml_view>false</xml_view>
+    </sys_hub_flow_input>
+    <sys_hub_action_input_action_instance action="delete_multiple" query="action_input=097845c2477b03d07ace13ff016d4325"/>
+    <sys_hub_flow_input action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <array>false</array>
+        <array_denormalized>false</array_denormalized>
+        <attributes>element_mapping_provider=com.glide.flow_design.action.data.FlowDesignVariableMapper,test_input_hidden=true,uiType=table_name,uiTypeLabel=Table Name</attributes>
+        <audit>false</audit>
+        <calculation><![CDATA[(function calculatedFieldValue(current) {
+
+	// Add your code here
+	return '';  // return the calculated value
+
+})(current);]]></calculation>
+        <choice/>
+        <choice_field/>
+        <choice_table/>
+        <column_label/>
+        <comments/>
+        <create_roles/>
+        <default_value/>
+        <defaultsort/>
+        <delete_roles/>
+        <dependent/>
+        <dependent_on_field/>
+        <display>false</display>
+        <dynamic_creation>false</dynamic_creation>
+        <dynamic_creation_script/>
+        <dynamic_default_value/>
+        <dynamic_ref_qual/>
+        <element>table_name</element>
+        <element_reference>false</element_reference>
+        <foreign_database/>
+        <formula/>
+        <function_definition/>
+        <function_field>false</function_field>
+        <help/>
+        <hint/>
+        <internal_type display_value="">table_name</internal_type>
+        <label>Table Name</label>
+        <mandatory>false</mandatory>
+        <max_length>200</max_length>
+        <model display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</model>
+        <model_id>55188582477b03d07ace13ff016d4324</model_id>
+        <model_table>sys_hub_flow</model_table>
+        <name>var__m_sys_hub_flow_input_55188582477b03d07ace13ff016d4324</name>
+        <next_element/>
+        <order>101</order>
+        <primary>false</primary>
+        <read_only>false</read_only>
+        <read_only_option/>
+        <read_roles/>
+        <reference/>
+        <reference_cascade_rule/>
+        <reference_floats>false</reference_floats>
+        <reference_key/>
+        <reference_qual/>
+        <reference_qual_condition/>
+        <reference_type/>
+        <sizeclass/>
+        <spell_check>false</spell_check>
+        <staged>false</staged>
+        <sys_class_name>sys_hub_flow_input</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 09:32:10</sys_created_on>
+        <sys_id>d17845c2477b03d07ace13ff016d4386</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name/>
+        <sys_package/>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 11:30:58</sys_updated_on>
+        <table_reference>false</table_reference>
+        <text_index>false</text_index>
+        <unique>false</unique>
+        <use_dependent_field>false</use_dependent_field>
+        <use_dynamic_default>false</use_dynamic_default>
+        <use_reference_qualifier>simple</use_reference_qualifier>
+        <virtual>false</virtual>
+        <virtual_type>script</virtual_type>
+        <widget/>
+        <write_roles/>
+        <xml_view>false</xml_view>
+    </sys_hub_flow_input>
+    <sys_hub_action_input_action_instance action="delete_multiple" query="action_input=d17845c2477b03d07ace13ff016d4386"/>
+    <sys_hub_flow_output action="delete_multiple" query="model=55188582477b03d07ace13ff016d4324"/>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=55188582477b03d07ace13ff016d4324"/>
+    <sys_hub_trigger_instance_v2 action="delete_multiple" query="flow=55188582477b03d07ace13ff016d4324^sys_idNOT IN03a9013247bb87d07ace13ff016d43e8"/>
+    <sys_hub_trigger_instance_v2 action="INSERT_OR_UPDATE">
+        <comment/>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</flow>
+        <generation_source/>
+        <name>Created</name>
+        <published_version/>
+        <remote_sys_id/>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-11 17:32:54</sys_created_on>
+        <sys_id>03a9013247bb87d07ace13ff016d43e8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_scope/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 17:32:54</sys_updated_on>
+        <trigger_definition display_value="Created">798916a0c31322002841b63b12d3ae7c</trigger_definition>
+        <trigger_inputs>H4sIAAAAAAAA/9VZXW/iOBT9K1GedqWOlA8opW9d2tFWmp1KlNl96FaRE9tgbXAYx0nLVP3ve50PCIlDoYGKPqHY5vrcc+89104eXswQ+SQ0L81RxDGTLOLmmcm4JIKjcLJcEJgKyqkY5uaIYyQjsTQvKQpjcmZSEc0nZL4IkSSrwUhgIsxL27LOzBSFCblfxrcYjIEJjuYbZs1iCYzFEoz8m1iWi+PEnzMpCYbpYMZCLAg3Lx8ez8wFEmBBKvsvtSmmtjg/RwgTZAWu7TqOZTkXPds/d33bwS4iPgWDOq81sKSGgKpn5FkSjgFi6XaTHUEQvuPhemAG7OY8zNFzzH7BBj1LGROEEnAkIPns6tHDLAZyl/lwMItYQOLcXUwoSkI5qo7lC+4WmQvZXyTyw8JoEIXJnH/PPTVXBv4u6IeRJIYNyUK5pXBKkagQ38+ip3EJ6CvjGQWFQ2EUoHD1hKQUzE+kgvNiPiEuY09GHsLYq9B4aSrDioMIk/B6vR+Ms+mUCI/xRSJj8zUjwvuZqC1yxMVaL3Mv9w1WFSR9ZSQs0iwOBFvIq0CytMzL17N1wouEgwlvFcJm2mdErij/xmLA9/ACZJCfSR6nLzZwU5JXeES/FRuME25E3AgSAaxJAzLDKDczMtgqm+jtHE0L6sFwSAJZSSf6I64+/cXimPFpxZk2LNmCJphwWUWUc9cNw+MhFaEZkrTmTxHlSr7uJw22TalPqGMNlDDYlutT2xpYfUSxa1mBU5GGJphWlLKWMEeRiP0FYp3r26Jfp7gAb1VrZadUTjfroCThVadTnaDZB4LmvDbl0t1LL1dpmQ9fb2bnNtdqMlsWznt1FuEUwT9w6eNbsqkW7KCPNIyeQIm7ayONBJmKKOG4LkpqC4PB78aK46iij4L/tqNYrzB+K4L6+6kp5DooZVojvjyANrrU9oekRyyQRBfU0O8Ph36AHEoH5wPi2DVtXMPQYvsUmvhG2FNd3rTpozaRU13+76GMHQA2VHJvgN31sUhMrTrmc59DB59mhHsAVXihUrqGHE5Dhkk5d9hqb2ydruu7a8XTi2HQtweDYACXJKh42iM+sntOHw0H5+5Fv1bxDSjbYEoNMx9ydYqXcQakRQ1+5FMffI065byOiZSqX3Vu8tnfUb5fpb+qEBqZAEXCUPQbt+uFxj2Bbpldto/V9CM5a7R7QPIHjG8gUUfH7xH/okF3xJsah6vELsS1IDu1w0kto9LNIHS+vpHeRX9IXb1g0aFOsNZg2mGe/GFlx1RIW5NKd2rZtTBTbX23HjPeUVu1NKmeP7YckA5Fin1wUpzjkeJ2PpSVtdh6Z30P2E/U77JTysGaXsSJF1GtbDNqFG8zCTb8pSFnBLgN4RgOOxsKxhH7Sn68bnQ9GDaK09HRGpqKSZ2U68iACUN8CC3H6Wq1vDns5ZvgAer33Zaj+LB++dYBegPvyfe4vVMk1WXc1ka3n926TW2rqxTUZkbs2MQO6rW+k3XzWtvL3vK6e5fa9upAg+L0+8+kePNb6zcZI15WuxtlV3x42yZarZJVf3/+7NmDc6vf63vxHAmJPMsDdwG/8tELIiFAXSFInlCSnl3Va3p2tVpujFbLjfFq+X5iF9AADR3S8oHWsipiV7JW80xqyFvTsk3Ocl53UbOLU/0m2zW5KQshNl5OXhwlInNvfDO6G197/1xNRn/ejL3xzf1kfDua3FzvlPy1z688mftZXeqK4vF/4CPATncgAAA=</trigger_inputs>
+        <trigger_outputs/>
+        <trigger_type>record_create</trigger_type>
+        <updation_source/>
+    </sys_hub_trigger_instance_v2>
+    <sys_hub_action_instance_v2 action="delete_multiple" query="flow=55188582477b03d07ace13ff016d4324^sys_idNOT IN1663d14a47bb03d07ace13ff016d4343,233c8d8a477b03d07ace13ff016d4310,23a8910647fb03d07ace13ff016d438e,2f80d5c247bb03d07ace13ff016d43be,5fc9958647fb03d07ace13ff016d43e5,bda5518e47bb03d07ace13ff016d4324,ca189146477b03d07ace13ff016d4352,f1cacdc6477b03d07ace13ff016d4393"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</flow>
+        <generation_source/>
+        <order>5</order>
+        <parent_ui_id>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</parent_ui_id>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 10:20:00</sys_created_on>
+        <sys_id>1663d14a47bb03d07ace13ff016d4343</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2026-10-11 17:56:05</sys_updated_on>
+        <ui_id>10845b2e-d407-4573-903f-f4f7309965e0</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VVy2rjMBT9laB1MHZe02ZXEgIDnRbaoZtOMTfSTSOQH5XktJngf58rW3ZMGjrp0E2YrKL78jnH91iPOyYFm7IRijC6jCZ8GA2HgzAcXIyi5WS4jAZiCIgR67MUEqRKjTzTgs4bUIUL7HYzjWBRxFHAC60xtQFYi6mAlGNZUqmQJlewffAdFOFrqQSVsunjU5/loGm4Rc2mu4PUqegULFFR6V0D7xCu3ebuLDJeJAQxlk3w2nfOfab3fU4ZanJworDP8M2RQQKyAmWwzxIgbjbTWza1uqAA8Re3qdq2FWuZ2ppoAm9G/qYnj0JXt0Jixr0I7TH2AtXh1Rws3NNkbgvd6pVJjqbWROAKCmVn3VhdcJtbmaV1i4WlarozVSTpTa0Iawd03kdhCATmjqdDXtNa3a+z17sG5EKmlSSeoso4qPZEL1zLZWEdnB1DhZXGCeS5TJ/jXGcbWTUTlCR4VnQIVip7pWca+ZwGwB3ugFSFYEHxeRV+AC0diR80hprLPjNbM1NgzJ4KaRi/FA5JTcxTiCsVKgniahNcM9cyt1f0qA164GXf7/9y/NGG8cv9QnVm7j3wFkffJuF4NI5NAtpCHMZ7C7w3wFU39zkrnAC0scLPagGOA/dueBe77vb2buqE98L4y7xwcU5e8DTO3gx/s0A4+PAj29mkautNZ/2NBVuYX0UYDsWx60DjCzW4WF157FL4pxmf884JDBvvLCQqYY5QboyDCYG3GNcSHJjHJ3sPPtleJl/moGgSVr8z8tH/cqc0QQe6XtXq39FC2KBoFSvL8ukPUJaChpAJAAA=</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=1663d14a47bb03d07ace13ff016d4343"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Ask For Approval">f8f2e9920b10030085c083eb37673abd</action_type>
+        <action_type_parent display_value="Ask For Approval">bae0a1120b10030085c083eb37673a92</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f8f2e9920b10030085c083eb37673abd</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</flow>
+        <generation_source/>
+        <order>2</order>
+        <parent_ui_id/>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 09:48:42</sys_created_on>
+        <sys_id>233c8d8a477b03d07ace13ff016d4310</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2026-10-11 17:56:05</sys_updated_on>
+        <ui_id>f3389dd6-7a8e-4737-91d2-315197629206</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+2Y32/aOhTH/xXkZ8ocQkLgrSqqtKt7N6nt+lKqyDgOeDJJZjtdGeJ/30ns/BhQChN76O1ekHx8jvM9J+cT2zysEY/QGA2DuM9Goz6eORi7GAcexYHLZu7QH7qEYtRFCVky8JSMpjKC8RMReWFYr68kI5pFodOjuZQs0ZsNzEdcZYKs7q0bWOiCiwjm0fjhsYsyImFFzSQar7emjpUkyIwJcL2pNG1r1KusGEcpzZegK+SV8V8bObEznY8TmIGgQg7uIvasWRIx0BEToVgXLUkSEZ3KFRprmYMBco4+J2JVeyx4ok2eS/Ks+A94sNsv/GIGiVFbg3oY2voYczwhmtzCylTnsi5XyilTpiQRi0ku9FXbZhw+Z5qniQnRZCaq6FTky+STKQiqF2i9jlyBCJYVeRbKTVrx7SL9flOJvOZJWRGbokgpEfWIaC35LNeFnDVigpUlXpIs48k8zGT6xMtgkLLszQUMerFIv8MzFZ8nPUIL3T2oKuldg31Smu+J5EUS/8EyELzpIrVSV4Io1aQCNQy/5YUSk5hNISyrYEpQxFHJM30JT3liVvOma9t9Rg/2Fm1aySzXdPtz6Ax97A28UC2J1CTEIdQBBJDinULbQe8VeYWSfcuZ0rsgXNbunavavXNTu59GyRGZVJTc2VS2MrOMlMOwnPsVkTKs88lMWEKcw4RYS4OI6a09hAT4DRFi03rziLxGBxv4rgc/w9jFTt/BAfODgI4woYHvewO36SFQADkQAd1OFKx9cFfoGad9m8Mr3qchcYT8ColLqx/ws/pfTMxiouCFJvMtRG4ro8WjfyIeL+8gjv+eAMn53VaVjWWnzn+GpOJxXxIOH+KPRR/5/Zk/wkF0EcV4djEIXO+CUIYvmO94zIt86jnuH6APO4e+6FGwp0ljzkT7SFZN7ILWmjkNqiNU7UB1bWW9JNciVQ737Txl/NbOcz60AozfElvv6XhGDzYba21AX9NcJgcICBdclZ3xIgktj9OIOEJkRcQ/RuU2ENvif4cH9y8P/38eBt7BVmsd6uuupmkS8UKxalFhvsxM3bCvcO1Ql8nqy8O+oxc0EJkzudk87rm+/M4ap5F1RLr1zT8XTL2WvuWqOdPZoDZbzUnQTlq+Buf6L+CN4fVe7jr0YK/Fo6a3ohwKBE3evuRMkZE9ReMpStKETVF3igqvsGiu0gweIK6eKG3rjRnnkthwpzVsYiOyUqWnogsWQWeW1l8sYYmCtZ/jf7cjKlLRN8lZZ2JKsluk6sJU6TRV4Tu72q11KFf6cMfbu5t3tt1t8Be+c1yPwvoCAVsXfPvOSOTjT5vBEP6MFgAA</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=233c8d8a477b03d07ace13ff016d4310"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</flow>
+        <generation_source/>
+        <order>10</order>
+        <parent_ui_id>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</parent_ui_id>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 10:43:02</sys_created_on>
+        <sys_id>23a8910647fb03d07ace13ff016d438e</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2026-10-11 17:56:05</sys_updated_on>
+        <ui_id>4992142f-ae0a-49fd-86da-7226ceb9f509</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VVy27iMBT9FeQ1QgmvadlVIKSROq1ER2w6lXUTX8CS86jtUBjEv8914gQEnQ6VukHDzvfhnHNyDnneMSnYiPVRBOFtOIx7Ya/XDYLuTT+Mhr0o7IoeIIaszVJIkCY1xpkWdF6DKlxhtxtrBIuCh5240BpTu99TX0iTK9jO/RhV4pVUgvps9PzSZjloutGiZqPdSetSSAoiVDQ6qzGdYrTb3J1FFhcJ4eKyLt77zYnvtL5PqENLDk4YtBluLKYCCcgClME2SyAVYDO9ZSOrCyoQafGYqm0zsZKprYgmsDHyNz25H7i5BRKz2IvQHLkXqCovJmDhiW6ObaEbvTIZo6k0EbiAQtnxca0aeMytzNJqxUKk6u1MFUn6UCnCmguO3kdhCATmjqdDXtFaPK2yt1kNcirTUhJPUWUxqOYE1moZFdbB2TFUWGqcQJ7LdMlzna1luUxQks5S0aGzUNkbPdPIZdqB2OHukKrQmVJ9UpbnoKUj8YOuoeV9m5mtGSsw5kCFNOSvhUNSEfMUeKlCKQEvneCWYy1ze0ePWqMHvm9700eDjxwW3x4MdXTnwfgbHn4bBoP+gJsEtAUecFKEoIB7u+RAsqFjyDW+FmjseSbumvHWuBlvzZrxzwXmAjp1YH6WNnmfns/MWe3+eLf1UDV8YgZflpiba0qMp3H1kflXUILuh3/FR04qs2GOQmIsfRp+FUHQE0QpV+RfcR6Ev0x9zv8XoKz9P5WohHkHdm1+JBAEiVc0TgLgm625bzafjS9LQTgMyt8VZeG/+Xq8/AFadSWlNAkAAA==</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=23a8910647fb03d07ace13ff016d438e"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</flow>
+        <generation_source/>
+        <order>4</order>
+        <parent_ui_id>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</parent_ui_id>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 10:07:32</sys_created_on>
+        <sys_id>2f80d5c247bb03d07ace13ff016d43be</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2026-10-11 17:56:05</sys_updated_on>
+        <ui_id>1fc10eee-bb67-476c-94f3-2144b8144d46</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VVXWsiMRT9K5JnkRm/tvWtKMJCtwW7+NIt4Tq51kDmo0nG6sr8972ZyYyitljoi6xP3q/knOM95nnHpGAj1kcRhLfhMOqFvV43CLo3/XAx7C3CrugBYsjaLIEYqVNjlGpB8RpU7hK73VgjWBQ87ES51pjYoqC6kCZTsJ37NspEK6kE1dno+aXNMtB0okXNRruj0qWQFCxQUeusxnSM0W4zF4s0ymPCxWWdvPeTE19p/ZxQhYYcnDBoM9xYTAQSkCUog20WQyLApnrLRlbnlCDS4jFR26ZjJRNbEY1hY+RfurkfuL4lErPIi9CE3AtUpZcTsPBEJ0c2141eqYzQVJoIXEKu7PgwVzU8ZlamSTViYaHq6VTlcfJQKcKaAw5+j9wQCMwcT4e8orV8WqXvsxrkVCalJJ6iSiNQTQTWarnIrYOzY6iw1DiGLJPJK890upblMEGJO6+Kgs5Spe90p5GvSQcih7tDqkJnSvlJmZ6Dlo7ELzqGhos2M1szVmDMngppyN9yh6Qi5inwUoVSAl5ughuOtMzsHV21xgZ4lXSg/abQtzONRVG0vT8Wg8+WMbrd797B9XuPbHj4YxgM+gNuYtAWeMBJPEINbhEIAuFwYnCNbzkae2qfu6a9NW7aW7Om/WveuoBO7a3f5Uadp+ftdZK7P5xtPVQFb67Bt5nr5prM5Wlcvbs+8FRjlKD76b/2wSaV3jAHJjGWXpE/eRD0BKEjfihOfXC+6WvbfwHGevunEpUwZ0DXq48xobPIKxJH6++LrbkvNu/Lt3kgHAbl54qc8L88M8XLPyHSzwBdCQAA</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=2f80d5c247bb03d07ace13ff016d43be"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</flow>
+        <generation_source/>
+        <order>12</order>
+        <parent_ui_id>14423385-bd9c-430a-b04f-dbe624498612</parent_ui_id>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 10:47:56</sys_created_on>
+        <sys_id>5fc9958647fb03d07ace13ff016d43e5</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2026-10-11 17:56:05</sys_updated_on>
+        <ui_id>20ead245-c63b-4e99-95e1-ad2954284b1e</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VVTW/iMBT8K8hnhBICbMutAiGt1G0luuLSraxH/CheOR+1HQqL+O/7nDgBAepSqRe03Pw+nJnJDHneMinYkPVQBOFtOIijMIq6QdC96YXzQTQPuyICxJC1WQoJ0qTGONOCzitQhStstyONYFHwsBMXWmNqdzvqC2lyBZuZH6NKvJRKUJ8Nn1/aLAdNN1rUbLg9al0KScEcFY1Oa0zHGO0md2eRxUVCuLisi/d+c+w7re9j6tCSgxMGbYZri6lAArIAZbDNEkgF2Exv2NDqggpEWjymatNMLGVqK6IJrI38Q0/uBW5ugcQs9iI0R+4FqsqLMVh4optjW+hGr0zGaCpNBC6gUHZ0WKsGHnMrs7RasTBX9XamiiR9qBRhzQUH76MwBAJzx9Mhr2gtnpbZ+7QGOZFpKYmnqLIYVHMCa7WcF9bB2TJUWGqcQJ7L9JXnOlvJcpmgJJ1XRYfOQmXv9EwjX9MOxA53h1SFzoTq47I8Ay0diR90DS3v2sxszEiBMXsqpCF/KxySipinwEsVSgl46QS3HGuZ2zt61Ao98F3bm37e/8hh8e3eUAd37o2/5uG3QdDv9blJQFvgASdFCAq4t0sOJBs6hlzjW4HGnmbirhlvjZrx1rQZ/1xgLqBTB+ZnaZPz9HxmTmr3h7uth6rhE9P/ssTcXFNiPI2rj8y/ghJ0P/wrPnBSmQ1zEBJj6dPwqwiCiNz6mxyO4jQH54c+5/4LMNbun0hUwpwBXVsfE0JnkVckjuzvm62ZbzYfjS/LQDgIyt8VJeG/+Xa8/AVCqNqXMgkAAA==</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=5fc9958647fb03d07ace13ff016d43e5"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</flow>
+        <generation_source/>
+        <order>7</order>
+        <parent_ui_id>c11f5f99-0499-4e0f-8943-df30a10e0cdc</parent_ui_id>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 10:29:49</sys_created_on>
+        <sys_id>bda5518e47bb03d07ace13ff016d4324</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2026-10-11 17:56:05</sys_updated_on>
+        <ui_id>bc434eb5-3e8c-4c1e-b0c4-109e20605f40</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VVy27iMBT9FeQ1ihJe07KrQEgjdVqpHbHpVJZj34A1zqO2Q2EQ/z7XiQMRRS0ddYOGne/L55zcg5+2RAoyJgMQYXQdjXg/6vd7Ydi7GkTxqB9HPdFnABHpkoylgJUaeK4FnldMlS6w3U40MAuCRgEvtYbMBsxayATLOOx2WCqkKRTbzH0HRvhSKoGlZPz03CUF0zjcgibj7VHqXHSKxaCw9KGBdwzXbgp3FjkvU4RIZRO89Z1Tn+l8n2IGmxycKOwSWDsygEASpgx0ScqQm831hoytLjGA/MV9pjb7iqXMbE00ZWsj/+DNg9DVJYDMuBdhf6ReoDqcTJlljziZ21Lv9colB1NrIiBhpbKTdqwuuC+szLO6xbJYNd25KtPsrlaE7Ae0vkdpEAQUjqdDXtNKHpf560MDciazShJPUeWcqf0JP7iWcWkdnC0BBZXGKSsKmS1oofOVrJoRShosFB6CROWveKeRiyxg3OEOUFUWzDA+rcJzpqUj8QPHYPOuS8zGTBQz5kAFNaQvpUNSE/MUaKVCJQGtNsE1cy0Le4NXrcAD33X9/sfD9zaMXx8WqjXz4IE1jb6NwuFgSE3KtGU0pAcLvDXATTv3OSucAbSxws9qAU4D9254E7tt93bu6oT3wvDLvHB1SV7wNC7eDB9ZIOy9+yfb2qRq601r/fkS+G8qs19lGPbFqQdBwwu2uFhTe+ph+Oc5n/PQGUwbD80kKGFOUG8MBCkSsEBrKY5M5JOduU/uH5Uvc1I0CqvfBfnpv3lbnv8CJp1Oal0JAAA=</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=bda5518e47bb03d07ace13ff016d4324"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</flow>
+        <generation_source/>
+        <order>9</order>
+        <parent_ui_id>3ff0d56f-97c7-4c09-ae59-bf897253a1d6</parent_ui_id>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 10:40:29</sys_created_on>
+        <sys_id>ca189146477b03d07ace13ff016d4352</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2026-10-11 17:56:05</sys_updated_on>
+        <ui_id>046997c7-4776-4aa7-8028-34e452a2b403</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VV204bMRD9FeTnaLWbWyFviChSJQoSVLxQZE3sCbHqvWB7A2mUf+9417tZhYBA5SVqnuK52OeczMncb5iSbMKGKOPkLBmLQTIY9OO4fzpM5uPBPOnLASAmrMcySJEqDYrcSDqvQJc+sNlcGASHkieRKI3BzEXgHGYSMoHbLZVKZQsN67vQQRGxVFpSKZvcP/RYAYYud2jYZLOX+ig6DXPUVHrTwNuH69aFP8tclClB5KoJXobOacicfJ9Shpo8nCTuMXzxZJCALEBb7LEUiJvLzZpNnCkpQPzldabXbcVSZa4mmsKLVX/o5WHs6xZIzEQQoT3yIFAdXkzBwS3dLFxpWr1yJdDWmkhcQKndRTdWF1wXTuVZ3eJgrpvuXJdpdlUrwtoLOr9HaQkEFp6nR17TWtwu8+ebBuRMZZUkgaLOBej2RD+4UfPSeTgbhhorjVMoCpU98sLkK1U1E5Q0etR0iBY6f6Y3rXrMIhAed0SqQjSj+LQK34FRnsQPuoaatz1m1/ZCg7U7KqQhfyo9kppYoMArFSoJeDUJvlkYVbhzemqFLfA66EGHSaFvBwq3220vWGU+em8Yxdlu9jrP7+zywpNv43g0HHGbgnHAY75zy2uvnHdzn3PNB4A2rvlZzcph4ME4r2KX3d6TqzoRbDP6MtucHpNtAo2j980bbmktEPff/T/uTFI19bYz/mKJ4jfPS/erjOOBPLQ8DD5Rj4+1xYe2yD/c9DkffYBt46OZQi3tAfqNiTAlCg55LceekULy5C4k2x30ZW5KxnH1OSJP/Y+rqJ3WN7YR1cIKZSsabaeHvzLSDETKCQAA</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=ca189146477b03d07ace13ff016d4352"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</flow>
+        <generation_source/>
+        <order>1</order>
+        <parent_ui_id/>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 09:42:18</sys_created_on>
+        <sys_id>f1cacdc6477b03d07ace13ff016d4393</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2026-10-11 17:56:05</sys_updated_on>
+        <ui_id>2978e728-6e59-4e56-a10b-1f14dcfc80fd</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VVTU/jMBD9K5XPVZQ0bRd6Q62QVmJBglUvLFiTeAqWnA9sB9qt8t93nDhpBV1UVlzQ5hTPh/3ey7z4dsukYDM2RhFGp9E0jaM4HoXh6GQcJdM4iUYiBsSIDVkOGVKlxrTQgtbPoCoX2G7nGsGi4FGQVlpjbuua8kKaUsFm6csokj5KJSjPZrd3Q1aCph0tajbbvkodC0lBgopKrztMrzHaTenWokirjHBx2QUvfOfCZwbfF5ShJgcnCocM1xZzgQRkBcrgkGWQC7CF3rCZ1RUFiLS4ytWmr3iUuW2JZrA28jedPA5d3QqJWepF6JfcC9SGVwuwcEM7p7bSvV6FTNG0mghcQaXsfD/WFlyVVhZ522IhUV13oaosv2wVYf0Ge9+jMgQCS8fTIW9prW4ei5frDuS5zBtJPEVVpKD6FVirZVJZB2fLUGGjcQZlKfMHXuriWTbNBCULHhQtgpUqXuhMIx/yAFKHOyBVITin+KIJL0FLR+IHbUPN9ZCZjZkrMGZHhTTkT5VD0hLzFHijQiMBbybBNadalvaMjnrGHngbdKD9pNDbgcK6rofeH8nkvWFMT3ezt3f8ziNrHn2bhpPxhJsMtAUechKPUIMbBIJAOJwYXONThca+tc9ZXz6Y9+WD6778Y946gk7nrZ/NRB2m5+31Jnax3zu4bBPeXJNPM9fJVzKXp/Hl3fUXT/VGCUfv/rX3JqnxhtkzibF0i/yqwjAW7kjHklAST1D33Uub9i5B8dYn/7bJx9xzBMfOPecSlTAHSHfWwYzQW+StCK/s45ODpU/299OneSiahs3zhZz0v1xT9d0f6TGp5Z0JAAA=</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=f1cacdc6477b03d07ace13ff016d4393"/>
+    <sys_hub_sub_flow_instance_v2 action="delete_multiple" query="flow=55188582477b03d07ace13ff016d4324"/>
+    <sys_hub_flow_logic_instance_v2 action="delete_multiple" query="flow=55188582477b03d07ace13ff016d4324^sys_idNOT IN45a9ddc247fb03d07ace13ff016d4344,7f55d14a47bb03d07ace13ff016d43d6,8b9e09ce477b03d07ace13ff016d43c4,8d77554247fb03d07ace13ff016d43ea"/>
+    <sys_hub_flow_logic_instance_v2 action="INSERT_OR_UPDATE">
+        <attributes/>
+        <block display_value="">fda365ca473f03d07ace13ff016d43b6</block>
+        <comment/>
+        <connected_to>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</connected_to>
+        <decision_table/>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</flow>
+        <flow_variables_assigned/>
+        <generation_source/>
+        <logic_definition display_value="Else">1f781bf3c32232002841b63b12d3aee6</logic_definition>
+        <order>11</order>
+        <outputs_assigned/>
+        <parent_ui_id/>
+        <sys_class_name>sys_hub_flow_logic_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 10:47:15</sys_created_on>
+        <sys_id>45a9ddc247fb03d07ace13ff016d4344</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:53</sys_updated_on>
+        <ui_id>14423385-bd9c-430a-b04f-dbe624498612</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/6tWyi8tKSgtKQ7JdywuzkzPU7KKjtVRyswDiUHYZYlFmYlJOalQbkpqcmZxZn5eCEjME0ldSmVeYm5mMrJQeX5RdlpOfjlCrBYAD1ouqHEAAAA=</values>
+        <workflow_reference/>
+    </sys_hub_flow_logic_instance_v2>
+    <sys_hub_flow_logic_instance_v2 action="INSERT_OR_UPDATE">
+        <attributes/>
+        <block display_value="">39a365ca473f03d07ace13ff016d43af</block>
+        <comment/>
+        <connected_to/>
+        <decision_table/>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</flow>
+        <flow_variables_assigned/>
+        <generation_source/>
+        <logic_definition display_value="If">af4e1945c3e232002841b63b12d3ae3e</logic_definition>
+        <order>6</order>
+        <outputs_assigned/>
+        <parent_ui_id>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</parent_ui_id>
+        <sys_class_name>sys_hub_flow_logic_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 10:28:35</sys_created_on>
+        <sys_id>7f55d14a47bb03d07ace13ff016d43d6</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:53</sys_updated_on>
+        <ui_id>c11f5f99-0499-4e0f-8943-df30a10e0cdc</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+2UUWvbMBDHv0rQszG204Q1byVbIbA2pQmFMYqRpXMiKkuuJCfNQr77TpadhjVlpexxb9b/Tnf/O/3wnujG1Y2zS31lrVgpMvn5GBGhvIbfe6JoBWRCmFZcOKFV3goR2VDZ+MA9PDdgHfDBdA3saTBTgzujN4IDxywubC3p7uFDyWwtJDfQeaipwU4ODJns/wi5XQ25pAVIrLlwRqgVXhccT2VCy/SSpWyYjYdZkmRfLtJiPCzSjA8p0CHm9Ren/UiD760SvTur74e67Ttpw72tNIkIvDhQ3v6kpNJCRCqqOHXa7I6KAcrnSr4Ka6EcliM++cWKX1g7G418Ygk4I4MQPB7zbotBZmstGMxrbzAojhayu8O0bCp1G+bw+4eSNtL1+0elsVgPam/au+gslYu13t73Da+FagfsglIzKo8n6nANRePA+ocBCRUWyita17icvA7Pado1VvFK4iEupd5iU89XTJk3HuOOaHyN+tdWfqBG+ClusAxeDjYLagXLWxaxnDM4wqFdS/7ceENhwG6UPGwDEywzonZX2GcDnetD9BbkE4b3+yk+EmKZpzFrDO7AxaZHNWceVbRxOMwWt/Plt5u75Y+3aH+qxr8g/pKOylGajM4TfzE+R/wZ1t/HPPsL5v5hPkh5kiT/MT/FXNg84NrN1jb/NOWPHunQwQZuODBh0cjSa7P+r+4DOwRAsFNpq82TH+FVO/wGMXsg5R8GAAA=</values>
+        <workflow_reference/>
+    </sys_hub_flow_logic_instance_v2>
+    <sys_hub_flow_logic_instance_v2 action="INSERT_OR_UPDATE">
+        <attributes/>
+        <block display_value="">35a365ca473f03d07ace13ff016d43ab</block>
+        <comment/>
+        <connected_to/>
+        <decision_table/>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</flow>
+        <flow_variables_assigned/>
+        <generation_source/>
+        <logic_definition display_value="If">af4e1945c3e232002841b63b12d3ae3e</logic_definition>
+        <order>3</order>
+        <outputs_assigned/>
+        <parent_ui_id/>
+        <sys_class_name>sys_hub_flow_logic_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 09:59:03</sys_created_on>
+        <sys_id>8b9e09ce477b03d07ace13ff016d43c4</sys_id>
+        <sys_mod_count>16</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:53</sys_updated_on>
+        <ui_id>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+1Uy27bMBD8lUBnW9DD8utmtAhQoGmAJsilDYQVubKJUqRKUnZcw//epR6O0dpoUeTYmzi73J1Z7ugQ6MbVjbOPemWtWKtg+eV5FAjlMfo+BAoqDJYB04oLJ7TKW2AUbEE2PnAHCtZoblZ1bfQWOYW4sLWE/dP1DLYRkhvsu9VgqKZDEywPv4TcvsZcQoGSCj04I9SargtOpzKCMl6wmKXJNE2iKJlP4mKaFnHCU0BIKW+4+G4gf/OxRUZXVfl+hNuhkzbc04qjUYAvDhUn+ssSpMVRUIHi4LTZnxCDwO+VfAU2QjkqF/jkFyt+UO0ky3xiiaSRYRc8HfN+dB3MNlowvK89wQ5xUMj+DtOyqdSnTocfOpbQSDcMnZDGUj2sPWnPoqdUPmz07vPQ8FaoVmAflJqBPJ3A0RiKxqH1D4MSKyqUV1DXNJzcP6ZoLxOXKlxLOoSl1Dtq6jcpBOaJhzQjCG8Jf9/CT2CEV3FHZehyR7MAK1jebh2Vc4YkHNux5N8bT6gT2EvJu2lQgmVG1G5FfbbYsz6Ofl/Zs209HMo0nS84n45nMMfxZJbOxouYJ+M0zuLFbJoskmgaQruqIHPrwOHx+LWJopTD1RV/q7Jv4YsFZGUWR9llX0yml3xxwRHXzZD8wQz++f7SC1EU/TfDuRmEzbul7rW1zf/ZC89+8bsOttsbjkxYIvLosQ/DX94H9rQAgp1DO22+eQmv2PEnr4Z1tS8GAAA=</values>
+        <workflow_reference/>
+    </sys_hub_flow_logic_instance_v2>
+    <sys_hub_flow_logic_instance_v2 action="INSERT_OR_UPDATE">
+        <attributes/>
+        <block display_value="">7da365ca473f03d07ace13ff016d43b2</block>
+        <comment/>
+        <connected_to/>
+        <decision_table/>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</flow>
+        <flow_variables_assigned/>
+        <generation_source/>
+        <logic_definition display_value="If">af4e1945c3e232002841b63b12d3ae3e</logic_definition>
+        <order>8</order>
+        <outputs_assigned/>
+        <parent_ui_id>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</parent_ui_id>
+        <sys_class_name>sys_hub_flow_logic_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 10:37:40</sys_created_on>
+        <sys_id>8d77554247fb03d07ace13ff016d43ea</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:53</sys_updated_on>
+        <ui_id>3ff0d56f-97c7-4c09-ae59-bf897253a1d6</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+2UUWvbMBDHv0rwszG204Q1byVbobA2pQmFMYqQpXMiKkuuJCfNQr77TpadhjVlpfSxb9Ffp7v/3f2cXaQbVzfOLvSFtWKposnvhzgSymv4excpWkE0iZhWXDihFWmFOFpT2fiLO3hqwDrgg+kK2ONg1rjBrdFrwYFjGBe2lnR7/75othKSG+hc1NRgLQcmmuz+uXLbGoikBUhMOndGqCU+FxxPZUrL7JxlbJiPh3ma5t/OsmI8LLKcDynQIcb1D6d9U4OfrRK/2a2vh7rtK2nDva0sjSN4dqC8/UlJpYU4qqji1GmzPSgGKJ8p+SKshHKYLvLBz1b8wdz5aOQDS8AeGYTLw5F0YwwyW2nBYFZ7g0FxtJDdG6ZlU6mb0IdfAJS0ka5fACqNxXxQe9PeRWepnK/05q4veClU22B3KTWj8nCiDsdQNA6sXwxIqDARqWhd43BIHdZp2jFWyVLiISml3mBRT1hCmTee4Ixocon691a+p0b4Lq4xDT4ONgtqBSMtjZjOGWxh346FPDXeUGiwa4WEaWCAZUbU7gLrrKFzvY9fo3xE8W43xSUhlyRLWGNwBi4xPauEeVYJfin7/dX8Zrb4cX27+PUa7o8l+Qzmz+moHGXp6DTzZ+NTzJ+g/W3Q8/+A7lfzTs7TNP0C/Rh0YUkAtuutLf5hzh881KGCDdxwYMKikYXXrvp/dn+xRQAEO5Y22jz6Fl60/V/YR5WRIwYAAA==</values>
+        <workflow_reference/>
+    </sys_hub_flow_logic_instance_v2>
+    <sys_hub_pill_compound action="delete_multiple" query="attached_to=55188582477b03d07ace13ff016d4324"/>
+    <sys_hub_flow_variable action="delete_multiple" query="model=55188582477b03d07ace13ff016d4324"/>
+    <sys_documentation action="INSERT_OR_UPDATE">
+        <element>table_name</element>
+        <help/>
+        <hint/>
+        <label>Table Name</label>
+        <language>en</language>
+        <name>var__m_sys_hub_flow_input_55188582477b03d07ace13ff016d4324</name>
+        <plural/>
+        <sys_class_name>sys_documentation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 09:32:10</sys_created_on>
+        <sys_id>557845c2477b03d07ace13ff016d438d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 09:32:10</sys_updated_on>
+        <url/>
+        <url_target/>
+    </sys_documentation>
+    <sys_documentation action="INSERT_OR_UPDATE">
+        <element>current</element>
+        <help/>
+        <hint/>
+        <label>Record</label>
+        <language>en</language>
+        <name>var__m_sys_hub_flow_input_55188582477b03d07ace13ff016d4324</name>
+        <plural/>
+        <sys_class_name>sys_documentation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 09:32:10</sys_created_on>
+        <sys_id>597845c2477b03d07ace13ff016d4381</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 09:32:10</sys_updated_on>
+        <url/>
+        <url_target/>
+    </sys_documentation>
+    <sys_choice action="delete_multiple" query="name=var__m_sys_hub_flow_input_55188582477b03d07ace13ff016d4324"/>
+    <sys_choice action="delete_multiple" query="name=var__m_sys_hub_flow_output_55188582477b03d07ace13ff016d4324"/>
+    <sys_hub_flow_snapshot action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <acls/>
+        <active>true</active>
+        <allow_high_security_roles>false</allow_high_security_roles>
+        <annotation/>
+        <attributes>browserActivatedIn=chrome,integrationActivatedIn=standalone,labelCacheCleanUpExecuted=true,viewActivatedIn=naturalLanguage</attributes>
+        <authored_on_release_version>29000</authored_on_release_version>
+        <callable_by_client_api>false</callable_by_client_api>
+        <category/>
+        <copied_from/>
+        <copied_from_name/>
+        <description/>
+        <flow_priority>MEDIUM</flow_priority>
+        <internal_name>smartattend__attendance_correction_approval</internal_name>
+        <label_cache>[{"name":"Created_1.current.requested_check_out","label":"Trigger - Record Created➛Attendance Correction Request Record➛Requested Check Out","reference":"","reference_display":"Requested Check Out","type":"glide_date_time","base_type":"glide_date_time","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"requested_check_out","usedInstances":{"3ff0d56f-97c7-4c09-ae59-bf897253a1d6":["condition"],"046997c7-4776-4aa7-8028-34e452a2b403":["check_out"]}},{"name":"Created_1.current.requested_check_in","label":"Trigger - Record Created➛Attendance Correction Request Record➛Requested Check In","reference":"","reference_display":"Requested Check In","type":"glide_date_time","base_type":"glide_date_time","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"requested_check_in","usedInstances":{"c11f5f99-0499-4e0f-8943-df30a10e0cdc":["condition"],"bc434eb5-3e8c-4c1e-b0c4-109e20605f40":["check_in"]}},{"name":"Created_1.table_name","label":"Trigger - Record Created➛Attendance Correction Request Table","reference":"x_1760545_smarta_0_attendance_correction_request","reference_display":"Attendance Correction Request","type":"table_name","base_type":"table_name","usedInstances":{"4153cee6-77e7-42e5-bda6-f3c4d516bda2":["condition"]},"attributes":{"test_input_hidden":"true"}},{"name":"Created_1.current.requested_status","label":"Trigger - Record Created➛Attendance Correction Request Record➛Requested Status","reference":"","reference_display":"Requested Status","type":"choice","base_type":"choice","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"requested_status","usedInstances":{"10845b2e-d407-4573-903f-f4f7309965e0":["status"]}},{"name":"Created_1.current.attendance","label":"Trigger - Record Created➛Attendance Correction Request Record➛Attendance","reference":"x_1760545_smarta_0_attendance","reference_display":"Attendance","type":"reference","base_type":"reference","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"attendance","usedInstances":{"10845b2e-d407-4573-903f-f4f7309965e0":["record"],"bc434eb5-3e8c-4c1e-b0c4-109e20605f40":["record"],"046997c7-4776-4aa7-8028-34e452a2b403":["record"]}},{"name":"f3389dd6-7a8e-4737-91d2-315197629206.approval_state","label":"2 - Ask For Approval➛Approval State","reference_display":"Approval State","type":"choice","base_type":"choice","choices":[{"label":"-- None --","value":"","order":0.0},{"label":"Not Yet Requested","value":"not requested","order":1.0},{"label":"Requested","value":"requested","order":2.0},{"label":"Approved","value":"approved","order":3.0},{"label":"Rejected","value":"rejected","order":4.0},{"label":"Cancelled","value":"cancelled","order":5.0},{"label":"No Longer Required","value":"not_required","order":6.0},{"label":"Skipped","value":"skipped","order":7.0}],"usedInstances":{"d9d5ccea-c0cf-4922-8b75-4f8898b4529b":["condition"]},"attributes":{"element_mapping_provider":"com.glide.flow_design.action.data.FlowDesignVariableMapper"}},{"name":"Created_1.current.manager","label":"Trigger - Record Created➛Attendance Correction Request Record➛Manager","reference":"sys_user","reference_display":"User","type":"reference","base_type":"reference","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"manager","usedInstances":{"f3389dd6-7a8e-4737-91d2-315197629206":["approval_conditions"]}},{"name":"2978e728-6e59-4e56-a10b-1f14dcfc80fd.record.manager","label":"1➛Attendance Correction Request Record➛Manager","reference":"sys_user","reference_display":"User","type":"reference","base_type":"reference","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"manager","usedInstances":{}},{"name":"Created_1.current.reason","label":"Trigger - Record Created➛Attendance Correction Request Record➛Reason","reference":"","reference_display":"Reason","type":"string","base_type":"string","parent_table_name":"x_1760545_smarta_0_attendance_correction_request","column_name":"reason","usedInstances":{"f3389dd6-7a8e-4737-91d2-315197629206":["approval_reason"]}},{"name":"Created_1.current","label":"Trigger - Record Created➛Attendance Correction Request Record","reference":"x_1760545_smarta_0_attendance_correction_request","reference_display":"Attendance Correction Request","type":"reference","base_type":"reference","usedInstances":{"2978e728-6e59-4e56-a10b-1f14dcfc80fd":["record"],"f3389dd6-7a8e-4737-91d2-315197629206":["record"],"1fc10eee-bb67-476c-94f3-2144b8144d46":["record"],"7f034761-4d3e-4741-8e99-6af574dc0013":["record"],"10845b2e-d407-4573-903f-f4f7309965e0":["record"],"bc434eb5-3e8c-4c1e-b0c4-109e20605f40":["record"],"4992142f-ae0a-49fd-86da-7226ceb9f509":["record"],"20ead245-c63b-4e99-95e1-ad2954284b1e":["record"]},"attributes":{}}]</label_cache>
+        <master>true</master>
+        <name>SmartAttend - Attendance Correction Approval</name>
+        <natlang/>
+        <outputs/>
+        <parent_flow display_value="SmartAttend - Attendance Correction Approval">55188582477b03d07ace13ff016d4324</parent_flow>
+        <remote_trigger_id/>
+        <run_as>system</run_as>
+        <run_with_roles/>
+        <sc_callable>false</sc_callable>
+        <status>published</status>
+        <sys_class_name>sys_hub_flow_snapshot</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:01</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>dea3a5ca473f03d07ace13ff016d4351</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name/>
+        <sys_overrides/>
+        <sys_package/>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:57</sys_updated_on>
+        <type>flow</type>
+        <version>2</version>
+    </sys_hub_flow_snapshot>
+    <sys_translated_text action="delete_multiple" query="documentkey=dea3a5ca473f03d07ace13ff016d4351"/>
+    <sys_variable_value action="delete_multiple" query="document_key=dea3a5ca473f03d07ace13ff016d4351"/>
+    <sys_hub_flow_stage action="delete_multiple" query="flow=dea3a5ca473f03d07ace13ff016d4351"/>
+    <sys_flow_cat_variable_model action="delete_multiple" query="id=dea3a5ca473f03d07ace13ff016d4351^sys_idNOT INd2a3a5ca473f03d07ace13ff016d4353"/>
+    <sys_flow_cat_variable_model action="INSERT_OR_UPDATE">
+        <id>dea3a5ca473f03d07ace13ff016d4351</id>
+        <name>SmartAttend - Attendance Correction Approval</name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:01</sys_created_on>
+        <sys_id>d2a3a5ca473f03d07ace13ff016d4353</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_scope/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 11:31:01</sys_updated_on>
+    </sys_flow_cat_variable_model>
+    <sys_flow_cat_variable action="delete_multiple" query="flow_catalog_model=d2a3a5ca473f03d07ace13ff016d4353"/>
+    <sys_hub_flow_input action="delete_multiple" query="model=dea3a5ca473f03d07ace13ff016d4351^sys_idNOT IN52a3a5ca473f03d07ace13ff016d4355,dea3a5ca473f03d07ace13ff016d4368"/>
+    <sys_hub_flow_input action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <array>false</array>
+        <array_denormalized>false</array_denormalized>
+        <attributes>element_mapping_provider=com.glide.flow_design.action.data.FlowDesignVariableMapper,uiType=document_id</attributes>
+        <audit>false</audit>
+        <calculation><![CDATA[(function calculatedFieldValue(current) {
+
+	// Add your code here
+	return '';  // return the calculated value
+
+})(current);]]></calculation>
+        <choice/>
+        <choice_field/>
+        <choice_table/>
+        <column_label/>
+        <comments/>
+        <create_roles/>
+        <default_value/>
+        <defaultsort/>
+        <delete_roles/>
+        <dependent>table_name</dependent>
+        <dependent_on_field>table_name</dependent_on_field>
+        <display>false</display>
+        <dynamic_creation>false</dynamic_creation>
+        <dynamic_creation_script/>
+        <dynamic_default_value/>
+        <dynamic_ref_qual/>
+        <element>current</element>
+        <element_reference>false</element_reference>
+        <foreign_database/>
+        <formula/>
+        <function_definition/>
+        <function_field>false</function_field>
+        <help/>
+        <hint/>
+        <internal_type display_value="">document_id</internal_type>
+        <label>Record</label>
+        <mandatory>true</mandatory>
+        <max_length>200</max_length>
+        <model display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</model>
+        <model_id>dea3a5ca473f03d07ace13ff016d4351</model_id>
+        <model_table>sys_hub_flow_snapshot</model_table>
+        <name>var__m_sys_hub_flow_input_dea3a5ca473f03d07ace13ff016d4351</name>
+        <next_element/>
+        <order>100</order>
+        <primary>false</primary>
+        <read_only>false</read_only>
+        <read_only_option/>
+        <read_roles/>
+        <reference/>
+        <reference_cascade_rule/>
+        <reference_floats>false</reference_floats>
+        <reference_key/>
+        <reference_qual/>
+        <reference_qual_condition/>
+        <reference_type/>
+        <sizeclass/>
+        <spell_check>false</spell_check>
+        <staged>false</staged>
+        <sys_class_name>sys_hub_flow_input</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:01</sys_created_on>
+        <sys_id>52a3a5ca473f03d07ace13ff016d4355</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name/>
+        <sys_package/>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:56</sys_updated_on>
+        <table_reference>false</table_reference>
+        <text_index>false</text_index>
+        <unique>false</unique>
+        <use_dependent_field>true</use_dependent_field>
+        <use_dynamic_default>false</use_dynamic_default>
+        <use_reference_qualifier>simple</use_reference_qualifier>
+        <virtual>false</virtual>
+        <virtual_type>script</virtual_type>
+        <widget/>
+        <write_roles/>
+        <xml_view>false</xml_view>
+    </sys_hub_flow_input>
+    <sys_hub_action_input_action_instance action="delete_multiple" query="action_input=52a3a5ca473f03d07ace13ff016d4355"/>
+    <sys_hub_flow_input action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <array>false</array>
+        <array_denormalized>false</array_denormalized>
+        <attributes>element_mapping_provider=com.glide.flow_design.action.data.FlowDesignVariableMapper,test_input_hidden=true,uiType=table_name</attributes>
+        <audit>false</audit>
+        <calculation><![CDATA[(function calculatedFieldValue(current) {
+
+	// Add your code here
+	return '';  // return the calculated value
+
+})(current);]]></calculation>
+        <choice/>
+        <choice_field/>
+        <choice_table/>
+        <column_label/>
+        <comments/>
+        <create_roles/>
+        <default_value/>
+        <defaultsort/>
+        <delete_roles/>
+        <dependent/>
+        <dependent_on_field/>
+        <display>false</display>
+        <dynamic_creation>false</dynamic_creation>
+        <dynamic_creation_script/>
+        <dynamic_default_value/>
+        <dynamic_ref_qual/>
+        <element>table_name</element>
+        <element_reference>false</element_reference>
+        <foreign_database/>
+        <formula/>
+        <function_definition/>
+        <function_field>false</function_field>
+        <help/>
+        <hint/>
+        <internal_type display_value="">table_name</internal_type>
+        <label>Table Name</label>
+        <mandatory>false</mandatory>
+        <max_length>200</max_length>
+        <model display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</model>
+        <model_id>dea3a5ca473f03d07ace13ff016d4351</model_id>
+        <model_table>sys_hub_flow_snapshot</model_table>
+        <name>var__m_sys_hub_flow_input_dea3a5ca473f03d07ace13ff016d4351</name>
+        <next_element/>
+        <order>101</order>
+        <primary>false</primary>
+        <read_only>false</read_only>
+        <read_only_option/>
+        <read_roles/>
+        <reference/>
+        <reference_cascade_rule/>
+        <reference_floats>false</reference_floats>
+        <reference_key/>
+        <reference_qual/>
+        <reference_qual_condition/>
+        <reference_type/>
+        <sizeclass/>
+        <spell_check>false</spell_check>
+        <staged>false</staged>
+        <sys_class_name>sys_hub_flow_input</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:01</sys_created_on>
+        <sys_id>dea3a5ca473f03d07ace13ff016d4368</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name/>
+        <sys_package/>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:56</sys_updated_on>
+        <table_reference>false</table_reference>
+        <text_index>false</text_index>
+        <unique>false</unique>
+        <use_dependent_field>false</use_dependent_field>
+        <use_dynamic_default>false</use_dynamic_default>
+        <use_reference_qualifier>simple</use_reference_qualifier>
+        <virtual>false</virtual>
+        <virtual_type>script</virtual_type>
+        <widget/>
+        <write_roles/>
+        <xml_view>false</xml_view>
+    </sys_hub_flow_input>
+    <sys_hub_action_input_action_instance action="delete_multiple" query="action_input=dea3a5ca473f03d07ace13ff016d4368"/>
+    <sys_hub_flow_output action="delete_multiple" query="model=dea3a5ca473f03d07ace13ff016d4351"/>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=dea3a5ca473f03d07ace13ff016d4351"/>
+    <sys_hub_trigger_instance_v2 action="delete_multiple" query="flow=dea3a5ca473f03d07ace13ff016d4351^sys_idNOT INaea3a5ca473f03d07ace13ff016d43fb"/>
+    <sys_hub_trigger_instance_v2 action="INSERT_OR_UPDATE">
+        <comment/>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</flow>
+        <generation_source/>
+        <name>Created</name>
+        <published_version/>
+        <remote_sys_id/>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:02</sys_created_on>
+        <sys_id>aea3a5ca473f03d07ace13ff016d43fb</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_scope/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:56</sys_updated_on>
+        <trigger_definition display_value="Created">798916a0c31322002841b63b12d3ae7c</trigger_definition>
+        <trigger_inputs>H4sIAAAAAAAA/9VY227bOBD9FUFPu4ALUJIvcd6yTooN0G0Ax919yAYCJZI2sRLlSpRSt8i/71A3y7o4duS0zksAkQx55vDMmaEffugedqinX+oL7HhUH+hcSBoK7C02awrDUg3bAvtqzseCYBmEG/1ShjEd6CwM/AX11x6WsJhhL4LBICQ01C+NgZ5gL6b3m+iWwE7w/+k2+Z56Pg3f32xjMkaj4ciOfBxKbCMbS0nhLOFS2w3CkLqSB8IO6deYRhL+lfAIDt38ne9wVS7XZuVybV4ud1fcIyEV+uXD40Bf4xCASAXyR22KK6Quc/HUpMi1DMs0ETIvhoYzthzDJBamCMGGddZqkckW8ra00G8KLSUlYw1eQ4rJnfA25YoVXEvGoY+/Rfw77H6B1DpGAbtLs7ny0875yYbdVcBderdWpGQjGc5sMvBiX3zO8CtmKcOxJwtmYSSOYD+6VpAViBwRu18FT/PiwI9cpNHlk17gYq/8gssMuRNLGinCGfeAejvjJgriMEU/v5ndza/tf64Wsz9v5vb85n4xv50tbq715zQu+2usdswQ5ljsLJznUg4fOfXUBYrYdwDNQI/ckK/lFcghKfT5PNhqfhYIwlNWGrp3i6loV/dF9PuEj1Cn9N3KiYX8Iwmb/BsjZJEodnwOWiZHa3Y8xphQ3KFZh1U0W426BZZsIaAa2T715iOHyHeI0C8ScG5dr9WvHxDqXW+302FyuQRFc7GOpWLrCQsZ2TKwMSF2hUe1FDC9JOgstqaqX9ZzGAvYwi5vqKnqlMiS0U8c3PHyAXLyXllleg0fwKBYQV56Aixnn/IT5rHQArhZ+KO5MTitkFpheuzWx8ucctjQAxeuqIR9iapff/Eo4mJZCaILQ8pZA0J5OohPKwLOoEQ9sTyeMuGbV5LUuK2VsqMz3zAYcygz0UTlvYEshxlogkaYEQsh16xkfhNMJ0pZE8ybOMBx+R+lUvUOUGKd4hw8qubKQTJKdjVYkKAkktvM7DTQjBNBMxW0ml1aR/llKcts+HpXnftCO3GfgEmiGjpyqG2qBQf4I/OCJ7Dq/t7oYPe/ZRjEgtTdSR2hcaFtV2i/5XT+/nY+yYKQ7sezu+KcHHJ7KYWssdicwBstZjhTOqQILNECN3RG06njYpOxyXhCTaPmjVsYrdjehSe+IL6kTb1d/tgqnKRNb0c4Yw+ADZc8GmB/f8yF2eqO2dz78MGnFRU2QA1tj6dv5JodLj1OaDF32mxvHJ1s87tvxrOLqTsyJhN3Am8gyHg2pA42huYITydj62JUy/gGlH0wZQszP+VlFG2iFEiHG3zJps7rmf+Wso2olKoc9a7hApredAucnVkpnOqWtNRjglD7HIgPt9t12j2Fepi+lt+omB8CSl279lNROYFcNZoLQPIHjO8gUS1rB2dn9zqrKSrZjbX364wOL0ZTZrX7EZu2+dEWTDfMs+9FDsyfpDMT25qSQ/WftKZRZxfxCgnXZFJtL/b0P6cixTg5KebbkWL17rmKXOx8kr4G7Duqd2kTcsKipyBQO2BVL78ONJjQ4EyNMy3/TZMSzdlockWBYQ96bThfU2D6mvieGtNEVur7l+LKevtG6YNhLW/Nzq+q1XRz2rc1JRM8Glkdnfa0/rZuA/QC3rOvcUfnTNKWgnsL3XH71vdsLXUVye4q4sAidtKo2ytZv6hba9lLUfevUvt+GWhBcab15/F/8H1KORQgAAA=</trigger_inputs>
+        <trigger_outputs/>
+        <trigger_type>record_create</trigger_type>
+        <updation_source/>
+    </sys_hub_trigger_instance_v2>
+    <sys_hub_action_instance_v2 action="delete_multiple" query="flow=dea3a5ca473f03d07ace13ff016d4351^sys_idNOT IN62a3a5ca473f03d07ace13ff016d43f9,66a3a5ca473f03d07ace13ff016d43f4,6aa3a5ca473f03d07ace13ff016d43f6,6ea3a5ca473f03d07ace13ff016d43f7,e2a3a5ca473f03d07ace13ff016d43f7,e6a3a5ca473f03d07ace13ff016d43f8,eaa3a5ca473f03d07ace13ff016d43f9,eea3a5ca473f03d07ace13ff016d43f5"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</flow>
+        <generation_source/>
+        <order>10</order>
+        <parent_ui_id>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</parent_ui_id>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:02</sys_created_on>
+        <sys_id>62a3a5ca473f03d07ace13ff016d43f9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 11:31:02</sys_updated_on>
+        <ui_id>4992142f-ae0a-49fd-86da-7226ceb9f509</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VVy27iMBT9FeQ1QgmvadlVIKSROq1ER2w6lXUTX8CS86jtUBjEv8914gQEnQ6VukHDzvfhnHNyDnneMSnYiPVRBOFtOIx7Ya/XDYLuTT+Mhr0o7IoeIIaszVJIkCY1xpkWdF6DKlxhtxtrBIuCh5240BpTu99TX0iTK9jO/RhV4pVUgvps9PzSZjloutGiZqPdSetSSAoiVDQ6qzGdYrTb3J1FFhcJ4eKyLt77zYnvtL5PqENLDk4YtBluLKYCCcgClME2SyAVYDO9ZSOrCyoQafGYqm0zsZKprYgmsDHyNz25H7i5BRKz2IvQHLkXqCovJmDhiW6ObaEbvTIZo6k0EbiAQtnxca0aeMytzNJqxUKk6u1MFUn6UCnCmguO3kdhCATmjqdDXtFaPK2yt1kNcirTUhJPUWUxqOYE1moZFdbB2TFUWGqcQJ7LdMlzna1luUxQks5S0aGzUNkbPdPIZdqB2OHukKrQmVJ9UpbnoKUj8YOuoeV9m5mtGSsw5kCFNOSvhUNSEfMUeKlCKQEvneCWYy1ze0ePWqMHvm9700eDjxwW3x4MdXTnwfgbHn4bBoP+gJsEtAUecFKEoIB7u+RAsqFjyDW+FmjseSbumvHWuBlvzZrxzwXmAjp1YH6WNnmfns/MWe3+eLf1UDV8YgZflpiba0qMp3H1kflXUILuh3/FR04qs2GOQmIsfRp+FUHQE0QpV+RfcR6Ev0x9zv8XoKz9P5WohHkHdm1+JBAEiVc0TgLgm625bzafjS9LQTgMyt8VZeG/+Xq8/AFadSWlNAkAAA==</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=62a3a5ca473f03d07ace13ff016d43f9"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</flow>
+        <generation_source/>
+        <order>1</order>
+        <parent_ui_id/>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:02</sys_created_on>
+        <sys_id>66a3a5ca473f03d07ace13ff016d43f4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 11:31:02</sys_updated_on>
+        <ui_id>2978e728-6e59-4e56-a10b-1f14dcfc80fd</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VVTU/jMBD9K5XPVZQ0bRd6Q62QVmJBglUvLFiTeAqWnA9sB9qt8t93nDhpBV1UVlzQ5hTPh/3ey7z4dsukYDM2RhFGp9E0jaM4HoXh6GQcJdM4iUYiBsSIDVkOGVKlxrTQgtbPoCoX2G7nGsGi4FGQVlpjbuua8kKaUsFm6csokj5KJSjPZrd3Q1aCph0tajbbvkodC0lBgopKrztMrzHaTenWokirjHBx2QUvfOfCZwbfF5ShJgcnCocM1xZzgQRkBcrgkGWQC7CF3rCZ1RUFiLS4ytWmr3iUuW2JZrA28jedPA5d3QqJWepF6JfcC9SGVwuwcEM7p7bSvV6FTNG0mghcQaXsfD/WFlyVVhZ522IhUV13oaosv2wVYf0Ge9+jMgQCS8fTIW9prW4ei5frDuS5zBtJPEVVpKD6FVirZVJZB2fLUGGjcQZlKfMHXuriWTbNBCULHhQtgpUqXuhMIx/yAFKHOyBVITin+KIJL0FLR+IHbUPN9ZCZjZkrMGZHhTTkT5VD0hLzFHijQiMBbybBNadalvaMjnrGHngbdKD9pNDbgcK6rofeH8nkvWFMT3ezt3f8ziNrHn2bhpPxhJsMtAUechKPUIMbBIJAOJwYXONThca+tc9ZXz6Y9+WD6778Y946gk7nrZ/NRB2m5+31Jnax3zu4bBPeXJNPM9fJVzKXp/Hl3fUXT/VGCUfv/rX3JqnxhtkzibF0i/yqwjAW7kjHklAST1D33Uub9i5B8dYn/7bJx9xzBMfOPecSlTAHSHfWwYzQW+StCK/s45ODpU/299OneSiahs3zhZz0v1xT9d0f6TGp5Z0JAAA=</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=66a3a5ca473f03d07ace13ff016d43f4"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</flow>
+        <generation_source/>
+        <order>4</order>
+        <parent_ui_id>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</parent_ui_id>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:02</sys_created_on>
+        <sys_id>6aa3a5ca473f03d07ace13ff016d43f6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 11:31:02</sys_updated_on>
+        <ui_id>1fc10eee-bb67-476c-94f3-2144b8144d46</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VVXWsiMRT9K5JnkRm/tvWtKMJCtwW7+NIt4Tq51kDmo0nG6sr8972ZyYyitljoi6xP3q/knOM95nnHpGAj1kcRhLfhMOqFvV43CLo3/XAx7C3CrugBYsjaLIEYqVNjlGpB8RpU7hK73VgjWBQ87ES51pjYoqC6kCZTsJ37NspEK6kE1dno+aXNMtB0okXNRruj0qWQFCxQUeusxnSM0W4zF4s0ymPCxWWdvPeTE19p/ZxQhYYcnDBoM9xYTAQSkCUog20WQyLApnrLRlbnlCDS4jFR26ZjJRNbEY1hY+RfurkfuL4lErPIi9CE3AtUpZcTsPBEJ0c2141eqYzQVJoIXEKu7PgwVzU8ZlamSTViYaHq6VTlcfJQKcKaAw5+j9wQCMwcT4e8orV8WqXvsxrkVCalJJ6iSiNQTQTWarnIrYOzY6iw1DiGLJPJK890upblMEGJO6+Kgs5Spe90p5GvSQcih7tDqkJnSvlJmZ6Dlo7ELzqGhos2M1szVmDMngppyN9yh6Qi5inwUoVSAl5ughuOtMzsHV21xgZ4lXSg/abQtzONRVG0vT8Wg8+WMbrd797B9XuPbHj4YxgM+gNuYtAWeMBJPEINbhEIAuFwYnCNbzkae2qfu6a9NW7aW7Om/WveuoBO7a3f5Uadp+ftdZK7P5xtPVQFb67Bt5nr5prM5Wlcvbs+8FRjlKD76b/2wSaV3jAHJjGWXpE/eRD0BKEjfihOfXC+6WvbfwHGevunEpUwZ0DXq48xobPIKxJH6++LrbkvNu/Lt3kgHAbl54qc8L88M8XLPyHSzwBdCQAA</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=6aa3a5ca473f03d07ace13ff016d43f6"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</flow>
+        <generation_source/>
+        <order>7</order>
+        <parent_ui_id>c11f5f99-0499-4e0f-8943-df30a10e0cdc</parent_ui_id>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:02</sys_created_on>
+        <sys_id>6ea3a5ca473f03d07ace13ff016d43f7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 11:31:02</sys_updated_on>
+        <ui_id>bc434eb5-3e8c-4c1e-b0c4-109e20605f40</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VVy27iMBT9FeQ1ihJe07KrQEgjdVqpHbHpVJZj34A1zqO2Q2EQ/z7XiQMRRS0ddYOGne/L55zcg5+2RAoyJgMQYXQdjXg/6vd7Ydi7GkTxqB9HPdFnABHpkoylgJUaeK4FnldMlS6w3U40MAuCRgEvtYbMBsxayATLOOx2WCqkKRTbzH0HRvhSKoGlZPz03CUF0zjcgibj7VHqXHSKxaCw9KGBdwzXbgp3FjkvU4RIZRO89Z1Tn+l8n2IGmxycKOwSWDsygEASpgx0ScqQm831hoytLjGA/MV9pjb7iqXMbE00ZWsj/+DNg9DVJYDMuBdhf6ReoDqcTJlljziZ21Lv9colB1NrIiBhpbKTdqwuuC+szLO6xbJYNd25KtPsrlaE7Ae0vkdpEAQUjqdDXtNKHpf560MDciazShJPUeWcqf0JP7iWcWkdnC0BBZXGKSsKmS1oofOVrJoRShosFB6CROWveKeRiyxg3OEOUFUWzDA+rcJzpqUj8QPHYPOuS8zGTBQz5kAFNaQvpUNSE/MUaKVCJQGtNsE1cy0Le4NXrcAD33X9/sfD9zaMXx8WqjXz4IE1jb6NwuFgSE3KtGU0pAcLvDXATTv3OSucAbSxws9qAU4D9254E7tt93bu6oT3wvDLvHB1SV7wNC7eDB9ZIOy9+yfb2qRq601r/fkS+G8qs19lGPbFqQdBwwu2uFhTe+ph+Oc5n/PQGUwbD80kKGFOUG8MBCkSsEBrKY5M5JOduU/uH5Uvc1I0CqvfBfnpv3lbnv8CJp1Oal0JAAA=</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=6ea3a5ca473f03d07ace13ff016d43f7"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</flow>
+        <generation_source/>
+        <order>5</order>
+        <parent_ui_id>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</parent_ui_id>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:02</sys_created_on>
+        <sys_id>e2a3a5ca473f03d07ace13ff016d43f7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 11:31:02</sys_updated_on>
+        <ui_id>10845b2e-d407-4573-903f-f4f7309965e0</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VVy2rjMBT9laB1MHZe02ZXEgIDnRbaoZtOMTfSTSOQH5XktJngf58rW3ZMGjrp0E2YrKL78jnH91iPOyYFm7IRijC6jCZ8GA2HgzAcXIyi5WS4jAZiCIgR67MUEqRKjTzTgs4bUIUL7HYzjWBRxFHAC60xtQFYi6mAlGNZUqmQJlewffAdFOFrqQSVsunjU5/loGm4Rc2mu4PUqegULFFR6V0D7xCu3ebuLDJeJAQxlk3w2nfOfab3fU4ZanJworDP8M2RQQKyAmWwzxIgbjbTWza1uqAA8Re3qdq2FWuZ2ppoAm9G/qYnj0JXt0Jixr0I7TH2AtXh1Rws3NNkbgvd6pVJjqbWROAKCmVn3VhdcJtbmaV1i4WlarozVSTpTa0Iawd03kdhCATmjqdDXtNa3a+z17sG5EKmlSSeoso4qPZEL1zLZWEdnB1DhZXGCeS5TJ/jXGcbWTUTlCR4VnQIVip7pWca+ZwGwB3ugFSFYEHxeRV+AC0diR80hprLPjNbM1NgzJ4KaRi/FA5JTcxTiCsVKgniahNcM9cyt1f0qA164GXf7/9y/NGG8cv9QnVm7j3wFkffJuF4NI5NAtpCHMZ7C7w3wFU39zkrnAC0scLPagGOA/dueBe77vb2buqE98L4y7xwcU5e8DTO3gx/s0A4+PAj29mkautNZ/2NBVuYX0UYDsWx60DjCzW4WF157FL4pxmf884JDBvvLCQqYY5QboyDCYG3GNcSHJjHJ3sPPtleJl/moGgSVr8z8tH/cqc0QQe6XtXq39FC2KBoFSvL8ukPUJaChpAJAAA=</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=e2a3a5ca473f03d07ace13ff016d43f7"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</flow>
+        <generation_source/>
+        <order>9</order>
+        <parent_ui_id>3ff0d56f-97c7-4c09-ae59-bf897253a1d6</parent_ui_id>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:02</sys_created_on>
+        <sys_id>e6a3a5ca473f03d07ace13ff016d43f8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 11:31:02</sys_updated_on>
+        <ui_id>046997c7-4776-4aa7-8028-34e452a2b403</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VV204bMRD9FeTnaLWbWyFviChSJQoSVLxQZE3sCbHqvWB7A2mUf+9417tZhYBA5SVqnuK52OeczMncb5iSbMKGKOPkLBmLQTIY9OO4fzpM5uPBPOnLASAmrMcySJEqDYrcSDqvQJc+sNlcGASHkieRKI3BzEXgHGYSMoHbLZVKZQsN67vQQRGxVFpSKZvcP/RYAYYud2jYZLOX+ig6DXPUVHrTwNuH69aFP8tclClB5KoJXobOacicfJ9Shpo8nCTuMXzxZJCALEBb7LEUiJvLzZpNnCkpQPzldabXbcVSZa4mmsKLVX/o5WHs6xZIzEQQoT3yIFAdXkzBwS3dLFxpWr1yJdDWmkhcQKndRTdWF1wXTuVZ3eJgrpvuXJdpdlUrwtoLOr9HaQkEFp6nR17TWtwu8+ebBuRMZZUkgaLOBej2RD+4UfPSeTgbhhorjVMoCpU98sLkK1U1E5Q0etR0iBY6f6Y3rXrMIhAed0SqQjSj+LQK34FRnsQPuoaatz1m1/ZCg7U7KqQhfyo9kppYoMArFSoJeDUJvlkYVbhzemqFLfA66EGHSaFvBwq3220vWGU+em8Yxdlu9jrP7+zywpNv43g0HHGbgnHAY75zy2uvnHdzn3PNB4A2rvlZzcph4ME4r2KX3d6TqzoRbDP6MtucHpNtAo2j980bbmktEPff/T/uTFI19bYz/mKJ4jfPS/erjOOBPLQ8DD5Rj4+1xYe2yD/c9DkffYBt46OZQi3tAfqNiTAlCg55LceekULy5C4k2x30ZW5KxnH1OSJP/Y+rqJ3WN7YR1cIKZSsabaeHvzLSDETKCQAA</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=e6a3a5ca473f03d07ace13ff016d43f8"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Update Record">f9d01dd2c31332002841b63b12d3aea1</action_type>
+        <action_type_parent display_value="Update Record">baf174c8c3c232002841b63b12d3aee4</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f9d01dd2c31332002841b63b12d3aea1</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</flow>
+        <generation_source/>
+        <order>12</order>
+        <parent_ui_id>14423385-bd9c-430a-b04f-dbe624498612</parent_ui_id>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:02</sys_created_on>
+        <sys_id>eaa3a5ca473f03d07ace13ff016d43f9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 11:31:02</sys_updated_on>
+        <ui_id>20ead245-c63b-4e99-95e1-ad2954284b1e</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+VVTW/iMBT8K8hnhBICbMutAiGt1G0luuLSraxH/CheOR+1HQqL+O/7nDgBAepSqRe03Pw+nJnJDHneMinYkPVQBOFtOIijMIq6QdC96YXzQTQPuyICxJC1WQoJ0qTGONOCzitQhStstyONYFHwsBMXWmNqdzvqC2lyBZuZH6NKvJRKUJ8Nn1/aLAdNN1rUbLg9al0KScEcFY1Oa0zHGO0md2eRxUVCuLisi/d+c+w7re9j6tCSgxMGbYZri6lAArIAZbDNEkgF2Exv2NDqggpEWjymatNMLGVqK6IJrI38Q0/uBW5ugcQs9iI0R+4FqsqLMVh4optjW+hGr0zGaCpNBC6gUHZ0WKsGHnMrs7RasTBX9XamiiR9qBRhzQUH76MwBAJzx9Mhr2gtnpbZ+7QGOZFpKYmnqLIYVHMCa7WcF9bB2TJUWGqcQJ7L9JXnOlvJcpmgJJ1XRYfOQmXv9EwjX9MOxA53h1SFzoTq47I8Ay0diR90DS3v2sxszEiBMXsqpCF/KxySipinwEsVSgl46QS3HGuZ2zt61Ao98F3bm37e/8hh8e3eUAd37o2/5uG3QdDv9blJQFvgASdFCAq4t0sOJBs6hlzjW4HGnmbirhlvjZrx1rQZ/1xgLqBTB+ZnaZPz9HxmTmr3h7uth6rhE9P/ssTcXFNiPI2rj8y/ghJ0P/wrPnBSmQ1zEBJj6dPwqwiCiNz6mxyO4jQH54c+5/4LMNbun0hUwpwBXVsfE0JnkVckjuzvm62ZbzYfjS/LQDgIyt8VJeG/+Xa8/AVCqNqXMgkAAA==</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=eaa3a5ca473f03d07ace13ff016d43f9"/>
+    <sys_hub_action_instance_v2 action="INSERT_OR_UPDATE">
+        <action_type display_value="Ask For Approval">f8f2e9920b10030085c083eb37673abd</action_type>
+        <action_type_parent display_value="Ask For Approval">bae0a1120b10030085c083eb37673a92</action_type_parent>
+        <attributes/>
+        <comment/>
+        <compiled_snapshot>f8f2e9920b10030085c083eb37673abd</compiled_snapshot>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</flow>
+        <generation_source/>
+        <order>2</order>
+        <parent_ui_id/>
+        <sys_class_name>sys_hub_action_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:02</sys_created_on>
+        <sys_id>eea3a5ca473f03d07ace13ff016d43f5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 11:31:02</sys_updated_on>
+        <ui_id>f3389dd6-7a8e-4737-91d2-315197629206</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+2Y32/aOhTH/xXkZ8ocQkLgrSqqtKt7N6nt+lKqyDgOeDJJZjtdGeJ/30ns/BhQChN76O1ekHx8jvM9J+cT2zysEY/QGA2DuM9Goz6eORi7GAcexYHLZu7QH7qEYtRFCVky8JSMpjKC8RMReWFYr68kI5pFodOjuZQs0ZsNzEdcZYKs7q0bWOiCiwjm0fjhsYsyImFFzSQar7emjpUkyIwJcL2pNG1r1KusGEcpzZegK+SV8V8bObEznY8TmIGgQg7uIvasWRIx0BEToVgXLUkSEZ3KFRprmYMBco4+J2JVeyx4ok2eS/Ks+A94sNsv/GIGiVFbg3oY2voYczwhmtzCylTnsi5XyilTpiQRi0ku9FXbZhw+Z5qniQnRZCaq6FTky+STKQiqF2i9jlyBCJYVeRbKTVrx7SL9flOJvOZJWRGbokgpEfWIaC35LNeFnDVigpUlXpIs48k8zGT6xMtgkLLszQUMerFIv8MzFZ8nPUIL3T2oKuldg31Smu+J5EUS/8EyELzpIrVSV4Io1aQCNQy/5YUSk5hNISyrYEpQxFHJM30JT3liVvOma9t9Rg/2Fm1aySzXdPtz6Ax97A28UC2J1CTEIdQBBJDinULbQe8VeYWSfcuZ0rsgXNbunavavXNTu59GyRGZVJTc2VS2MrOMlMOwnPsVkTKs88lMWEKcw4RYS4OI6a09hAT4DRFi03rziLxGBxv4rgc/w9jFTt/BAfODgI4woYHvewO36SFQADkQAd1OFKx9cFfoGad9m8Mr3qchcYT8ColLqx/ws/pfTMxiouCFJvMtRG4ro8WjfyIeL+8gjv+eAMn53VaVjWWnzn+GpOJxXxIOH+KPRR/5/Zk/wkF0EcV4djEIXO+CUIYvmO94zIt86jnuH6APO4e+6FGwp0ljzkT7SFZN7ILWmjkNqiNU7UB1bWW9JNciVQ737Txl/NbOcz60AozfElvv6XhGDzYba21AX9NcJgcICBdclZ3xIgktj9OIOEJkRcQ/RuU2ENvif4cH9y8P/38eBt7BVmsd6uuupmkS8UKxalFhvsxM3bCvcO1Ql8nqy8O+oxc0EJkzudk87rm+/M4ap5F1RLr1zT8XTL2WvuWqOdPZoDZbzUnQTlq+Buf6L+CN4fVe7jr0YK/Fo6a3ohwKBE3evuRMkZE9ReMpStKETVF3igqvsGiu0gweIK6eKG3rjRnnkthwpzVsYiOyUqWnogsWQWeW1l8sYYmCtZ/jf7cjKlLRN8lZZ2JKsluk6sJU6TRV4Tu72q11KFf6cMfbu5t3tt1t8Be+c1yPwvoCAVsXfPvOSOTjT5vBEP6MFgAA</values>
+    </sys_hub_action_instance_v2>
+    <sys_hub_alias_mapping action="delete_multiple" query="source_id=eea3a5ca473f03d07ace13ff016d43f5"/>
+    <sys_hub_sub_flow_instance_v2 action="delete_multiple" query="flow=dea3a5ca473f03d07ace13ff016d4351"/>
+    <sys_hub_flow_logic_instance_v2 action="delete_multiple" query="flow=dea3a5ca473f03d07ace13ff016d4351^sys_idNOT IN2ea3a5ca473f03d07ace13ff016d43e0,2ea3a5ca473f03d07ace13ff016d43e4,66a3a5ca473f03d07ace13ff016d43e6,e2a3a5ca473f03d07ace13ff016d43e3"/>
+    <sys_hub_flow_logic_instance_v2 action="INSERT_OR_UPDATE">
+        <attributes/>
+        <block display_value="">35a365ca473f03d07ace13ff016d43ab</block>
+        <comment/>
+        <connected_to/>
+        <decision_table/>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</flow>
+        <flow_variables_assigned/>
+        <generation_source/>
+        <logic_definition display_value="If">af4e1945c3e232002841b63b12d3ae3e</logic_definition>
+        <order>3</order>
+        <outputs_assigned/>
+        <parent_ui_id/>
+        <sys_class_name>sys_hub_flow_logic_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:01</sys_created_on>
+        <sys_id>2ea3a5ca473f03d07ace13ff016d43e0</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:56</sys_updated_on>
+        <ui_id>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+1VyW7bMBD9lYBnWdDiJfbNcBCgQNIATZBLGwhjkrKJUqRKUnZcwf/eoRbbSG20QXPszXyzvTeaB9dEV66snH3Sc2vFSpHZ15eACOUx/F0TBQUnM0K1YsIJrbIGCMgGZOUD96Bgxc3VvCyN3nCGISZsKWH3fDmDroVkhnfTSjDY03FDZvWbkGDYII8gj6c0pmkyTpMoSq6H8XKcLuOEpcAhxYYSllxi6qKneXXXIMFF/m5Xetw6I9Sqe991XR57UBvmWcVRQPir44oh+1kO0vKAFKAYOG12B8RwYA9KHoG1UA7bEZ/8asVPHJiMRj4x5yiR8jZ4eGbd5lo4vwEHSKWirjJdKl1rQbltl8N4DpV0i1OsTXgovdS2xMFS9tVaVoX63G6EHBr0HwqRyiIJXnqlnnqnI39c6+2XnuWtUM1WuqDUFOThBQ53t6yc51MTLnmBjbICyhI3mvkDEE0xcinClcRHmEu9xaH++kKgnniIi4XwFvGbBn4GI7yKe2yDxS3NJVhBs+ZSsR2uiZN9QOzOLiRYexSJ281+VJ5iK7kTl7X78SXUiNLNcfKGdzr2we+Hf3LzdZ2n6fWUsfFgAtd8MJykk8E0ZskgjUfxdDJOpkk0DqE5eJCZdeD4fv+tiqKUwUWjfFTb97lrCqN8FEej8+4ajs+564yv3mmp5A+W8t/zLx0VRdF/S/2zpYTNWiN02prhH+ioF2+fduZh11RYpPbksU/9P44P7PC4BD2Fttp896KO2P4XJpalCLsGAAA=</values>
+        <workflow_reference/>
+    </sys_hub_flow_logic_instance_v2>
+    <sys_hub_flow_logic_instance_v2 action="INSERT_OR_UPDATE">
+        <attributes/>
+        <block display_value="">7da365ca473f03d07ace13ff016d43b2</block>
+        <comment/>
+        <connected_to/>
+        <decision_table/>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</flow>
+        <flow_variables_assigned/>
+        <generation_source/>
+        <logic_definition display_value="If">af4e1945c3e232002841b63b12d3ae3e</logic_definition>
+        <order>8</order>
+        <outputs_assigned/>
+        <parent_ui_id>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</parent_ui_id>
+        <sys_class_name>sys_hub_flow_logic_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:02</sys_created_on>
+        <sys_id>2ea3a5ca473f03d07ace13ff016d43e4</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:56</sys_updated_on>
+        <ui_id>3ff0d56f-97c7-4c09-ae59-bf897253a1d6</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+1VXWvbMBT9K0HPxthOE9a8lXSFQtuUJhTGKOZakhNR2XL1kTQz+e+78kcS2oy12x73Zh1dXZ1zdA+uiXK2ctYs1IUxYlmSyfengIjSY/hdkxIKTiaEqpIJK1SZNkBA1iCd33jgL44by9lguuL0eTBzdnCv1VowzrCMCVNJ2D5+rJquhGSadywq0HiX5ZpM6jdbgmGzPII8PqcxHSbjYRJFyZezOBsPszhhQ+AwxIYSMi6xdNrTH9w0SPBLXXZbedxYLcplt77pusx7UGnmWcVRQPir5aVnP8lBGh6QAkoGVuntHtEc2KyUB2AlSovtiC9+NeIHXpiMRr4w5yiR8nZzv0w7F1s4vwQLSMVR63RXSldKUG5acxjPwUk7PcbaglnlpbZHLGSyP62kK8q71hGyb9A/GiLOIAleeaWeeqcjn6/U5qFneSXKxpVuUyoKcr8Ci95lzno+NeGSF9goLaCq0NG0akdANw9ShEuJizCXaoOX+qkMgXriIRoL4RXilw38CFp4FbfYBg+3NDMwgqbNBGM7tImTXUDM1kwlGHMQie6mL85TbCV34tLWH3+EalHZC7x5zTsdu+B9II6yUNdTfGuc7jQOqdPoig11P/Ep9ROfYt52u+v53Wzx9fZ+8e19RP6syeeScw6jfBRHo9PJORufSs6JzHwyLslv4uLf6oNpiaLof1z+Oi7CpO2Qd9qay/9hWp58NNo7915TYZDawmPX/V/Gb2xxuAQ9hjZKP3tRB2z3Exsm5kWvBgAA</values>
+        <workflow_reference/>
+    </sys_hub_flow_logic_instance_v2>
+    <sys_hub_flow_logic_instance_v2 action="INSERT_OR_UPDATE">
+        <attributes/>
+        <block display_value="">fda365ca473f03d07ace13ff016d43b6</block>
+        <comment/>
+        <connected_to>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</connected_to>
+        <decision_table/>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</flow>
+        <flow_variables_assigned/>
+        <generation_source/>
+        <logic_definition display_value="Else">1f781bf3c32232002841b63b12d3aee6</logic_definition>
+        <order>11</order>
+        <outputs_assigned/>
+        <parent_ui_id/>
+        <sys_class_name>sys_hub_flow_logic_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:02</sys_created_on>
+        <sys_id>66a3a5ca473f03d07ace13ff016d43e6</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:57</sys_updated_on>
+        <ui_id>14423385-bd9c-430a-b04f-dbe624498612</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/6tWyi8tKSgtKQ7JdywuzkzPU7KKjtVRyswDiUHYZYlFmYlJOalQbkpqcmZxZn5eCEjME0ldSmVeYm5mMrJQeX5RdlpOfjlCrBYAD1ouqHEAAAA=</values>
+        <workflow_reference/>
+    </sys_hub_flow_logic_instance_v2>
+    <sys_hub_flow_logic_instance_v2 action="INSERT_OR_UPDATE">
+        <attributes/>
+        <block display_value="">39a365ca473f03d07ace13ff016d43af</block>
+        <comment/>
+        <connected_to/>
+        <decision_table/>
+        <display_text/>
+        <flow display_value="SmartAttend - Attendance Correction Approval">dea3a5ca473f03d07ace13ff016d4351</flow>
+        <flow_variables_assigned/>
+        <generation_source/>
+        <logic_definition display_value="If">af4e1945c3e232002841b63b12d3ae3e</logic_definition>
+        <order>6</order>
+        <outputs_assigned/>
+        <parent_ui_id>d9d5ccea-c0cf-4922-8b75-4f8898b4529b</parent_ui_id>
+        <sys_class_name>sys_hub_flow_logic_instance_v2</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:02</sys_created_on>
+        <sys_id>e2a3a5ca473f03d07ace13ff016d43e3</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:56</sys_updated_on>
+        <ui_id>c11f5f99-0499-4e0f-8943-df30a10e0cdc</ui_id>
+        <updation_source/>
+        <values>H4sIAAAAAAAA/+1VXWvbMBT9K0HPxthOE9a8lXSFQNuUNhTGKOZalhNRWXL1kTQz+e+78kcS2oy12x73Zh1dXZ1zdA+uiXK2ctYs1IUxfCnJ5PtTQLj0GH7XRELJyIRQJXNuuZJpAwRkDcL5jXv24pixLB9MV4w+D2ZycKfVmucsx6qcm0rA9vFDxXTFRa5Zx6ECjTdZpsmkfrPFc+xVRFDE5zSmw2Q8TKIo+XIWZ+NhFif5EBgMsaGAjAksnfbkB9cNEvxSld1WHjdWc7ns1tddl4ceVDr3rOIoIOzVMunZTwoQhgWkBJmDVXq7RzSDfC7FAVhxabEd8cWvhv/AC5PRyBcWDCVS1m7ul2lnYgsXl2ABqThqne5K6UpxykxrTs4KcMJOj7G2YF55qe0RC5noTyvhSnnbOkL2Dfo3Q8QZJMEqr9RT73QUDyu1ue9ZXnHZuNJtCkVB7Fdg0bvMWc+nJkywEhulJVQVOppW7Qjo5kHKcClwERZCbfBSP5MhUE88RGMhvEL8soEfQXOv4gbb4OGWZgaG07SZX2yHNjGyC4jZmqkAYw4i0d30xXmKreROXNr6449QzSt7gTevWadjF7yPw1ES6nqKb43DncYhdRpdsaHuBz6lfuCR2G43e7idL77e3C2+vQ/IH/X4XG7OYVSM4mh0Ojdn41O5OZGYT4Yl+U1Y/Et9MCtRFP0Py1+HhZu0HfFOW3P5P8zKkw9Ge+fea8oNUlt4bNb/YfzGFoeL02Noo/SzF3XAdj8BxSogfqsGAAA=</values>
+        <workflow_reference/>
+    </sys_hub_flow_logic_instance_v2>
+    <sys_hub_pill_compound action="delete_multiple" query="attached_to=dea3a5ca473f03d07ace13ff016d4351"/>
+    <sys_hub_flow_variable action="delete_multiple" query="model=dea3a5ca473f03d07ace13ff016d4351"/>
+    <sys_documentation action="INSERT_OR_UPDATE">
+        <element>current</element>
+        <help/>
+        <hint/>
+        <label>Record</label>
+        <language>en</language>
+        <name>var__m_sys_hub_flow_input_dea3a5ca473f03d07ace13ff016d4351</name>
+        <plural/>
+        <sys_class_name>sys_documentation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:01</sys_created_on>
+        <sys_id>16a3a5ca473f03d07ace13ff016d4364</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 11:31:01</sys_updated_on>
+        <url/>
+        <url_target/>
+    </sys_documentation>
+    <sys_documentation action="INSERT_OR_UPDATE">
+        <element>table_name</element>
+        <help/>
+        <hint/>
+        <label>Table Name</label>
+        <language>en</language>
+        <name>var__m_sys_hub_flow_input_dea3a5ca473f03d07ace13ff016d4351</name>
+        <plural/>
+        <sys_class_name>sys_documentation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:01</sys_created_on>
+        <sys_id>66a3a5ca473f03d07ace13ff016d43c7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-09 11:31:01</sys_updated_on>
+        <url/>
+        <url_target/>
+    </sys_documentation>
+    <sys_choice action="delete_multiple" query="name=var__m_sys_hub_flow_input_dea3a5ca473f03d07ace13ff016d4351"/>
+    <sys_choice action="delete_multiple" query="name=var__m_sys_hub_flow_output_dea3a5ca473f03d07ace13ff016d4351"/>
+    <sys_hub_flow action="UPDATE">
+        <sys_id>55188582477b03d07ace13ff016d4324</sys_id>
+        <latest_snapshot>dea3a5ca473f03d07ace13ff016d4351</latest_snapshot>
+        <compiler_build>glide-australia-02-11-2026__patch3-05-25-2026_06-12-2026_1106.zip</compiler_build>
+        <version_record/>
+    </sys_hub_flow>
+    <sys_flow_trigger_plan action="delete_multiple" query="plan_id=55188582477b03d07ace13ff016d4324^sys_idNOT INb2a3e5ca473f03d07ace13ff016d434e"/>
+    <sys_flow_trigger_plan action="INSERT_OR_UPDATE">
+        <binding_strategy>com.snc.process_flow.engine.binding.OncePerRecord</binding_strategy>
+        <plan>{"@class":"com.snc.process_flow.engine.serialization.plan_data.ChunkingPlanData","chunk_data":{"table":"sys_flow_trigger_plan","id":"b2a3e5ca473f03d07ace13ff016d434e","name":"plan","plan_signature":null},"plan_data":"CHUNKING_PLAN"}</plan>
+        <plan_id>55188582477b03d07ace13ff016d4324</plan_id>
+        <snapshot>e2fe41fa47bb87d07ace13ff016d4399</snapshot>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-09 11:31:03</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>b2a3e5ca473f03d07ace13ff016d434e</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_overrides/>
+        <sys_scope/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 16:30:58</sys_updated_on>
+        <trigger display_value="">3f7b3cb2473b87d07ace13ff016d43e0</trigger>
+    </sys_flow_trigger_plan>
+    <sys_flow_subflow_plan action="delete_multiple" query="plan_id=55188582477b03d07ace13ff016d4324"/>
+</record_update>

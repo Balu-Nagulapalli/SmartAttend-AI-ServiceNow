@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>d6e0536547bb4f907ace13ff016d435b</enforce_acl>
+        <http_method>GET</http_method>
+        <name>My Attendance</name>
+        <operation_script><![CDATA[(function process(request, response) {
+
+    // =========================================================
+    // 1. CURRENT LOGGED-IN EMPLOYEE
+    // =========================================================
+    var employeeId = gs.getUserID();
+
+
+    // =========================================================
+    // 2. QUERY EMPLOYEE ATTENDANCE
+    // =========================================================
+    var attendance =
+        new GlideRecord(
+            'x_1760545_smarta_0_attendance'
+        );
+
+    attendance.addQuery(
+        'employee',
+        employeeId
+    );
+
+    attendance.orderByDesc(
+        'attendance_date'
+    );
+
+    attendance.setLimit(30);
+
+    attendance.query();
+
+
+    var records = [];
+
+
+    // =========================================================
+    // 3. BUILD RESPONSE
+    // =========================================================
+    while (attendance.next()) {
+
+        records.push({
+
+            number:
+                attendance.getValue(
+                    'number'
+                ),
+
+            attendance_id:
+                attendance.getUniqueValue(),
+
+            attendance_date:
+                attendance.getValue(
+                    'attendance_date'
+                ),
+
+            status:
+                attendance.getValue(
+                    'status'
+                ),
+
+            check_in:
+                convertToIndiaTime(
+                    attendance.getValue(
+                        'check_in'
+                    )
+                ),
+
+            check_out:
+                convertToIndiaTime(
+                    attendance.getValue(
+                        'check_out'
+                    )
+                ),
+
+            late_minutes:
+                attendance.getValue(
+                    'late_minutes'
+                ) || '0',
+
+            working_minutes:
+                attendance.getValue(
+                    'working_minutes'
+                ) || '',
+
+            scanner:
+                attendance.scanner
+                    .getDisplayValue()
+
+        });
+    }
+
+
+    // =========================================================
+    // 4. RETURN
+    // =========================================================
+    response.setStatus(200);
+
+    response.setBody({
+
+        success: true,
+
+        employee:
+            gs.getUserDisplayName(),
+
+        count:
+            records.length,
+
+        attendance:
+            records
+
+    });
+
+
+    // =========================================================
+    // HELPER - CONVERT STORED UTC TO INDIA TIME
+    // =========================================================
+    function convertToIndiaTime(value) {
+
+        if (!value) {
+            return '';
+        }
+
+
+        var dateTime =
+            new GlideDateTime(
+                value
+            );
+
+
+        // India = UTC + 5:30
+        dateTime.addSeconds(
+            19800
+        );
+
+
+        return dateTime.getValue();
+    }
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1760545_smarta_0/smartattend_api/my-attendance</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/my-attendance</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <support_trailing_slash>false</support_trailing_slash>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-10 11:40:08</sys_created_on>
+        <sys_id>f42fe25647b7c3d07ace13ff016d43cb</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>My Attendance</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_ws_operation_f42fe25647b7c3d07ace13ff016d43cb</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-10 11:40:08</sys_updated_on>
+        <web_service_definition display_value="SmartAttend API">6710d7e147bb4f907ace13ff016d431e</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

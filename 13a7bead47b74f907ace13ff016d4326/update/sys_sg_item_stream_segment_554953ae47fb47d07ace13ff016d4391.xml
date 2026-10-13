@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_item_stream_segment">
+    <sys_sg_item_stream_segment action="INSERT_OR_UPDATE">
+        <empty_state/>
+        <interleave_order_direction>asc</interleave_order_direction>
+        <max_offline_rows>500</max_offline_rows>
+        <name>Pending Corrections - Screen segment</name>
+        <order/>
+        <screen display_value="Pending Corrections">1d4953ae47fb47d07ace13ff016d438b</screen>
+        <sys_class_name>sys_sg_item_stream_segment</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-11 09:21:49</sys_created_on>
+        <sys_id>554953ae47fb47d07ace13ff016d4391</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Pending Corrections - Screen segment</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_sg_item_stream_segment_554953ae47fb47d07ace13ff016d4391</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 09:21:49</sys_updated_on>
+    </sys_sg_item_stream_segment>
+</record_update>

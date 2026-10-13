@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_item_section">
+    <sys_sg_item_section action="INSERT_OR_UPDATE">
+        <access_control_type>user_roles</access_control_type>
+        <active>true</active>
+        <card_size/>
+        <column_count/>
+        <custom_height/>
+        <custom_width/>
+        <data_item/>
+        <destination_screen display_value="Today's Attendance">d585bbfa47ffc7d07ace13ff016d4352</destination_screen>
+        <display_title>true</display_title>
+        <hide_header>false</hide_header>
+        <hide_section_if_empty>false</hide_section_if_empty>
+        <hide_see_all_button>true</hide_see_all_button>
+        <is_custom_size>false</is_custom_size>
+        <is_hidden_preference_name/>
+        <max_items_display_count>1</max_items_display_count>
+        <orientation>vertical</orientation>
+        <required_roles>x_1760545_smarta_0.smartattend_employee</required_roles>
+        <row_count/>
+        <scrolling_type>free</scrolling_type>
+        <sys_class_name>sys_sg_item_section</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-12 06:11:19</sys_created_on>
+        <sys_id>6847ff7e47ffc7d07ace13ff016d4398</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Today's Attendance</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_sg_item_section_6847ff7e47ffc7d07ace13ff016d4398</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-12 06:14:08</sys_updated_on>
+        <table/>
+        <title>Today's Attendance</title>
+        <visible_condition/>
+        <wide_column_count/>
+    </sys_sg_item_section>
+</record_update>

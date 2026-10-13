@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element attributes="enforce_dot_walk_cross_scope_access=true" db_object_id="c26c7a2947f74f907ace13ff016d432b" label="Scanner" max_length="40" name="x_1760545_smarta_0_scanner" type="collection">
+        <element display="true" label="Scanner Name" mandatory="true" max_length="100" name="scanner_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Location" mandatory="true" max_length="150" name="location" type="string"/>
+        <element label="Last Seen" max_length="40" name="last_seen" type="glide_date_time"/>
+        <element label="Kiosk User" mandatory="true" max_length="32" name="kiosk_user" reference="sys_user" type="reference"/>
+        <element label="Description" max_length="500" name="description" type="string"/>
+        <element default="True" label="Active" mandatory="true" max_length="255" name="active" type="boolean"/>
+        <index name="index">
+            <element name="kiosk_user"/>
+        </index>
+    </element>
+</database>

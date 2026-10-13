@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element attributes="enforce_dot_walk_cross_scope_access=true" db_object_id="6c8143e1473b4f907ace13ff016d4384" label="Attendance" max_length="40" name="x_1760545_smarta_0_attendance" type="collection">
+        <element display="true" label="Reference Label" max_length="200" name="reference_label" type="string"/>
+        <element label="Scanner" max_length="32" name="scanner" reference="x_1760545_smarta_0_scanner" type="reference"/>
+        <element label="Remarks" max_length="500" name="remarks" type="string"/>
+        <element label="Employee" mandatory="true" max_length="32" name="employee" reference="sys_user" type="reference"/>
+        <element choice="3" label="Status" mandatory="true" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Present" sequence="0" value="present"/>
+                <element inactive_on_update="false" label="Exception" sequence="5" value="exception"/>
+                <element inactive_on_update="false" label="Half Day" sequence="3" value="half_day"/>
+                <element inactive_on_update="false" label="Late" sequence="1" value="late"/>
+                <element inactive_on_update="false" label="Insufficient Hours" sequence="6" value="insufficient_hours"/>
+                <element inactive_on_update="false" label="On Leave" sequence="4" value="on_leave"/>
+                <element inactive_on_update="false" label="Absent" sequence="2" value="absent"/>
+            </choice>
+        </element>
+        <element label="Check In" max_length="255" name="check_in" type="glide_date_time"/>
+        <element label="Check Out" max_length="40" name="check_out" type="glide_date_time"/>
+        <element label="Late Minutes" max_length="40" name="late_minutes" type="integer"/>
+        <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Working Minutes" max_length="40" name="working_minutes" type="integer"/>
+        <element label="Attendance Date" mandatory="true" max_length="40" name="attendance_date" type="glide_date"/>
+        <index name="index">
+            <element name="employee"/>
+        </index>
+        <index name="index2">
+            <element name="scanner"/>
+        </index>
+    </element>
+</database>

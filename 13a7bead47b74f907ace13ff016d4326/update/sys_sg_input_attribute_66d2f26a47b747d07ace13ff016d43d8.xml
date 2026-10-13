@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_input_attribute">
+    <sys_sg_input_attribute action="INSERT_OR_UPDATE">
+        <input display_value="Attendance Record">42e17e6a47b747d07ace13ff016d4316</input>
+        <name>SourceFieldName</name>
+        <sys_class_name>sys_sg_input_attribute</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-11 06:33:58</sys_created_on>
+        <sys_id>66d2f26a47b747d07ace13ff016d43d8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>SourceFieldName</sys_name>
+        <sys_package display_value="SmartAttend AI" source="x_1760545_smarta_0">13a7bead47b74f907ace13ff016d4326</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="SmartAttend AI">13a7bead47b74f907ace13ff016d4326</sys_scope>
+        <sys_update_name>sys_sg_input_attribute_66d2f26a47b747d07ace13ff016d43d8</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-11 06:33:58</sys_updated_on>
+        <translated_value/>
+        <value>attendance</value>
+    </sys_sg_input_attribute>
+</record_update>
